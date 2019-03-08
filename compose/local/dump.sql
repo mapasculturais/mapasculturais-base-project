@@ -2676,7 +2676,7 @@ COPY public.request (id, request_uid, requester_user_id, origin_type, origin_id,
 --
 
 COPY public.role (id, usr_id, name, subsite_id) FROM stdin;
-1	1	superAdmin	\N
+2	1	saasSuperAdmin	\N
 \.
 
 
@@ -2774,6 +2774,8 @@ COPY public.user_app (public_key, private_key, user_id, name, status, create_tim
 --
 
 COPY public.user_meta (object_id, key, value, id) FROM stdin;
+1	deleteAccountToken	54cd760dfca39f8e8c8332d7499bdb44f921dc16	1
+1	localAuthenticationPassword	$2y$10$iIXeqhX.4fEAAVZPsbtRde7CFw1ChduCi8NsnXGnJc6TlelY6gf3e	2
 \.
 
 
@@ -2782,7 +2784,7 @@ COPY public.user_meta (object_id, key, value, id) FROM stdin;
 --
 
 COPY public.usr (id, auth_provider, auth_uid, email, last_login_timestamp, create_timestamp, status, profile_id) FROM stdin;
-1	1	1	Admin@local	2019-03-07 00:00:00	2019-03-07 00:00:00	1	1
+1	1	1	Admin@local	2019-03-08 19:03:34	2019-03-07 00:00:00	1	1
 \.
 
 
@@ -3083,7 +3085,7 @@ SELECT pg_catalog.setval('public.revision_data_id_seq', 10, true);
 -- Name: role_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
-SELECT pg_catalog.setval('public.role_id_seq', 1, true);
+SELECT pg_catalog.setval('public.role_id_seq', 2, true);
 
 
 --
@@ -3153,7 +3155,7 @@ SELECT pg_catalog.setval('public.term_relation_id_seq', 1, false);
 -- Name: user_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
-SELECT pg_catalog.setval('public.user_meta_id_seq', 1, false);
+SELECT pg_catalog.setval('public.user_meta_id_seq', 2, true);
 
 
 --
