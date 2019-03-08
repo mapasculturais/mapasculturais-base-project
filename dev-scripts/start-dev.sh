@@ -24,25 +24,14 @@ case $i in
             DOWN="1"
 	    shift
     ;;
-    -s|--sleep)
-            SLEEP_TIME="${i#*=}"
-	    shift
-    ;;
-    -u|--update)
-            BUILD="1"
-	    rm ../src/protected/composer.lock
-	    shift
-    ;;
     -h|--help)
     	    echo "
-	run-tests.sh [-b] [-u] [-d] [-s=25]
+	start-dev.sh [-b] [-d]
 
-    -b=  | --build      builda a imagem Docker
-    -u=  | --update     atualiza os pacotes do composer
-	-d=  | --down    executa o docker-compose down antes do docker-compose run
-    -s=  | --sleep=     tempo de espera em segundos para o banco de dados ser inicializado (padrão: 0 se existir a pasta docker-data/postgres ou 15 se não existir)
-    -h=  | --help      Imprime este texto de ajuda
-		    "
+    -b   | --build      builda a imagem Docker
+    -d   | --down       executa o docker-compose down antes do docker-compose run
+    -h   | --help       Imprime esta mensagem de ajuda
+    "
     	    exit
     ;;
 esac
