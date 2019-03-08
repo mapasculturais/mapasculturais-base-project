@@ -52,6 +52,9 @@ meu-mapas/dev-scripts/$ sudo ./start-dev.php
 
 Para parar o ambiente de desenvolvimento usar as teclas `Ctrl+c`
 
+### Usuário de teste
+O banco de dados inicial virá com um usuário de role _saasSuperAdmin_ login **Admin@local** e senha **mapas123**
+
 ## Criando um novo tema
 Usaremos para exemplo o nome de tema `NovoTema`
 
