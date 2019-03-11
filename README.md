@@ -18,11 +18,14 @@ Este é um projeto base para desenvolvimento de temas e plugins.
     - **SampleTheme** - esqueleto de tema filho de Subsite para demostração e para servir de base para o desenvolvimento de outros temas
 
 ## Guia rápido para início de novo projeto
-Certifique-se de ter os pacotres _git_, _docker_ e _docker-compose_ instalados e estar utilizando sistema operacional Linux ou MacOS. 
+Antes de tudo certifique-se de ter os pacotes _git_, _docker_ e _docker-compose_ instalados e estar utilizando sistema operacional Linux ou MacOS. 
 
+_Nos exemplos é usado o comando sudo para que os scripts tenham os privilégios requeridos pelo docker._
+
+### Criando repositório do projeto
 Crie um repositório vazio no github ou gitlab (usarei de exemplo o nome _https://github.com/organizacao/meu-mapas_)
 
-Clone o repositório do projeto base
+Clone o repositório do projeto base no seu computador
 ```
 $ git clone https://github.com/mapasculturais/mapasculturais-base-project.git meu-mapas
 $ cd meu-mapas
@@ -45,28 +48,62 @@ To github.com:organizacao/meu-mapas
 
 ```
 
+### Ambiente de desenvolvimento
+
+#### Iniciando o ambiente de desenvolvimento
 Para subir o ambiente de desenvolvimento basta entrar na pasta `dev-scripts` e rodar o script `dev-start.php`.
+
 ```
 meu-mapas/dev-scripts/$ sudo ./start-dev.php
 ```
 
-Para parar o ambiente de desenvolvimento usar as teclas `Ctrl+c`
+acesse no seu navegador http://localhost/
 
-### Usuário de teste
-O banco de dados inicial virá com um usuário de role _saasSuperAdmin_ login **Admin@local** e senha **mapas123**
+#### psysh
+Este ambiente roda com o built-in web server do PHP, o que possibilita que seja utilizado o [PsySH](https://psysh.org/]), um console interativo para debug e desenvolvimento. 
+
+no lugar desejado, adicione a linha `eval(\psy\sh());` e você obterá um console. `Ctrl + D` para continuar a execução do código.
+
+#### Parando o ambiente de desenvolvimento
+Para parar o ambiente de desenvolvimento usar as teclas `Ctrl + C`
+
+#### Usuário super administrador da rede
+O banco de dados inicial inclui um usuário de role `saasSuperAdmin` de **id** `1` e **email** `Admin@local`.
+Este usuário possui permissão de criar, modificar e deletar qualquer objeto do banco.
+
+- **email**: `Admin@local`
+- **senha**: `mapas123`
 
 ## Criando um novo tema
 Usaremos para exemplo o nome de tema `NovoTema`
 
-1. copie a pasta `themes/SampleTheme` para `themes\NovoTema`;
+1. copie a pasta `themes/SampleTheme` para `themes/NovoTema`;
+```
+meu-mapas/themes$ cp -a SamplesTheme NovoTema
+```
 2. edite o arquivo `dev-scripts/docker-compose.yml` adicionando uma linha na seção _volumes_ para o tema:
 ```
     - ../themes/NovoTema:/var/www/html/protected/application/themes/NovoTema
 ```
-3. edite o arquivo `themes\NovoTema\Theme.php` e substitua o namespace (linha 2) por `NovoTema`:
+3. edite o arquivo `themes/NovoTema/Theme.php` e substitua o namespace (linha 2) por `NovoTema`:
 ```+PHP
 <?php
 namespace NovoTema;
 ```
 
+## Criando um novo plugin
+Usaremos para exemplo o seguinte nome para o plugin: `MeuPlugin`
 
+1. copie a pasta `plugins/SamplePlugin` para `plugins/MeuPlugin`;
+```
+meu-mapas/plugins$ cp -a SamplesTheme MeuPlugin
+```
+2. edite o arquivo `dev-scripts/docker-compose.yml` adicionando uma linha na seção _volumes_ para o tema:
+```
+    - ../plugins/MeuPlugin:/var/www/html/protected/application/plugins/MeuPlugin
+```
+3. edite o arquivo `plugins/MeuPlugin/Plugin.php` e substitua o namespace (linha 2) por `MeuPlugin`:
+```+PHP
+<?php
+namespace MeuPlugin;
+```
