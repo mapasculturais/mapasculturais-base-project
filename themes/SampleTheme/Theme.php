@@ -3,8 +3,10 @@ namespace SampleTheme;
 
 use MapasCulturais\App;
 
-class Theme extends \Subsite\Theme {
 
+// class Theme extends \Subsite\Theme {
+class Theme extends \MapasCulturais\Themes\BaseV1\Theme {
+ 
     static function getThemeFolder() {
         return __DIR__;
     }
