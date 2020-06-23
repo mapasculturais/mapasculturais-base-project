@@ -1,0 +1,58 @@
+version: '3'
+services:
+  web:
+    image: hacklab/mapasculturais-nginx:latest
+    restart: always
+    volumes:
+     - ./docker-data/public-files:/var/www/html/files
+     - ./docker-data/assets:/var/www/html/assets
+    ports:
+     - "80:80"
+     - "443:443"
+    depends_on:
+      - mapasculturais
+    links:
+      - mapasculturais
+
+
+  mapasculturais:
+    build:
+      context: ./
+      dockerfile: compose/production/Dockerfile
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./docker-data/assets:/var/www/html/assets
+      - ./docker-data/public-files:/var/www/html/files
+      - ./docker-data/private-files:/var/www/private-files
+    links:
+      - db
+    environment:
+      - POSTGRES_PASSWORD=mapas
+      - POSTGRES_USER=mapas
+      - POSTGRES_DB=mapas
+
+#      - APP_LCODE=pt_BR,es_ES # para selecao do idioma baseado no navegador
+      - APP_LCODE=pt_BR
+      
+      - APP_MODE=production
+      - ACTIVE_THEME=SampleTheme
+      - PENDING_PCACHE_RECREATION_INTERVAL=60
+
+    depends_on:
+      - db
+      
+  db:
+    image: mdillon/postgis:10
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=mapas
+      - POSTGRES_USER=mapas
+      - POSTGRES_DB=mapas
+      - POSTGRES_DB_TEST=mapasculturais_test
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./compose/local/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ./docker-data/db-data:/var/lib/postgresql/data
