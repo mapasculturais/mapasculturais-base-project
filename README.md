@@ -51,10 +51,10 @@ To github.com:organizacao/meu-mapas
 ### Ambiente de desenvolvimento
 
 #### Iniciando o ambiente de desenvolvimento
-Para subir o ambiente de desenvolvimento basta entrar na pasta `dev-scripts` e rodar o script `dev-start.php`.
+Para subir o ambiente de desenvolvimento basta entrar na pasta `dev-scripts` e rodar o script `start-dev.sh`.
 
 ```
-meu-mapas/dev-scripts/$ sudo ./start-dev.php
+meu-mapas/dev-scripts/$ sudo ./start-dev.sh
 ```
 
 acesse no seu navegador http://localhost/
