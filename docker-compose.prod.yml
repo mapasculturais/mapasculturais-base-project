@@ -51,8 +51,8 @@ services:
       - POSTGRES_USER=mapas
       - POSTGRES_DB=mapas
       - POSTGRES_DB_TEST=mapasculturais_test
-    ports:
-      - "5432:5432"
+#    ports:
+#      - "5432:5432"
     volumes:
       - ./compose/local/dump.sql:/docker-entrypoint-initdb.d/dump.sql
       - ./docker-data/db-data:/var/lib/postgresql/data
