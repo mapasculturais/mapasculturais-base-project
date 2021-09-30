@@ -1,4 +1,4 @@
-FROM mapasculturais/mapasculturais:v5.0.0-RC-cli
+FROM mapasculturais/mapasculturais:latest-cli
 
 RUN git clone https://github.com/hacklabr/mapasculturais-multipleLocalAuth /var/www/html/protected/application/plugins/MultipleLocalAuth
 RUN curl https://raw.githubusercontent.com/opauth/facebook/master/FacebookStrategy.php > /var/www/html/protected/application/plugins/MultipleLocalAuth/Facebook/FacebookStrategy.php
