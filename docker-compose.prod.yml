@@ -38,7 +38,7 @@ services:
       
       - APP_MODE=production
       - ACTIVE_THEME=SampleTheme
-      - PENDING_PCACHE_RECREATION_INTERVAL=60
+      - PENDING_PCACHE_RECREATION_INTERVAL=5
 
       - REDIS_CACHE=redis
       - SESSIONS_SAVE_PATH=tcp://redis:6379
