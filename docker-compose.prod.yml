@@ -16,6 +16,8 @@ services:
 
 
   mapasculturais:
+    env_file:
+      - mapasculturais.prod.env
     build:
       context: ./
       dockerfile: compose/production/Dockerfile
@@ -26,24 +28,30 @@ services:
       - ./docker-data/assets:/var/www/html/assets
       - ./docker-data/public-files:/var/www/html/files
       - ./docker-data/private-files:/var/www/private-files
+      - ./docker-data/saas-files:/var/www/SaaS
     links:
       - db
+      - redis
     environment:
+      - ACTIVE_THEME=SampleTheme
+
+      - LOG_LEVEL=DEBUG
+      - LOG_ENABLED=true
+      
+      - APP_MODE=production
+      - APP_LCODE=pt_BR
+#      - APP_LCODE=pt_BR,es_ES # para selecao do idioma baseado no navegador
+      
+      - REDIS_CACHE=redis
+      - SESSIONS_SAVE_PATH=tcp://redis:6379
+      - PENDING_PCACHE_RECREATION_INTERVAL=5
+
       - POSTGRES_PASSWORD=mapas
       - POSTGRES_USER=mapas
       - POSTGRES_DB=mapas
-
-#      - APP_LCODE=pt_BR,es_ES # para selecao do idioma baseado no navegador
-      - APP_LCODE=pt_BR
-      
-      - APP_MODE=production
-      - ACTIVE_THEME=SampleTheme
-      - PENDING_PCACHE_RECREATION_INTERVAL=5
-
-      - REDIS_CACHE=redis
-      - SESSIONS_SAVE_PATH=tcp://redis:6379
     depends_on:
       - db
+      - redis
 
   redis:
     image: redis:5
