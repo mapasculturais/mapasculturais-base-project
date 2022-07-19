@@ -54,7 +54,7 @@ services:
       - redis
 
   redis:
-    image: redis:5
+    image: redis:6
     command: --maxmemory 256Mb --maxmemory-policy allkeys-lru
     
       
