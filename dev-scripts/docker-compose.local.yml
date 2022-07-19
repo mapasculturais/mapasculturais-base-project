@@ -21,13 +21,21 @@ services:
 
     environment:
       - PENDING_PCACHE_RECREATION_INTERVAL=10
+      - JOBS_INTERVAL=10
+      - REDIS_CACHE=redis
       - APP_MODE=development
 
     depends_on:
       - db
+      - redis
   
     stdin_open: true
     tty: true
+
+
+  redis:
+    image: redis:6
+    command: --maxmemory 256Mb --maxmemory-policy allkeys-lru
 
   db:
     image: mdillon/postgis:10
