@@ -15,39 +15,6 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: tiger; Type: SCHEMA; Schema: -; Owner: mapas
---
-
-CREATE SCHEMA tiger;
-
-
-ALTER SCHEMA tiger OWNER TO mapas;
-
---
--- Name: tiger_data; Type: SCHEMA; Schema: -; Owner: mapas
---
-
-CREATE SCHEMA tiger_data;
-
-
-ALTER SCHEMA tiger_data OWNER TO mapas;
-
---
--- Name: topology; Type: SCHEMA; Schema: -; Owner: mapas
---
-
-CREATE SCHEMA topology;
-
-
-ALTER SCHEMA topology OWNER TO mapas;
-
---
--- Name: SCHEMA topology; Type: COMMENT; Schema: -; Owner: mapas
---
-
-COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
-
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
