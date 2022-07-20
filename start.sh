@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker-compose -f docker-compose.prod.yml up --detach
+docker-compose up --detach

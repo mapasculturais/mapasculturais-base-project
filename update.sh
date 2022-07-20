@@ -4,7 +4,7 @@ git pull
 
 git submodule update
 
-docker-compose -f docker-compose.prod.yml build --no-cache
+docker-compose build --no-cache
 
 ./stop.sh
 ./start.sh

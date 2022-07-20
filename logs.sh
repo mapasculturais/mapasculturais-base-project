@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker-compose -f docker-compose.prod.yml logs -f --tail=10
+docker-compose logs -f --tail=10
