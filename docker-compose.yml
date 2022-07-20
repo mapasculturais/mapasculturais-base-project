@@ -17,7 +17,7 @@ services:
 
   mapasculturais:
     env_file:
-      - mapasculturais.prod.env
+      - .env
     build:
       context: ./
       dockerfile: compose/production/Dockerfile
