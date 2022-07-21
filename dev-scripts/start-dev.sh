@@ -45,10 +45,9 @@ if [ $DOWN = "1" ]; then
    docker-compose -f docker-compose.local.yml down
 fi
 
-rm -rf ../docker-data/pcache-cron.log
-touch ../docker-data/pcache-cron.log
+NAME=mapas
 
-docker-compose -f docker-compose.local.yml run --service-ports  mapas
+docker-compose -f docker-compose.local.yml run --name=$NAME --service-ports  mapas
 
 docker-compose -f docker-compose.local.yml down
 cd $CDIR
