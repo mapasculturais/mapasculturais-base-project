@@ -33,7 +33,7 @@ services:
       - db
       - redis
     environment:
-      - ACTIVE_THEME=SampleTheme
+      #- ACTIVE_THEME=MeuTema
 
       - LOG_LEVEL=DEBUG
       - LOG_ENABLED=true
