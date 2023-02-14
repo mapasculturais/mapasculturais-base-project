@@ -57,6 +57,7 @@ services:
   redis:
     image: redis:6
     command: --maxmemory 256Mb --maxmemory-policy allkeys-lru
+    restart: always
     
       
   db:
