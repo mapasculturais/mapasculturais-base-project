@@ -17,6 +17,7 @@ services:
       # themes and plugins
       - ../themes/SampleTheme:/var/www/html/protected/application/themes/SampleTheme
       - ../plugins/SamplePlugin:/var/www/html/protected/application/plugins/SamplePlugin
+      - ../plugins/MultipleLocalAuth:/var/www/html/protected/application/plugins/MultipleLocalAuth
 
     environment:
       - PENDING_PCACHE_RECREATION_INTERVAL=10
