@@ -136,6 +136,10 @@ meu-mapas/themes git submodule add https://github.com/mapasculturais/theme-SpCul
 
 ### Definindo o tema ativo
 Edite o arquivo `compose/common/0.main.php` e defina o valor da chave `themes.active`.
+```PHP
+    // Define o tema ativo no site principal. Deve ser informado o namespace do tema e neste deve existir uma classe Theme.
+    'themes.active' => 'SpCultura',
+```
 
 ## Configuração dos plugins
 ### Criando um novo plugin
