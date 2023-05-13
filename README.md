@@ -1,6 +1,6 @@
 # Mapas Culturais Base Project
 
-A ideia desse projeto é facilitar o deploy da plataforma Mapas Culturais e ser um repositório aglutinador das partes do sistema, viabilizando um alto controle das versões de cada de cada uma das peças deste (plugins, tema, core do Mapas Culturais, PostgreSQL/PostGIS, redis etc). 
+A ideia desse projeto é facilitar o deploy da plataforma Mapas Culturais e ser um repositório aglutinador das partes do sistema, viabilizando um alto controle das versões de cada uma das peças do sistema (plugins, tema, core do Mapas Culturais, PostgreSQL/PostGIS, redis etc). 
 
 É recomendado a utilização do [Git Flow](https://danielkummer.github.io/git-flow-cheatsheet/index.pt_BR.html) para a estrutura de branches e o [Versionamento Semântico](https://semver.org/lang/pt-BR/) para as tags, da seguinte maneira:
 
@@ -95,6 +95,9 @@ Este usuário possui permissão de criar, modificar e deletar qualquer objeto do
 
 - **email**: `Admin@local`
 - **senha**: `mapas123`
+
+### Testando envio de emails
+O ambiente de desenvolvimento inclui o [MailHog](https://github.com/mailhog/MailHog) que pode ser acessado em `http://localhost:8025`.
 
 ## Configuração do Tema
 ### Criando um novo tema
