@@ -12,11 +12,11 @@ return [
         'salt' => env('AUTH_SALT', null),
         'timeout' => '24 hours',
         'strategies' => [
-           'Facebook' => array(
+            'Facebook' => array(
                'app_id' => env('AUTH_FACEBOOK_APP_ID', null),
                'app_secret' => env('AUTH_FACEBOOK_APP_SECRET', null),
                'scope' => env('AUTH_FACEBOOK_SCOPE', 'email'),
-           ),
+            ),
 
             'LinkedIn' => array(
                 'api_key' => env('AUTH_LINKEDIN_API_KEY', null),

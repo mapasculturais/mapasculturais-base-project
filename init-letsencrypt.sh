@@ -8,9 +8,15 @@ fi
 echo "EDITE ESTE ARQUIVO E DEFINA AS VARIÁVEIS domain, email e staging"
 exit; # E APAGUE ESSA LINHA
 
+# Domínio da instalação
 domain=(meumapa.gov.br)
-email="webmaster@meumapa.gov.br" # Adding a valid address is strongly recommended
-staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
+
+# Informe um e-mail válido
+email="webmaster@meumapa.gov.br"
+
+# EVITA que se atinja o LIMITE DE REQUESTS ao Let's Encrypt enquanto se testa as configurações
+# defina stagin=0 quando os testes passarem e execute novamente o script
+staging=1 
 
 data_path="./docker-data/certbot"
 rsa_key_size=4096
@@ -31,8 +37,8 @@ if [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || [ ! -e "$data_path/conf/
 fi
 
 echo "### Creating dummy certificate for $domain ..."
-path="/etc/letsencrypt/live/$domain"
-mkdir -p "$data_path/conf/live/$domain"
+path="/etc/letsencrypt/live/mapasculturais"
+mkdir -p "$data_path/conf/live/mapasculturais"
 docker-compose run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:1024 -days 1\
     -keyout '$path/privkey.pem' \
@@ -47,9 +53,9 @@ echo
 
 echo "### Deleting dummy certificate for $domain ..."
 docker-compose run --rm --entrypoint "\
-  rm -Rf /etc/letsencrypt/live/$domain && \
-  rm -Rf /etc/letsencrypt/archive/$domain && \
-  rm -Rf /etc/letsencrypt/renewal/$domain.conf" certbot
+  rm -Rf /etc/letsencrypt/live/mapasculturais && \
+  rm -Rf /etc/letsencrypt/archive/mapasculturais && \
+  rm -Rf /etc/letsencrypt/renewal/mapasculturais.conf" certbot
 echo
 
 

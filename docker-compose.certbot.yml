@@ -1,0 +1,19 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    volumes:
+     - ./compose/production/nginx-certbot.conf:/etc/nginx/conf.d/nginx.conf
+     - ./docker-data/certbot/conf:/etc/letsencrypt
+     - ./docker-data/certbot/www:/var/www/certbot
+    ports:
+     - "80:80"
+    
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - ./docker-data/certbot/conf:/etc/letsencrypt
+      - ./docker-data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
