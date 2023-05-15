@@ -1,6 +1,6 @@
 #!/bin/bash
 docker pull hacklab/mapasculturais:latest
-git pull
+git pull --recurse-submodules
 
 git submodule update
 
