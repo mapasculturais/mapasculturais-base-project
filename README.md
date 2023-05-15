@@ -223,13 +223,15 @@ meu-mapas$
 ```
 
 ### 2. Gerando o certificado Let's Encrypt
-Para gerar o certificadao, você precisa editar o arquivo `init-letsencrypt.sh` preenchendo corretamente as linhas que definem as variáveis `domain` e `email`, informando o domínio que aponta para o servidor e preferencialmente um e-mail válido do responsável pelo domínio. 
+Para gerar o certificadao, você precisa editar o arquivo `init-letsencrypt.sh` preenchendo corretamente as linhas que definem as variáveis `domain` e `email`, informando o domínio que aponta para o servidor e preferencialmente um e-mail válido do responsável pelo domínio. Essa configuração deve ficar persistida no repositório, então commite essas modificações.
 
-Após editar o arquivo, execute o script para testar se a configuração está correta e se o desafio do Let's Encrypt consegue ser executado corretamente.
+Após editar o arquivo, atualize o código do servidor e execute o script para testar se a configuração está correta e se o desafio do Let's Encrypt consegue ser executado corretamente.
 
 > IMPORTANTE: o domínio já deve apontar para o servidor e a porta 80 estar aberta para que o desafio do Let's Encript funcione corretamente.
 
 ```sh
+meu-mapas$ git pull
+
 meu-mapas$ sudo ./init-letsencrypt.sh
 ```
 
