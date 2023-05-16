@@ -243,7 +243,7 @@ meu-mapas$ git pull
 meu-mapas$ sudo ./init-letsencrypt.sh
 ```
 
-> IMPORTANTE: Antes de prosseguir para o próximo passo, certifique-se de que a pasta `docker-data/certbot/conf` contém os arquivos abaixo:
+> IMPORTANTE: Antes de prosseguir para o próximo passo, certifique-se de que a pasta `docker-data/certs/conf` contém os arquivos abaixo:
 - `live/mapasculturais/fullchain.pem`
 - `live/mapasculturais/privkey.pem`
 - `options-ssl-nginx.conf`
@@ -258,8 +258,8 @@ Para utilizar o certificado Let's Encrypt diretamente no servidor, primeiro deve
 
   ##### versão com ssl
     #  - ./compose/production/nginx-ssl.conf:/etc/nginx/conf.d/default.conf
-    #  - ./docker-data/certbot/conf:/etc/letsencrypt
-    #  - ./docker-data/certbot/www:/var/www/certbot
+    #  - ./docker-data/certs/conf:/etc/letsencrypt
+    #  - ./docker-data/certs/www:/var/www/certbot
 ```
 > IMPORTANTE: certifique-se de que a identação das linhas descomentadas está correta
 ### 4. Configurando o sistema

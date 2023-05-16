@@ -4,9 +4,8 @@ services:
     image: nginx:latest
     restart: unless-stopped
     volumes:
-     - ./compose/production/nginx-certbot.conf:/etc/nginx/conf.d/nginx.conf
      - ./docker-data/certbot/conf:/etc/letsencrypt
-     - ./docker-data/certbot/www:/var/www/certbot
+     - ./docker-data/certbot/www:/usr/share/nginx/html/
     ports:
      - "80:80"
     

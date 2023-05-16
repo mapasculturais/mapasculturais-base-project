@@ -14,8 +14,8 @@ services:
 
   ##### versão com ssl
     #  - ./compose/production/nginx-ssl.conf:/etc/nginx/conf.d/default.conf
-    #  - ./docker-data/certbot/conf:/etc/letsencrypt
-    #  - ./docker-data/certbot/www:/var/www/certbot
+    #  - ./docker-data/certs/conf:/etc/letsencrypt
+    #  - ./docker-data/certs/www:/var/www/certbot
     ports:
      - "80:80"
      - "443:443"
