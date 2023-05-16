@@ -235,7 +235,19 @@ meu-mapas$ git pull
 meu-mapas$ sudo ./init-letsencrypt.sh
 ```
 
-Tendo um resultado positivo do Let's Encrypt de que a configuração está correta, edite o arquivo `init-letsencrypt.sh` para definir o valor da variável `staging=0` 
+Tendo um resultado positivo do Let's Encrypt de que a configuração está correta, edite o arquivo `init-letsencrypt.sh` para definir o valor da variável `staging=0` e execute o script novamente:
+
+```sh
+meu-mapas$ git pull
+
+meu-mapas$ sudo ./init-letsencrypt.sh
+```
+
+> IMPORTANTE: Antes de prosseguir para o próximo passo, certifique-se de que a pasta `docker-data/certbot/conf` contém os arquivos abaixo:
+- `live/mapasculturais/fullchain.pem`
+- `live/mapasculturais/privkey.pem`
+- `options-ssl-nginx.conf`
+- `ssl-dhparams.pem`
 
 ### 3. Preparando o arquivo docker-compose para utilizar o certificado Let's Encrypt:
 Para utilizar o certificado Let's Encrypt diretamente no servidor, primeiro deve-se editar o arquivo `docker-compose.yml`, comentar a linha do arquivo de configuração do nginx sem o ssl e descomentar as linha de configuração do nginx que icluem os certificados gerados pelo Let's Encrypt:
@@ -249,7 +261,7 @@ Para utilizar o certificado Let's Encrypt diretamente no servidor, primeiro deve
     #  - ./docker-data/certbot/conf:/etc/letsencrypt
     #  - ./docker-data/certbot/www:/var/www/certbot
 ```
-
+> IMPORTANTE: certifique-se de que a identação das linhas descomentadas está correta
 ### 4. Configurando o sistema
 Antes de subir o ambiente é preciso configurá-lo. Para isso crie no servidor um arquivo `.env ` baseado no `.env_sample` e preencha-o corretamente.
 
