@@ -39,7 +39,7 @@ services:
     command: --maxmemory 256Mb --maxmemory-policy allkeys-lru
 
   db:
-    image: mdillon/postgis:10
+    image: postgis/postgis:14-master
     environment:
       - POSTGRES_PASSWORD=mapas
       - POSTGRES_USER=mapas
