@@ -9,21 +9,21 @@ services:
     volumes:
       - ../docker-data/assets:/var/www/html/assets
       - ../docker-data/public-files:/var/www/html/files
-      - ../docker-data/private-files:/var/www/private-files
+      - ../docker-data/private-files:/var/www/var/private-files
 
-      - ../compose/common/config.d:/var/www/html/protected/application/conf/conf-common.d
-      - ../compose/local/config.d:/var/www/html/protected/application/conf/config.d
+      - ../compose/common/config.d:/var/www/config/common.d
+      - ../compose/local/config.d:/var/www/config/local.d
 
       # themes and plugins
-      - ../themes/SampleTheme:/var/www/html/protected/application/themes/SampleTheme
-      - ../plugins/SamplePlugin:/var/www/html/protected/application/plugins/SamplePlugin
-      - ../plugins/MultipleLocalAuth:/var/www/html/protected/application/plugins/MultipleLocalAuth
+      - ../plugins/SamplePlugin:/var/www/src/plugins/SamplePlugin
+      - ../plugins/MultipleLocalAuth:/var/www/src/plugins/MultipleLocalAuth
 
     environment:
       - PENDING_PCACHE_RECREATION_INTERVAL=10
       - JOBS_INTERVAL=10
       - REDIS_CACHE=redis
       - APP_MODE=development
+      - BUILD_ASSETS=1
 
     depends_on:
       - db

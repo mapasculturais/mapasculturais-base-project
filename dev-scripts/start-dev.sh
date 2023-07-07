@@ -7,11 +7,6 @@ cd $DIR
 
 BUILD="0"
 DOWN="0"
-SLEEP_TIME="0"
-
-if [ ! -d "../docker-data/postgres" ]; then
-  SLEEP_TIME=15
-fi
 
 for i in "$@"
 do
@@ -37,15 +32,17 @@ case $i in
 esac
 done
 
+NAME=mapas-base
+
 if [ $BUILD = "1" ]; then
-   docker-compose build
+   docker-compose build --no-cache --pull
 fi
 
 if [ $DOWN = "1" ]; then
    docker-compose down
+   docker rm $NAME
 fi
 
-NAME=mapas
 
 docker-compose run --name=$NAME --service-ports  mapas
 

@@ -4,8 +4,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CDIR=$( pwd )
 cd $DIR
 
-NAME=mapas
+NAME=mapas-base
 
-docker exec -it $MAPAS bash
+docker exec -it $NAME bash
 
 cd $CDIR
