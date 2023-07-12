@@ -7,3 +7,8 @@ COPY compose/production/config.d /var/www/html/protected/application/conf/config
 COPY themes /var/www/html/protected/application/themes
 COPY plugins /var/www/html/protected/application/plugins
 
+WORKDIR /var/www/src
+
+RUN pnpm install --recursive && pnpm run build 
+
+WORKDIR /var/www/html
