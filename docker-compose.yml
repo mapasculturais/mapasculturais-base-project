@@ -35,8 +35,10 @@ services:
       - ./.env:/.env
       - ./docker-data/assets:/var/www/html/assets
       - ./docker-data/public-files:/var/www/html/files
-      - ./docker-data/private-files:/var/www/private-files
-      - ./docker-data/saas-files:/var/www/SaaS
+      - ./docker-data/private-files:/var/www/var/private-files
+      - ./docker-data/saas-files:/var/www/var/saas-files
+      - ./docker-data/sessions:/var/www/var/sessions
+      - ./docker-data/logs:/var/www/var/logs
     links:
       - db
       - redis
@@ -44,6 +46,9 @@ services:
     environment:
       - REDIS_CACHE=redis
       - SESSIONS_SAVE_PATH=tcp://sessions:6379
+      - PENDING_PCACHE_RECREATION_INTERVAL=1
+      - JOBS_INTERVAL=1
+      # - APP_MODE=
     depends_on:
       - db
       - redis
@@ -51,7 +56,7 @@ services:
 
   redis:
     image: redis:6
-    command: --maxmemory 256Mb --maxmemory-policy allkeys-lru
+    command: --maxmemory 1256Mb --maxmemory-policy allkeys-lru
     restart: unless-stopped
  
   sessions:
