@@ -3,16 +3,21 @@ services:
   mapas:
     build:
       context: ../
-      dockerfile: compose/local/Dockerfile
+      dockerfile: docker/Dockerfile
+      
+    command: /var/www/dev/start.sh
+
     ports:
       - "80:80"
+    
     volumes:
-      - ../docker-data/assets:/var/www/html/assets
-      - ../docker-data/public-files:/var/www/html/files
-      - ../docker-data/private-files:/var/www/var/private-files
+      - ./docker-data/assets:/var/www/html/assets
+      - ./docker-data/public-files:/var/www/html/files
+      - ./docker-data/private-files:/var/www/var/private-files
+      - ./docker-data/logs:/var/www/var/logs
 
-      - ../compose/common/config.d:/var/www/config/common.d
-      - ../compose/local/config.d:/var/www/config/local.d
+      - ../docker/common/config.d:/var/www/config/common.d
+      - ./config.d:/var/www/config/local.d
 
       # themes and plugins
       - ../plugins/SamplePlugin:/var/www/src/plugins/SamplePlugin
@@ -47,8 +52,8 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ../compose/db:/docker-entrypoint-initdb.d
-      - ../docker-data/db-data:/var/lib/postgresql/data
+      - ../docker/db:/docker-entrypoint-initdb.d
+      - ./docker-data/db-data:/var/lib/postgresql/data
 
   mailhog: 
     image: mailhog/mailhog

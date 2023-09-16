@@ -31,20 +31,25 @@ case $i in
     ;;
 esac
 done
-
-NAME=mapas-base
-
 if [ $BUILD = "1" ]; then
    docker-compose build --no-cache --pull
 fi
 
 if [ $DOWN = "1" ]; then
    docker-compose down
-   docker rm $NAME
 fi
 
+mkdir -p docker-data/assets
+mkdir -p docker-data/logs
+mkdir -p docker-data/private-files
+mkdir -p docker-data/public-files
+mkdir -p docker-data/saas-files
 
-docker-compose run --name=$NAME --service-ports  mapas
+touch docker-data/logs/app.log
+
+chown -R www-data: docker-data/assets docker-data/logs docker-data/private-files docker-data/public-files docker-data/saas-files
+
+docker-compose run --service-ports mapas
 
 docker-compose down
 cd $CDIR
