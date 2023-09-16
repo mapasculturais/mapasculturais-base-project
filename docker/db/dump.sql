@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.4 (Debian 14.4-1.pgdg110+1)
--- Dumped by pg_dump version 14.4 (Debian 14.4-1.pgdg110+1)
+-- Dumped from database version 14.8 (Debian 14.8-1.pgdg110+1)
+-- Dumped by pg_dump version 14.8 (Debian 14.8-1.pgdg110+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -17,28 +17,34 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: tiger; Type: SCHEMA; Schema: -; Owner: -
+-- Name: tiger; Type: SCHEMA; Schema: -; Owner: mapas
 --
 
 CREATE SCHEMA tiger;
 
 
+ALTER SCHEMA tiger OWNER TO mapas;
+
 --
--- Name: tiger_data; Type: SCHEMA; Schema: -; Owner: -
+-- Name: tiger_data; Type: SCHEMA; Schema: -; Owner: mapas
 --
 
 CREATE SCHEMA tiger_data;
 
 
+ALTER SCHEMA tiger_data OWNER TO mapas;
+
 --
--- Name: topology; Type: SCHEMA; Schema: -; Owner: -
+-- Name: topology; Type: SCHEMA; Schema: -; Owner: mapas
 --
 
 CREATE SCHEMA topology;
 
 
+ALTER SCHEMA topology OWNER TO mapas;
+
 --
--- Name: SCHEMA topology; Type: COMMENT; Schema: -; Owner: -
+-- Name: SCHEMA topology; Type: COMMENT; Schema: -; Owner: mapas
 --
 
 COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
@@ -52,7 +58,7 @@ CREATE EXTENSION IF NOT EXISTS fuzzystrmatch WITH SCHEMA public;
 
 
 --
--- Name: EXTENSION fuzzystrmatch; Type: COMMENT; Schema: -; Owner: -
+-- Name: EXTENSION fuzzystrmatch; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION fuzzystrmatch IS 'determine similarities and distance between strings';
@@ -66,7 +72,7 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
 
 --
--- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
@@ -80,7 +86,7 @@ CREATE EXTENSION IF NOT EXISTS postgis_tiger_geocoder WITH SCHEMA tiger;
 
 
 --
--- Name: EXTENSION postgis_tiger_geocoder; Type: COMMENT; Schema: -; Owner: -
+-- Name: EXTENSION postgis_tiger_geocoder; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION postgis_tiger_geocoder IS 'PostGIS tiger geocoder and reverse geocoder';
@@ -94,7 +100,7 @@ CREATE EXTENSION IF NOT EXISTS postgis_topology WITH SCHEMA topology;
 
 
 --
--- Name: EXTENSION postgis_topology; Type: COMMENT; Schema: -; Owner: -
+-- Name: EXTENSION postgis_topology; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and functions';
@@ -108,22 +114,24 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
 
 --
--- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
+-- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
--- Name: frequency; Type: DOMAIN; Schema: public; Owner: -
+-- Name: frequency; Type: DOMAIN; Schema: public; Owner: mapas
 --
 
 CREATE DOMAIN public.frequency AS character varying
 	CONSTRAINT frequency_check CHECK (((VALUE)::text = ANY (ARRAY[('once'::character varying)::text, ('daily'::character varying)::text, ('weekly'::character varying)::text, ('monthly'::character varying)::text, ('yearly'::character varying)::text])));
 
 
+ALTER DOMAIN public.frequency OWNER TO mapas;
+
 --
--- Name: object_type; Type: TYPE; Schema: public; Owner: -
+-- Name: object_type; Type: TYPE; Schema: public; Owner: mapas
 --
 
 CREATE TYPE public.object_type AS ENUM (
@@ -141,12 +149,16 @@ CREATE TYPE public.object_type AS ENUM (
     'MapasCulturais\Entities\Request',
     'MapasCulturais\Entities\Seal',
     'MapasCulturais\Entities\Space',
-    'MapasCulturais\Entities\Subsite'
+    'MapasCulturais\Entities\Subsite',
+    'MapasCulturais\Entities\User',
+    'UserManagement\Entities\SystemRole'
 );
 
 
+ALTER TYPE public.object_type OWNER TO mapas;
+
 --
--- Name: permission_action; Type: TYPE; Schema: public; Owner: -
+-- Name: permission_action; Type: TYPE; Schema: public; Owner: mapas
 --
 
 CREATE TYPE public.permission_action AS ENUM (
@@ -188,12 +200,27 @@ CREATE TYPE public.permission_action AS ENUM (
     'viewPrivateData',
     'viewPrivateFiles',
     'viewRegistrations',
-    'viewUserEvaluation'
+    'viewUserEvaluation',
+    'changeType',
+    'changeUserProfile',
+    'deleteAccount',
+    'evaluateOnTime',
+    'unarchive',
+    'changePassword'
 );
 
 
+ALTER TYPE public.permission_action OWNER TO mapas;
+
 --
--- Name: days_in_month(date); Type: FUNCTION; Schema: public; Owner: -
+-- Name: CAST (point AS text); Type: CAST; Schema: -; Owner: -
+--
+
+-- CREATE CAST (point AS text) WITH FUNCTION pg_catalog.text(point) AS IMPLICIT;
+
+
+--
+-- Name: days_in_month(date); Type: FUNCTION; Schema: public; Owner: mapas
 --
 
 CREATE FUNCTION public.days_in_month(check_date date) RETURNS integer
@@ -207,8 +234,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.days_in_month(check_date date) OWNER TO mapas;
+
 --
--- Name: fn_clean_orphans(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: fn_clean_orphans(); Type: FUNCTION; Schema: public; Owner: mapas
 --
 
 CREATE FUNCTION public.fn_clean_orphans() RETURNS trigger
@@ -240,8 +269,10 @@ CREATE FUNCTION public.fn_clean_orphans() RETURNS trigger
                     END; $$;
 
 
+ALTER FUNCTION public.fn_clean_orphans() OWNER TO mapas;
+
 --
--- Name: generate_recurrences(interval, date, date, date, date, integer, integer, integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: generate_recurrences(interval, date, date, date, date, integer, integer, integer); Type: FUNCTION; Schema: public; Owner: mapas
 --
 
 CREATE FUNCTION public.generate_recurrences(duration interval, original_start_date date, original_end_date date, range_start date, range_end date, repeat_month integer, repeat_week integer, repeat_day integer) RETURNS SETOF date
@@ -294,8 +325,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.generate_recurrences(duration interval, original_start_date date, original_end_date date, range_start date, range_end date, repeat_month integer, repeat_week integer, repeat_day integer) OWNER TO mapas;
+
 --
--- Name: interval_for(public.frequency); Type: FUNCTION; Schema: public; Owner: -
+-- Name: interval_for(public.frequency); Type: FUNCTION; Schema: public; Owner: mapas
 --
 
 CREATE FUNCTION public.interval_for(recurs public.frequency) RETURNS interval
@@ -317,8 +350,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.interval_for(recurs public.frequency) OWNER TO mapas;
+
 --
--- Name: intervals_between(date, date, interval); Type: FUNCTION; Schema: public; Owner: -
+-- Name: intervals_between(date, date, interval); Type: FUNCTION; Schema: public; Owner: mapas
 --
 
 CREATE FUNCTION public.intervals_between(start_date date, end_date date, duration interval) RETURNS double precision
@@ -344,8 +379,10 @@ END
 $$;
 
 
+ALTER FUNCTION public.intervals_between(start_date date, end_date date, duration interval) OWNER TO mapas;
+
 --
--- Name: pseudo_random_id_generator(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: pseudo_random_id_generator(); Type: FUNCTION; Schema: public; Owner: mapas
 --
 
 CREATE FUNCTION public.pseudo_random_id_generator() RETURNS integer
@@ -374,8 +411,10 @@ CREATE FUNCTION public.pseudo_random_id_generator() RETURNS integer
             $$;
 
 
+ALTER FUNCTION public.pseudo_random_id_generator() OWNER TO mapas;
+
 --
--- Name: random_id_generator(character varying, bigint); Type: FUNCTION; Schema: public; Owner: -
+-- Name: random_id_generator(character varying, bigint); Type: FUNCTION; Schema: public; Owner: mapas
 --
 
 CREATE FUNCTION public.random_id_generator(table_name character varying, initial_range bigint) RETURNS bigint
@@ -403,12 +442,14 @@ CREATE FUNCTION public.random_id_generator(table_name character varying, initial
             $$;
 
 
+ALTER FUNCTION public.random_id_generator(table_name character varying, initial_range bigint) OWNER TO mapas;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
 --
--- Name: event_occurrence; Type: TABLE; Schema: public; Owner: -
+-- Name: event_occurrence; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.event_occurrence (
@@ -426,12 +467,17 @@ CREATE TABLE public.event_occurrence (
     until date,
     timezone_name text DEFAULT 'Etc/UTC'::text NOT NULL,
     status integer DEFAULT 1 NOT NULL,
+    description text,
+    price text,
+    priceinfo text,
     CONSTRAINT positive_separation CHECK ((separation > 0))
 );
 
 
+ALTER TABLE public.event_occurrence OWNER TO mapas;
+
 --
--- Name: recurrences_for(public.event_occurrence, timestamp without time zone, timestamp without time zone); Type: FUNCTION; Schema: public; Owner: -
+-- Name: recurrences_for(public.event_occurrence, timestamp without time zone, timestamp without time zone); Type: FUNCTION; Schema: public; Owner: mapas
 --
 
 CREATE FUNCTION public.recurrences_for(event public.event_occurrence, range_start timestamp without time zone, range_end timestamp without time zone) RETURNS SETOF date
@@ -478,8 +524,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.recurrences_for(event public.event_occurrence, range_start timestamp without time zone, range_end timestamp without time zone) OWNER TO mapas;
+
 --
--- Name: recurring_event_occurrence_for(timestamp without time zone, timestamp without time zone, character varying, integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: recurring_event_occurrence_for(timestamp without time zone, timestamp without time zone, character varying, integer); Type: FUNCTION; Schema: public; Owner: mapas
 --
 
 CREATE FUNCTION public.recurring_event_occurrence_for(range_start timestamp without time zone, range_end timestamp without time zone, time_zone character varying, event_occurrence_limit integer) RETURNS SETOF public.event_occurrence
@@ -605,8 +653,10 @@ CREATE FUNCTION public.recurring_event_occurrence_for(range_start timestamp with
             $$;
 
 
+ALTER FUNCTION public.recurring_event_occurrence_for(range_start timestamp without time zone, range_end timestamp without time zone, time_zone character varying, event_occurrence_limit integer) OWNER TO mapas;
+
 --
--- Name: _mesoregiao; Type: TABLE; Schema: public; Owner: -
+-- Name: _mesoregiao; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public._mesoregiao (
@@ -618,8 +668,10 @@ CREATE TABLE public._mesoregiao (
 );
 
 
+ALTER TABLE public._mesoregiao OWNER TO mapas;
+
 --
--- Name: _mesoregiao_gid_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: _mesoregiao_gid_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public._mesoregiao_gid_seq
@@ -630,15 +682,17 @@ CREATE SEQUENCE public._mesoregiao_gid_seq
     CACHE 1;
 
 
+ALTER TABLE public._mesoregiao_gid_seq OWNER TO mapas;
+
 --
--- Name: _mesoregiao_gid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: _mesoregiao_gid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public._mesoregiao_gid_seq OWNED BY public._mesoregiao.gid;
 
 
 --
--- Name: _microregiao; Type: TABLE; Schema: public; Owner: -
+-- Name: _microregiao; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public._microregiao (
@@ -650,8 +704,10 @@ CREATE TABLE public._microregiao (
 );
 
 
+ALTER TABLE public._microregiao OWNER TO mapas;
+
 --
--- Name: _microregiao_gid_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: _microregiao_gid_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public._microregiao_gid_seq
@@ -662,15 +718,17 @@ CREATE SEQUENCE public._microregiao_gid_seq
     CACHE 1;
 
 
+ALTER TABLE public._microregiao_gid_seq OWNER TO mapas;
+
 --
--- Name: _microregiao_gid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: _microregiao_gid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public._microregiao_gid_seq OWNED BY public._microregiao.gid;
 
 
 --
--- Name: _municipios; Type: TABLE; Schema: public; Owner: -
+-- Name: _municipios; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public._municipios (
@@ -682,8 +740,10 @@ CREATE TABLE public._municipios (
 );
 
 
+ALTER TABLE public._municipios OWNER TO mapas;
+
 --
--- Name: _municipios_gid_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: _municipios_gid_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public._municipios_gid_seq
@@ -694,15 +754,17 @@ CREATE SEQUENCE public._municipios_gid_seq
     CACHE 1;
 
 
+ALTER TABLE public._municipios_gid_seq OWNER TO mapas;
+
 --
--- Name: _municipios_gid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: _municipios_gid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public._municipios_gid_seq OWNED BY public._municipios.gid;
 
 
 --
--- Name: agent_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: agent_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.agent_id_seq
@@ -713,8 +775,10 @@ CREATE SEQUENCE public.agent_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.agent_id_seq OWNER TO mapas;
+
 --
--- Name: agent; Type: TABLE; Schema: public; Owner: -
+-- Name: agent; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.agent (
@@ -736,15 +800,17 @@ CREATE TABLE public.agent (
 );
 
 
+ALTER TABLE public.agent OWNER TO mapas;
+
 --
--- Name: COLUMN agent.location; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN agent.location; Type: COMMENT; Schema: public; Owner: mapas
 --
 
 COMMENT ON COLUMN public.agent.location IS 'type=POINT';
 
 
 --
--- Name: agent_meta; Type: TABLE; Schema: public; Owner: -
+-- Name: agent_meta; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.agent_meta (
@@ -755,8 +821,10 @@ CREATE TABLE public.agent_meta (
 );
 
 
+ALTER TABLE public.agent_meta OWNER TO mapas;
+
 --
--- Name: agent_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: agent_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.agent_meta_id_seq
@@ -767,15 +835,17 @@ CREATE SEQUENCE public.agent_meta_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.agent_meta_id_seq OWNER TO mapas;
+
 --
--- Name: agent_meta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: agent_meta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.agent_meta_id_seq OWNED BY public.agent_meta.id;
 
 
 --
--- Name: agent_relation; Type: TABLE; Schema: public; Owner: -
+-- Name: agent_relation; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.agent_relation (
@@ -791,8 +861,10 @@ CREATE TABLE public.agent_relation (
 );
 
 
+ALTER TABLE public.agent_relation OWNER TO mapas;
+
 --
--- Name: agent_relation_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: agent_relation_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.agent_relation_id_seq
@@ -803,15 +875,17 @@ CREATE SEQUENCE public.agent_relation_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.agent_relation_id_seq OWNER TO mapas;
+
 --
--- Name: agent_relation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: agent_relation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.agent_relation_id_seq OWNED BY public.agent_relation.id;
 
 
 --
--- Name: chat_message; Type: TABLE; Schema: public; Owner: -
+-- Name: chat_message; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.chat_message (
@@ -824,8 +898,10 @@ CREATE TABLE public.chat_message (
 );
 
 
+ALTER TABLE public.chat_message OWNER TO mapas;
+
 --
--- Name: chat_message_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: chat_message_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.chat_message_id_seq
@@ -836,8 +912,10 @@ CREATE SEQUENCE public.chat_message_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.chat_message_id_seq OWNER TO mapas;
+
 --
--- Name: chat_thread; Type: TABLE; Schema: public; Owner: -
+-- Name: chat_thread; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.chat_thread (
@@ -853,15 +931,17 @@ CREATE TABLE public.chat_thread (
 );
 
 
+ALTER TABLE public.chat_thread OWNER TO mapas;
+
 --
--- Name: COLUMN chat_thread.object_type; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN chat_thread.object_type; Type: COMMENT; Schema: public; Owner: mapas
 --
 
 COMMENT ON COLUMN public.chat_thread.object_type IS '(DC2Type:object_type)';
 
 
 --
--- Name: chat_thread_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: chat_thread_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.chat_thread_id_seq
@@ -872,8 +952,10 @@ CREATE SEQUENCE public.chat_thread_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.chat_thread_id_seq OWNER TO mapas;
+
 --
--- Name: db_update; Type: TABLE; Schema: public; Owner: -
+-- Name: db_update; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.db_update (
@@ -882,8 +964,10 @@ CREATE TABLE public.db_update (
 );
 
 
+ALTER TABLE public.db_update OWNER TO mapas;
+
 --
--- Name: entity_revision; Type: TABLE; Schema: public; Owner: -
+-- Name: entity_revision; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.entity_revision (
@@ -897,8 +981,10 @@ CREATE TABLE public.entity_revision (
 );
 
 
+ALTER TABLE public.entity_revision OWNER TO mapas;
+
 --
--- Name: entity_revision_data; Type: TABLE; Schema: public; Owner: -
+-- Name: entity_revision_data; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.entity_revision_data (
@@ -909,8 +995,10 @@ CREATE TABLE public.entity_revision_data (
 );
 
 
+ALTER TABLE public.entity_revision_data OWNER TO mapas;
+
 --
--- Name: entity_revision_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: entity_revision_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.entity_revision_id_seq
@@ -921,8 +1009,10 @@ CREATE SEQUENCE public.entity_revision_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.entity_revision_id_seq OWNER TO mapas;
+
 --
--- Name: entity_revision_revision_data; Type: TABLE; Schema: public; Owner: -
+-- Name: entity_revision_revision_data; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.entity_revision_revision_data (
@@ -931,19 +1021,26 @@ CREATE TABLE public.entity_revision_revision_data (
 );
 
 
+ALTER TABLE public.entity_revision_revision_data OWNER TO mapas;
+
 --
--- Name: evaluation_method_configuration; Type: TABLE; Schema: public; Owner: -
+-- Name: evaluation_method_configuration; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.evaluation_method_configuration (
     id integer NOT NULL,
     opportunity_id integer NOT NULL,
-    type character varying(255) NOT NULL
+    type character varying(255) NOT NULL,
+    evaluation_from timestamp without time zone,
+    evaluation_to timestamp without time zone,
+    name character varying(255) DEFAULT NULL::character varying
 );
 
 
+ALTER TABLE public.evaluation_method_configuration OWNER TO mapas;
+
 --
--- Name: evaluation_method_configuration_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: evaluation_method_configuration_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.evaluation_method_configuration_id_seq
@@ -954,15 +1051,17 @@ CREATE SEQUENCE public.evaluation_method_configuration_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.evaluation_method_configuration_id_seq OWNER TO mapas;
+
 --
--- Name: evaluation_method_configuration_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: evaluation_method_configuration_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.evaluation_method_configuration_id_seq OWNED BY public.evaluation_method_configuration.id;
 
 
 --
--- Name: evaluationmethodconfiguration_meta; Type: TABLE; Schema: public; Owner: -
+-- Name: evaluationmethodconfiguration_meta; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.evaluationmethodconfiguration_meta (
@@ -973,8 +1072,10 @@ CREATE TABLE public.evaluationmethodconfiguration_meta (
 );
 
 
+ALTER TABLE public.evaluationmethodconfiguration_meta OWNER TO mapas;
+
 --
--- Name: evaluationmethodconfiguration_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: evaluationmethodconfiguration_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.evaluationmethodconfiguration_meta_id_seq
@@ -985,8 +1086,10 @@ CREATE SEQUENCE public.evaluationmethodconfiguration_meta_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.evaluationmethodconfiguration_meta_id_seq OWNER TO mapas;
+
 --
--- Name: pcache_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: pcache_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.pcache_id_seq
@@ -997,8 +1100,10 @@ CREATE SEQUENCE public.pcache_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.pcache_id_seq OWNER TO mapas;
+
 --
--- Name: pcache; Type: TABLE; Schema: public; Owner: -
+-- Name: pcache; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.pcache (
@@ -1011,8 +1116,10 @@ CREATE TABLE public.pcache (
 );
 
 
+ALTER TABLE public.pcache OWNER TO mapas;
+
 --
--- Name: registration; Type: TABLE; Schema: public; Owner: -
+-- Name: registration; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.registration (
@@ -1032,8 +1139,10 @@ CREATE TABLE public.registration (
 );
 
 
+ALTER TABLE public.registration OWNER TO mapas;
+
 --
--- Name: registration_evaluation; Type: TABLE; Schema: public; Owner: -
+-- Name: registration_evaluation; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.registration_evaluation (
@@ -1048,8 +1157,10 @@ CREATE TABLE public.registration_evaluation (
 );
 
 
+ALTER TABLE public.registration_evaluation OWNER TO mapas;
+
 --
--- Name: usr_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: usr_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.usr_id_seq
@@ -1060,8 +1171,10 @@ CREATE SEQUENCE public.usr_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.usr_id_seq OWNER TO mapas;
+
 --
--- Name: usr; Type: TABLE; Schema: public; Owner: -
+-- Name: usr; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.usr (
@@ -1076,15 +1189,17 @@ CREATE TABLE public.usr (
 );
 
 
+ALTER TABLE public.usr OWNER TO mapas;
+
 --
--- Name: COLUMN usr.auth_provider; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN usr.auth_provider; Type: COMMENT; Schema: public; Owner: mapas
 --
 
 COMMENT ON COLUMN public.usr.auth_provider IS '1=openid';
 
 
 --
--- Name: evaluations; Type: VIEW; Schema: public; Owner: -
+-- Name: evaluations; Type: VIEW; Schema: public; Owner: mapas
 --
 
 CREATE VIEW public.evaluations AS
@@ -1127,19 +1242,17 @@ CREATE VIEW public.evaluations AS
             NULL::character varying AS evaluation_result,
             NULL::smallint AS evaluation_status
            FROM (((public.registration r2
-             JOIN public.pcache p2 ON ((r2.id = p2.object_id)))
+             JOIN public.pcache p2 ON (((p2.object_id = r2.id) AND (p2.object_type = 'MapasCulturais\Entities\Registration'::public.object_type) AND (p2.action = 'evaluateOnTime'::public.permission_action))))
              JOIN public.usr u2 ON ((u2.id = p2.user_id)))
              JOIN public.evaluation_method_configuration emc ON ((emc.opportunity_id = r2.opportunity_id)))
-          WHERE ((p2.object_type = 'MapasCulturais\Entities\Registration'::public.object_type) AND (p2.action = 'evaluate'::public.permission_action) AND (r2.status > 0) AND (p2.user_id IN ( SELECT agent.user_id
-                   FROM public.agent
-                  WHERE (agent.id IN ( SELECT agent_relation.agent_id
-                           FROM public.agent_relation
-                          WHERE ((agent_relation.object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration'::public.object_type) AND (agent_relation.object_id = emc.id)))))))) evaluations_view
+          WHERE (r2.status > 0)) evaluations_view
   GROUP BY evaluations_view.registration_id, evaluations_view.registration_sent_timestamp, evaluations_view.registration_number, evaluations_view.registration_category, evaluations_view.registration_agent_id, evaluations_view.valuer_user_id, evaluations_view.valuer_agent_id, evaluations_view.opportunity_id;
 
 
+ALTER TABLE public.evaluations OWNER TO mapas;
+
 --
--- Name: event; Type: TABLE; Schema: public; Owner: -
+-- Name: event; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.event (
@@ -1159,8 +1272,10 @@ CREATE TABLE public.event (
 );
 
 
+ALTER TABLE public.event OWNER TO mapas;
+
 --
--- Name: event_attendance; Type: TABLE; Schema: public; Owner: -
+-- Name: event_attendance; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.event_attendance (
@@ -1177,8 +1292,10 @@ CREATE TABLE public.event_attendance (
 );
 
 
+ALTER TABLE public.event_attendance OWNER TO mapas;
+
 --
--- Name: event_attendance_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: event_attendance_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.event_attendance_id_seq
@@ -1189,8 +1306,10 @@ CREATE SEQUENCE public.event_attendance_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.event_attendance_id_seq OWNER TO mapas;
+
 --
--- Name: event_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: event_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.event_id_seq
@@ -1201,15 +1320,17 @@ CREATE SEQUENCE public.event_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.event_id_seq OWNER TO mapas;
+
 --
--- Name: event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.event_id_seq OWNED BY public.event.id;
 
 
 --
--- Name: event_meta; Type: TABLE; Schema: public; Owner: -
+-- Name: event_meta; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.event_meta (
@@ -1220,8 +1341,10 @@ CREATE TABLE public.event_meta (
 );
 
 
+ALTER TABLE public.event_meta OWNER TO mapas;
+
 --
--- Name: event_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: event_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.event_meta_id_seq
@@ -1232,15 +1355,17 @@ CREATE SEQUENCE public.event_meta_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.event_meta_id_seq OWNER TO mapas;
+
 --
--- Name: event_meta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: event_meta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.event_meta_id_seq OWNED BY public.event_meta.id;
 
 
 --
--- Name: event_occurrence_cancellation; Type: TABLE; Schema: public; Owner: -
+-- Name: event_occurrence_cancellation; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.event_occurrence_cancellation (
@@ -1250,8 +1375,10 @@ CREATE TABLE public.event_occurrence_cancellation (
 );
 
 
+ALTER TABLE public.event_occurrence_cancellation OWNER TO mapas;
+
 --
--- Name: event_occurrence_cancellation_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: event_occurrence_cancellation_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.event_occurrence_cancellation_id_seq
@@ -1262,15 +1389,17 @@ CREATE SEQUENCE public.event_occurrence_cancellation_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.event_occurrence_cancellation_id_seq OWNER TO mapas;
+
 --
--- Name: event_occurrence_cancellation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: event_occurrence_cancellation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.event_occurrence_cancellation_id_seq OWNED BY public.event_occurrence_cancellation.id;
 
 
 --
--- Name: event_occurrence_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: event_occurrence_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.event_occurrence_id_seq
@@ -1281,15 +1410,17 @@ CREATE SEQUENCE public.event_occurrence_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.event_occurrence_id_seq OWNER TO mapas;
+
 --
--- Name: event_occurrence_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: event_occurrence_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.event_occurrence_id_seq OWNED BY public.event_occurrence.id;
 
 
 --
--- Name: event_occurrence_recurrence; Type: TABLE; Schema: public; Owner: -
+-- Name: event_occurrence_recurrence; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.event_occurrence_recurrence (
@@ -1301,8 +1432,10 @@ CREATE TABLE public.event_occurrence_recurrence (
 );
 
 
+ALTER TABLE public.event_occurrence_recurrence OWNER TO mapas;
+
 --
--- Name: event_occurrence_recurrence_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: event_occurrence_recurrence_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.event_occurrence_recurrence_id_seq
@@ -1313,15 +1446,17 @@ CREATE SEQUENCE public.event_occurrence_recurrence_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.event_occurrence_recurrence_id_seq OWNER TO mapas;
+
 --
--- Name: event_occurrence_recurrence_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: event_occurrence_recurrence_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.event_occurrence_recurrence_id_seq OWNED BY public.event_occurrence_recurrence.id;
 
 
 --
--- Name: file_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: file_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.file_id_seq
@@ -1332,8 +1467,10 @@ CREATE SEQUENCE public.file_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.file_id_seq OWNER TO mapas;
+
 --
--- Name: file; Type: TABLE; Schema: public; Owner: -
+-- Name: file; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.file (
@@ -1345,15 +1482,17 @@ CREATE TABLE public.file (
     object_id integer NOT NULL,
     create_timestamp timestamp without time zone DEFAULT now() NOT NULL,
     grp character varying(32) NOT NULL,
-    description character varying(255),
+    description text,
     parent_id integer,
     path character varying(1024) DEFAULT NULL::character varying,
     private boolean DEFAULT false NOT NULL
 );
 
 
+ALTER TABLE public.file OWNER TO mapas;
+
 --
--- Name: geo_division_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: geo_division_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.geo_division_id_seq
@@ -1364,8 +1503,10 @@ CREATE SEQUENCE public.geo_division_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.geo_division_id_seq OWNER TO mapas;
+
 --
--- Name: geo_division; Type: TABLE; Schema: public; Owner: -
+-- Name: geo_division; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.geo_division (
@@ -1381,8 +1522,10 @@ CREATE TABLE public.geo_division (
 );
 
 
+ALTER TABLE public.geo_division OWNER TO mapas;
+
 --
--- Name: job; Type: TABLE; Schema: public; Owner: -
+-- Name: job; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.job (
@@ -1399,15 +1542,17 @@ CREATE TABLE public.job (
 );
 
 
---
--- Name: COLUMN job.metadata; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.job.metadata IS '(DC2Type:json_array)';
-
+ALTER TABLE public.job OWNER TO mapas;
 
 --
--- Name: metadata; Type: TABLE; Schema: public; Owner: -
+-- Name: COLUMN job.metadata; Type: COMMENT; Schema: public; Owner: mapas
+--
+
+COMMENT ON COLUMN public.job.metadata IS '(DC2Type:json)';
+
+
+--
+-- Name: metadata; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.metadata (
@@ -1418,8 +1563,10 @@ CREATE TABLE public.metadata (
 );
 
 
+ALTER TABLE public.metadata OWNER TO mapas;
+
 --
--- Name: metalist_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: metalist_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.metalist_id_seq
@@ -1430,8 +1577,10 @@ CREATE SEQUENCE public.metalist_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.metalist_id_seq OWNER TO mapas;
+
 --
--- Name: metalist; Type: TABLE; Schema: public; Owner: -
+-- Name: metalist; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.metalist (
@@ -1447,8 +1596,10 @@ CREATE TABLE public.metalist (
 );
 
 
+ALTER TABLE public.metalist OWNER TO mapas;
+
 --
--- Name: notification_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: notification_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.notification_id_seq
@@ -1459,8 +1610,10 @@ CREATE SEQUENCE public.notification_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.notification_id_seq OWNER TO mapas;
+
 --
--- Name: notification; Type: TABLE; Schema: public; Owner: -
+-- Name: notification; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.notification (
@@ -1474,8 +1627,10 @@ CREATE TABLE public.notification (
 );
 
 
+ALTER TABLE public.notification OWNER TO mapas;
+
 --
--- Name: notification_meta; Type: TABLE; Schema: public; Owner: -
+-- Name: notification_meta; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.notification_meta (
@@ -1486,8 +1641,10 @@ CREATE TABLE public.notification_meta (
 );
 
 
+ALTER TABLE public.notification_meta OWNER TO mapas;
+
 --
--- Name: notification_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: notification_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.notification_meta_id_seq
@@ -1498,8 +1655,10 @@ CREATE SEQUENCE public.notification_meta_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.notification_meta_id_seq OWNER TO mapas;
+
 --
--- Name: occurrence_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: occurrence_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.occurrence_id_seq
@@ -1511,8 +1670,10 @@ CREATE SEQUENCE public.occurrence_id_seq
     CYCLE;
 
 
+ALTER TABLE public.occurrence_id_seq OWNER TO mapas;
+
 --
--- Name: opportunity_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: opportunity_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.opportunity_id_seq
@@ -1523,8 +1684,10 @@ CREATE SEQUENCE public.opportunity_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.opportunity_id_seq OWNER TO mapas;
+
 --
--- Name: opportunity; Type: TABLE; Schema: public; Owner: -
+-- Name: opportunity; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.opportunity (
@@ -1545,12 +1708,16 @@ CREATE TABLE public.opportunity (
     subsite_id integer,
     object_type character varying(255) NOT NULL,
     object_id integer NOT NULL,
-    avaliable_evaluation_fields json
+    avaliable_evaluation_fields json,
+    publish_timestamp timestamp without time zone,
+    auto_publish boolean DEFAULT false NOT NULL
 );
 
 
+ALTER TABLE public.opportunity OWNER TO mapas;
+
 --
--- Name: opportunity_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: opportunity_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.opportunity_meta_id_seq
@@ -1561,8 +1728,10 @@ CREATE SEQUENCE public.opportunity_meta_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.opportunity_meta_id_seq OWNER TO mapas;
+
 --
--- Name: opportunity_meta; Type: TABLE; Schema: public; Owner: -
+-- Name: opportunity_meta; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.opportunity_meta (
@@ -1573,8 +1742,10 @@ CREATE TABLE public.opportunity_meta (
 );
 
 
+ALTER TABLE public.opportunity_meta OWNER TO mapas;
+
 --
--- Name: permission_cache_pending; Type: TABLE; Schema: public; Owner: -
+-- Name: permission_cache_pending; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.permission_cache_pending (
@@ -1585,8 +1756,10 @@ CREATE TABLE public.permission_cache_pending (
 );
 
 
+ALTER TABLE public.permission_cache_pending OWNER TO mapas;
+
 --
--- Name: permission_cache_pending_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: permission_cache_pending_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.permission_cache_pending_seq
@@ -1597,8 +1770,10 @@ CREATE SEQUENCE public.permission_cache_pending_seq
     CACHE 1;
 
 
+ALTER TABLE public.permission_cache_pending_seq OWNER TO mapas;
+
 --
--- Name: procuration; Type: TABLE; Schema: public; Owner: -
+-- Name: procuration; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.procuration (
@@ -1611,8 +1786,10 @@ CREATE TABLE public.procuration (
 );
 
 
+ALTER TABLE public.procuration OWNER TO mapas;
+
 --
--- Name: project; Type: TABLE; Schema: public; Owner: -
+-- Name: project; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.project (
@@ -1626,15 +1803,17 @@ CREATE TABLE public.project (
     is_verified boolean DEFAULT false NOT NULL,
     type smallint NOT NULL,
     parent_id integer,
-    registration_from timestamp without time zone,
-    registration_to timestamp without time zone,
+    starts_on timestamp without time zone,
+    ends_on timestamp without time zone,
     update_timestamp timestamp(0) without time zone,
     subsite_id integer
 );
 
 
+ALTER TABLE public.project OWNER TO mapas;
+
 --
--- Name: project_event; Type: TABLE; Schema: public; Owner: -
+-- Name: project_event; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.project_event (
@@ -1646,8 +1825,10 @@ CREATE TABLE public.project_event (
 );
 
 
+ALTER TABLE public.project_event OWNER TO mapas;
+
 --
--- Name: project_event_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: project_event_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.project_event_id_seq
@@ -1658,15 +1839,17 @@ CREATE SEQUENCE public.project_event_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.project_event_id_seq OWNER TO mapas;
+
 --
--- Name: project_event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: project_event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.project_event_id_seq OWNED BY public.project_event.id;
 
 
 --
--- Name: project_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: project_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.project_id_seq
@@ -1677,15 +1860,17 @@ CREATE SEQUENCE public.project_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.project_id_seq OWNER TO mapas;
+
 --
--- Name: project_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: project_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.project_id_seq OWNED BY public.project.id;
 
 
 --
--- Name: project_meta; Type: TABLE; Schema: public; Owner: -
+-- Name: project_meta; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.project_meta (
@@ -1696,8 +1881,10 @@ CREATE TABLE public.project_meta (
 );
 
 
+ALTER TABLE public.project_meta OWNER TO mapas;
+
 --
--- Name: project_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: project_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.project_meta_id_seq
@@ -1708,15 +1895,17 @@ CREATE SEQUENCE public.project_meta_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.project_meta_id_seq OWNER TO mapas;
+
 --
--- Name: project_meta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: project_meta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.project_meta_id_seq OWNED BY public.project_meta.id;
 
 
 --
--- Name: pseudo_random_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: pseudo_random_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.pseudo_random_id_seq
@@ -1727,8 +1916,10 @@ CREATE SEQUENCE public.pseudo_random_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.pseudo_random_id_seq OWNER TO mapas;
+
 --
--- Name: registration_evaluation_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: registration_evaluation_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.registration_evaluation_id_seq
@@ -1739,8 +1930,10 @@ CREATE SEQUENCE public.registration_evaluation_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.registration_evaluation_id_seq OWNER TO mapas;
+
 --
--- Name: registration_field_configuration; Type: TABLE; Schema: public; Owner: -
+-- Name: registration_field_configuration; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.registration_field_configuration (
@@ -1754,19 +1947,24 @@ CREATE TABLE public.registration_field_configuration (
     field_options text NOT NULL,
     max_size text,
     display_order smallint DEFAULT 255,
-    config text
+    config text,
+    conditional boolean,
+    conditional_field character varying(255),
+    conditional_value character varying(255)
 );
 
 
+ALTER TABLE public.registration_field_configuration OWNER TO mapas;
+
 --
--- Name: COLUMN registration_field_configuration.categories; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN registration_field_configuration.categories; Type: COMMENT; Schema: public; Owner: mapas
 --
 
 COMMENT ON COLUMN public.registration_field_configuration.categories IS '(DC2Type:array)';
 
 
 --
--- Name: registration_field_configuration_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: registration_field_configuration_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.registration_field_configuration_id_seq
@@ -1777,8 +1975,10 @@ CREATE SEQUENCE public.registration_field_configuration_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.registration_field_configuration_id_seq OWNER TO mapas;
+
 --
--- Name: registration_file_configuration; Type: TABLE; Schema: public; Owner: -
+-- Name: registration_file_configuration; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.registration_file_configuration (
@@ -1788,19 +1988,24 @@ CREATE TABLE public.registration_file_configuration (
     description text,
     required boolean NOT NULL,
     categories text,
-    display_order smallint DEFAULT 255
+    display_order smallint DEFAULT 255,
+    conditional boolean,
+    conditional_field character varying(255),
+    conditional_value character varying(255)
 );
 
 
+ALTER TABLE public.registration_file_configuration OWNER TO mapas;
+
 --
--- Name: COLUMN registration_file_configuration.categories; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN registration_file_configuration.categories; Type: COMMENT; Schema: public; Owner: mapas
 --
 
 COMMENT ON COLUMN public.registration_file_configuration.categories IS '(DC2Type:array)';
 
 
 --
--- Name: registration_file_configuration_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: registration_file_configuration_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.registration_file_configuration_id_seq
@@ -1811,15 +2016,17 @@ CREATE SEQUENCE public.registration_file_configuration_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.registration_file_configuration_id_seq OWNER TO mapas;
+
 --
--- Name: registration_file_configuration_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: registration_file_configuration_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.registration_file_configuration_id_seq OWNED BY public.registration_file_configuration.id;
 
 
 --
--- Name: registration_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: registration_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.registration_id_seq
@@ -1830,8 +2037,10 @@ CREATE SEQUENCE public.registration_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.registration_id_seq OWNER TO mapas;
+
 --
--- Name: registration_meta; Type: TABLE; Schema: public; Owner: -
+-- Name: registration_meta; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.registration_meta (
@@ -1842,8 +2051,10 @@ CREATE TABLE public.registration_meta (
 );
 
 
+ALTER TABLE public.registration_meta OWNER TO mapas;
+
 --
--- Name: registration_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: registration_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.registration_meta_id_seq
@@ -1854,15 +2065,17 @@ CREATE SEQUENCE public.registration_meta_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.registration_meta_id_seq OWNER TO mapas;
+
 --
--- Name: registration_meta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: registration_meta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.registration_meta_id_seq OWNED BY public.registration_meta.id;
 
 
 --
--- Name: request_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: request_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.request_id_seq
@@ -1873,8 +2086,10 @@ CREATE SEQUENCE public.request_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.request_id_seq OWNER TO mapas;
+
 --
--- Name: request; Type: TABLE; Schema: public; Owner: -
+-- Name: request; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.request (
@@ -1893,8 +2108,10 @@ CREATE TABLE public.request (
 );
 
 
+ALTER TABLE public.request OWNER TO mapas;
+
 --
--- Name: revision_data_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: revision_data_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.revision_data_id_seq
@@ -1905,8 +2122,10 @@ CREATE SEQUENCE public.revision_data_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.revision_data_id_seq OWNER TO mapas;
+
 --
--- Name: role; Type: TABLE; Schema: public; Owner: -
+-- Name: role; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.role (
@@ -1917,8 +2136,10 @@ CREATE TABLE public.role (
 );
 
 
+ALTER TABLE public.role OWNER TO mapas;
+
 --
--- Name: role_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: role_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.role_id_seq
@@ -1929,15 +2150,17 @@ CREATE SEQUENCE public.role_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.role_id_seq OWNER TO mapas;
+
 --
--- Name: role_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: role_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.role_id_seq OWNED BY public.role.id;
 
 
 --
--- Name: seal; Type: TABLE; Schema: public; Owner: -
+-- Name: seal; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.seal (
@@ -1956,8 +2179,10 @@ CREATE TABLE public.seal (
 );
 
 
+ALTER TABLE public.seal OWNER TO mapas;
+
 --
--- Name: seal_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: seal_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.seal_id_seq
@@ -1968,8 +2193,10 @@ CREATE SEQUENCE public.seal_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.seal_id_seq OWNER TO mapas;
+
 --
--- Name: seal_meta; Type: TABLE; Schema: public; Owner: -
+-- Name: seal_meta; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.seal_meta (
@@ -1980,8 +2207,10 @@ CREATE TABLE public.seal_meta (
 );
 
 
+ALTER TABLE public.seal_meta OWNER TO mapas;
+
 --
--- Name: seal_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: seal_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.seal_meta_id_seq
@@ -1992,8 +2221,10 @@ CREATE SEQUENCE public.seal_meta_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.seal_meta_id_seq OWNER TO mapas;
+
 --
--- Name: seal_relation; Type: TABLE; Schema: public; Owner: -
+-- Name: seal_relation; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.seal_relation (
@@ -2010,8 +2241,10 @@ CREATE TABLE public.seal_relation (
 );
 
 
+ALTER TABLE public.seal_relation OWNER TO mapas;
+
 --
--- Name: seal_relation_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: seal_relation_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.seal_relation_id_seq
@@ -2022,8 +2255,10 @@ CREATE SEQUENCE public.seal_relation_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.seal_relation_id_seq OWNER TO mapas;
+
 --
--- Name: space; Type: TABLE; Schema: public; Owner: -
+-- Name: space; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.space (
@@ -2045,15 +2280,17 @@ CREATE TABLE public.space (
 );
 
 
+ALTER TABLE public.space OWNER TO mapas;
+
 --
--- Name: COLUMN space.location; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN space.location; Type: COMMENT; Schema: public; Owner: mapas
 --
 
 COMMENT ON COLUMN public.space.location IS 'type=POINT';
 
 
 --
--- Name: space_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: space_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.space_id_seq
@@ -2064,15 +2301,17 @@ CREATE SEQUENCE public.space_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.space_id_seq OWNER TO mapas;
+
 --
--- Name: space_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: space_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.space_id_seq OWNED BY public.space.id;
 
 
 --
--- Name: space_meta; Type: TABLE; Schema: public; Owner: -
+-- Name: space_meta; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.space_meta (
@@ -2083,8 +2322,10 @@ CREATE TABLE public.space_meta (
 );
 
 
+ALTER TABLE public.space_meta OWNER TO mapas;
+
 --
--- Name: space_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: space_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.space_meta_id_seq
@@ -2095,15 +2336,17 @@ CREATE SEQUENCE public.space_meta_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.space_meta_id_seq OWNER TO mapas;
+
 --
--- Name: space_meta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: space_meta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.space_meta_id_seq OWNED BY public.space_meta.id;
 
 
 --
--- Name: space_relation; Type: TABLE; Schema: public; Owner: -
+-- Name: space_relation; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.space_relation (
@@ -2116,8 +2359,10 @@ CREATE TABLE public.space_relation (
 );
 
 
+ALTER TABLE public.space_relation OWNER TO mapas;
+
 --
--- Name: space_relation_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: space_relation_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.space_relation_id_seq
@@ -2128,8 +2373,10 @@ CREATE SEQUENCE public.space_relation_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.space_relation_id_seq OWNER TO mapas;
+
 --
--- Name: subsite; Type: TABLE; Schema: public; Owner: -
+-- Name: subsite; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.subsite (
@@ -2145,8 +2392,10 @@ CREATE TABLE public.subsite (
 );
 
 
+ALTER TABLE public.subsite OWNER TO mapas;
+
 --
--- Name: subsite_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: subsite_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.subsite_id_seq
@@ -2157,8 +2406,10 @@ CREATE SEQUENCE public.subsite_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.subsite_id_seq OWNER TO mapas;
+
 --
--- Name: subsite_meta; Type: TABLE; Schema: public; Owner: -
+-- Name: subsite_meta; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.subsite_meta (
@@ -2169,8 +2420,10 @@ CREATE TABLE public.subsite_meta (
 );
 
 
+ALTER TABLE public.subsite_meta OWNER TO mapas;
+
 --
--- Name: subsite_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: subsite_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.subsite_meta_id_seq
@@ -2181,8 +2434,49 @@ CREATE SEQUENCE public.subsite_meta_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.subsite_meta_id_seq OWNER TO mapas;
+
 --
--- Name: term; Type: TABLE; Schema: public; Owner: -
+-- Name: system_role; Type: TABLE; Schema: public; Owner: mapas
+--
+
+CREATE TABLE public.system_role (
+    id integer NOT NULL,
+    slug character varying(64) NOT NULL,
+    name character varying(255) NOT NULL,
+    subsite_context boolean NOT NULL,
+    permissions json,
+    create_timestamp timestamp(0) without time zone NOT NULL,
+    update_timestamp timestamp(0) without time zone DEFAULT NULL::timestamp without time zone,
+    status smallint NOT NULL
+);
+
+
+ALTER TABLE public.system_role OWNER TO mapas;
+
+--
+-- Name: COLUMN system_role.permissions; Type: COMMENT; Schema: public; Owner: mapas
+--
+
+COMMENT ON COLUMN public.system_role.permissions IS '(DC2Type:json)';
+
+
+--
+-- Name: system_role_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
+--
+
+CREATE SEQUENCE public.system_role_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.system_role_id_seq OWNER TO mapas;
+
+--
+-- Name: term; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.term (
@@ -2193,15 +2487,17 @@ CREATE TABLE public.term (
 );
 
 
+ALTER TABLE public.term OWNER TO mapas;
+
 --
--- Name: COLUMN term.taxonomy; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN term.taxonomy; Type: COMMENT; Schema: public; Owner: mapas
 --
 
 COMMENT ON COLUMN public.term.taxonomy IS '1=tag';
 
 
 --
--- Name: term_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: term_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.term_id_seq
@@ -2212,15 +2508,17 @@ CREATE SEQUENCE public.term_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.term_id_seq OWNER TO mapas;
+
 --
--- Name: term_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: term_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.term_id_seq OWNED BY public.term.id;
 
 
 --
--- Name: term_relation; Type: TABLE; Schema: public; Owner: -
+-- Name: term_relation; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.term_relation (
@@ -2231,8 +2529,10 @@ CREATE TABLE public.term_relation (
 );
 
 
+ALTER TABLE public.term_relation OWNER TO mapas;
+
 --
--- Name: term_relation_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: term_relation_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.term_relation_id_seq
@@ -2243,15 +2543,17 @@ CREATE SEQUENCE public.term_relation_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.term_relation_id_seq OWNER TO mapas;
+
 --
--- Name: term_relation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: term_relation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mapas
 --
 
 ALTER SEQUENCE public.term_relation_id_seq OWNED BY public.term_relation.id;
 
 
 --
--- Name: user_app; Type: TABLE; Schema: public; Owner: -
+-- Name: user_app; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.user_app (
@@ -2265,8 +2567,10 @@ CREATE TABLE public.user_app (
 );
 
 
+ALTER TABLE public.user_app OWNER TO mapas;
+
 --
--- Name: user_meta; Type: TABLE; Schema: public; Owner: -
+-- Name: user_meta; Type: TABLE; Schema: public; Owner: mapas
 --
 
 CREATE TABLE public.user_meta (
@@ -2277,8 +2581,10 @@ CREATE TABLE public.user_meta (
 );
 
 
+ALTER TABLE public.user_meta OWNER TO mapas;
+
 --
--- Name: user_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: user_meta_id_seq; Type: SEQUENCE; Schema: public; Owner: mapas
 --
 
 CREATE SEQUENCE public.user_meta_id_seq
@@ -2289,106 +2595,108 @@ CREATE SEQUENCE public.user_meta_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.user_meta_id_seq OWNER TO mapas;
+
 --
--- Name: _mesoregiao gid; Type: DEFAULT; Schema: public; Owner: -
+-- Name: _mesoregiao gid; Type: DEFAULT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public._mesoregiao ALTER COLUMN gid SET DEFAULT nextval('public._mesoregiao_gid_seq'::regclass);
 
 
 --
--- Name: _microregiao gid; Type: DEFAULT; Schema: public; Owner: -
+-- Name: _microregiao gid; Type: DEFAULT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public._microregiao ALTER COLUMN gid SET DEFAULT nextval('public._microregiao_gid_seq'::regclass);
 
 
 --
--- Name: _municipios gid; Type: DEFAULT; Schema: public; Owner: -
+-- Name: _municipios gid; Type: DEFAULT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public._municipios ALTER COLUMN gid SET DEFAULT nextval('public._municipios_gid_seq'::regclass);
 
 
 --
--- Name: agent_relation id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: agent_relation id; Type: DEFAULT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.agent_relation ALTER COLUMN id SET DEFAULT nextval('public.agent_relation_id_seq'::regclass);
 
 
 --
--- Name: evaluation_method_configuration id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: evaluation_method_configuration id; Type: DEFAULT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.evaluation_method_configuration ALTER COLUMN id SET DEFAULT nextval('public.evaluation_method_configuration_id_seq'::regclass);
 
 
 --
--- Name: event id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: event id; Type: DEFAULT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event ALTER COLUMN id SET DEFAULT nextval('public.event_id_seq'::regclass);
 
 
 --
--- Name: event_occurrence id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: event_occurrence id; Type: DEFAULT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_occurrence ALTER COLUMN id SET DEFAULT nextval('public.event_occurrence_id_seq'::regclass);
 
 
 --
--- Name: event_occurrence_cancellation id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: event_occurrence_cancellation id; Type: DEFAULT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_occurrence_cancellation ALTER COLUMN id SET DEFAULT nextval('public.event_occurrence_cancellation_id_seq'::regclass);
 
 
 --
--- Name: event_occurrence_recurrence id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: event_occurrence_recurrence id; Type: DEFAULT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_occurrence_recurrence ALTER COLUMN id SET DEFAULT nextval('public.event_occurrence_recurrence_id_seq'::regclass);
 
 
 --
--- Name: project id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: project id; Type: DEFAULT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.project ALTER COLUMN id SET DEFAULT nextval('public.project_id_seq'::regclass);
 
 
 --
--- Name: project_event id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: project_event id; Type: DEFAULT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.project_event ALTER COLUMN id SET DEFAULT nextval('public.project_event_id_seq'::regclass);
 
 
 --
--- Name: space id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: space id; Type: DEFAULT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.space ALTER COLUMN id SET DEFAULT nextval('public.space_id_seq'::regclass);
 
 
 --
--- Name: term id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: term id; Type: DEFAULT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.term ALTER COLUMN id SET DEFAULT nextval('public.term_id_seq'::regclass);
 
 
 --
--- Name: term_relation id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: term_relation id; Type: DEFAULT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.term_relation ALTER COLUMN id SET DEFAULT nextval('public.term_relation_id_seq'::regclass);
 
 
 --
--- Data for Name: _mesoregiao; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: _mesoregiao; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public._mesoregiao (gid, id, nm_meso, cd_geocodu, geom) FROM stdin;
@@ -2396,7 +2704,7 @@ COPY public._mesoregiao (gid, id, nm_meso, cd_geocodu, geom) FROM stdin;
 
 
 --
--- Data for Name: _microregiao; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: _microregiao; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public._microregiao (gid, id, nm_micro, cd_geocodu, geom) FROM stdin;
@@ -2404,7 +2712,7 @@ COPY public._microregiao (gid, id, nm_micro, cd_geocodu, geom) FROM stdin;
 
 
 --
--- Data for Name: _municipios; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: _municipios; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public._municipios (gid, id, cd_geocodm, nm_municip, geom) FROM stdin;
@@ -2412,7 +2720,7 @@ COPY public._municipios (gid, id, cd_geocodm, nm_municip, geom) FROM stdin;
 
 
 --
--- Data for Name: agent; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: agent; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.agent (id, parent_id, user_id, type, name, location, _geo_location, short_description, long_description, create_timestamp, status, is_verified, public_location, update_timestamp, subsite_id) FROM stdin;
@@ -2421,7 +2729,7 @@ COPY public.agent (id, parent_id, user_id, type, name, location, _geo_location, 
 
 
 --
--- Data for Name: agent_meta; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: agent_meta; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.agent_meta (object_id, key, value, id) FROM stdin;
@@ -2429,7 +2737,7 @@ COPY public.agent_meta (object_id, key, value, id) FROM stdin;
 
 
 --
--- Data for Name: agent_relation; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: agent_relation; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.agent_relation (id, agent_id, object_type, object_id, type, has_control, create_timestamp, status, metadata) FROM stdin;
@@ -2437,7 +2745,7 @@ COPY public.agent_relation (id, agent_id, object_type, object_id, type, has_cont
 
 
 --
--- Data for Name: chat_message; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: chat_message; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.chat_message (id, chat_thread_id, parent_id, user_id, payload, create_timestamp) FROM stdin;
@@ -2445,7 +2753,7 @@ COPY public.chat_message (id, chat_thread_id, parent_id, user_id, payload, creat
 
 
 --
--- Data for Name: chat_thread; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: chat_thread; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.chat_thread (id, object_id, object_type, type, identifier, description, create_timestamp, last_message_timestamp, status) FROM stdin;
@@ -2453,7 +2761,7 @@ COPY public.chat_thread (id, object_id, object_type, type, identifier, descripti
 
 
 --
--- Data for Name: db_update; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: db_update; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.db_update (name, exec_time) FROM stdin;
@@ -2549,16 +2857,47 @@ Remove lixo angular registration_meta	2022-12-28 15:18:39.104279
 Adiciona coluna avaliableEvaluationFields na tabela opportunity	2022-12-28 15:18:39.104279
 Consede permissão em todos os campo para todos os avaliadores da oportunidade	2022-12-28 15:18:39.104279
 alter seal add column locked_fields	2022-12-28 15:18:39.104279
-Definição dos cammpos cpf e cnpj com base no documento	2022-12-28 15:18:39.104279
 update taxonomy slug funcao	2022-12-28 15:18:39.104279
 create registrations history entries	2022-12-28 15:18:39.949624
 create evaluations history entries	2022-12-28 15:18:39.960974
 corrige registration_metadada dos campos @	2022-12-28 15:18:39.963793
+remove orphan events again	2023-09-16 18:51:34.531169
+fix subsite verifiedSeals array	2023-09-16 18:51:34.531169
+RECREATE VIEW evaluations AGAIN!!!!!	2023-09-16 18:51:34.531169
+adiciona oportunidades na fila de reprocessamento de cache	2023-09-16 18:51:34.531169
+adiciona novos indices a tabela agent_relation	2023-09-16 18:51:34.531169
+alter job.metadata comment	2023-09-16 18:51:34.531169
+Adiciona coluna publish_timestamp na tabela opportunity	2023-09-16 18:51:34.531169
+Adiciona coluna auto_publish na tabela opportunity	2023-09-16 18:51:34.531169
+Adiciona coluna evaluation_from e evaluation_to na tabela evaluation_method_configuration	2023-09-16 18:51:34.531169
+adiciona coluna name na tabela evaluation_method_configuration	2023-09-16 18:51:34.531169
+popula as colunas name, evaluation_from e evaluation_to da tabela evaluation_method_configuration	2023-09-16 18:51:34.531169
+Renomeia colunas registrationFrom e registrationTo da tabela de projetod	2023-09-16 18:51:34.531169
+Adiciona novas coluna na tabela registration_field_configuration	2023-09-16 18:51:34.531169
+Adiciona novas coluna na tabela registration_file_configuration	2023-09-16 18:51:34.531169
+corrige metadados criados por erro em inscricoes de fases	2023-09-16 18:51:34.531169
+Adiciona a coluna description para a descrição da ocorrência	2023-09-16 18:51:34.531169
+Adiciona a coluna price para a o valor de entrada da ocorrência	2023-09-16 18:51:34.531169
+Adiciona a coluna priceInfo para a informações sobre o valor de entrada da ocorrência	2023-09-16 18:51:34.531169
+Apaga registro do db-update de "Definição dos cammpos cpf e cnpj com base no documento" para que rode novamente	2023-09-16 18:51:34.531169
+Corrige config dos campos na entidade registration_fields_configurarion	2023-09-16 18:51:34.531169
+seta como vazio campo escolaridade do agent caso esteja com valor não informado	2023-09-16 18:51:34.531169
+altera tipo da coluna description na tabela file	2023-09-16 18:51:34.531169
+faz com que o updateTimestamp seja igual ao createTimestamp na criacão da entidade	2023-09-16 18:51:34.531169
+migra valores das colunas do tipo array para do tipo json	2023-09-16 18:51:34.531169
+define metadado isDataCollection = 0 nas fases sem campos configurados	2023-09-16 18:51:34.531169
+create table system_role	2023-09-16 18:51:34.531169
+alter system_role.permissions comment	2023-09-16 18:51:34.531169
+Definição dos cammpos cpf e cnpj com base no documento	2023-09-16 18:51:35.638149
+Atualiza os campos das ocorrencias para o novo padrao	2023-09-16 18:51:35.644497
+create permission cache for users	2023-09-16 18:51:35.648676
+Atualiza campos condicionados para funcionar na nova estrutura	2023-09-16 18:51:35.653105
+criando fases de resultado final para as oportunidades existentes sem fase final	2023-09-16 18:51:35.657056
 \.
 
 
 --
--- Data for Name: entity_revision; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: entity_revision; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.entity_revision (id, user_id, object_id, object_type, create_timestamp, action, message) FROM stdin;
@@ -2567,7 +2906,7 @@ COPY public.entity_revision (id, user_id, object_id, object_type, create_timesta
 
 
 --
--- Data for Name: entity_revision_data; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: entity_revision_data; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.entity_revision_data (id, "timestamp", key, value) FROM stdin;
@@ -2585,7 +2924,7 @@ COPY public.entity_revision_data (id, "timestamp", key, value) FROM stdin;
 
 
 --
--- Data for Name: entity_revision_revision_data; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: entity_revision_revision_data; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.entity_revision_revision_data (revision_id, revision_data_id) FROM stdin;
@@ -2603,15 +2942,15 @@ COPY public.entity_revision_revision_data (revision_id, revision_data_id) FROM s
 
 
 --
--- Data for Name: evaluation_method_configuration; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: evaluation_method_configuration; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
-COPY public.evaluation_method_configuration (id, opportunity_id, type) FROM stdin;
+COPY public.evaluation_method_configuration (id, opportunity_id, type, evaluation_from, evaluation_to, name) FROM stdin;
 \.
 
 
 --
--- Data for Name: evaluationmethodconfiguration_meta; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: evaluationmethodconfiguration_meta; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.evaluationmethodconfiguration_meta (id, object_id, key, value) FROM stdin;
@@ -2619,7 +2958,7 @@ COPY public.evaluationmethodconfiguration_meta (id, object_id, key, value) FROM 
 
 
 --
--- Data for Name: event; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: event; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.event (id, project_id, name, short_description, long_description, rules, create_timestamp, status, agent_id, is_verified, type, update_timestamp, subsite_id) FROM stdin;
@@ -2627,7 +2966,7 @@ COPY public.event (id, project_id, name, short_description, long_description, ru
 
 
 --
--- Data for Name: event_attendance; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: event_attendance; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.event_attendance (id, user_id, event_occurrence_id, event_id, space_id, type, reccurrence_string, start_timestamp, end_timestamp, create_timestamp) FROM stdin;
@@ -2635,7 +2974,7 @@ COPY public.event_attendance (id, user_id, event_occurrence_id, event_id, space_
 
 
 --
--- Data for Name: event_meta; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: event_meta; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.event_meta (key, object_id, value, id) FROM stdin;
@@ -2643,15 +2982,15 @@ COPY public.event_meta (key, object_id, value, id) FROM stdin;
 
 
 --
--- Data for Name: event_occurrence; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: event_occurrence; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
-COPY public.event_occurrence (id, space_id, event_id, rule, starts_on, ends_on, starts_at, ends_at, frequency, separation, count, until, timezone_name, status) FROM stdin;
+COPY public.event_occurrence (id, space_id, event_id, rule, starts_on, ends_on, starts_at, ends_at, frequency, separation, count, until, timezone_name, status, description, price, priceinfo) FROM stdin;
 \.
 
 
 --
--- Data for Name: event_occurrence_cancellation; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: event_occurrence_cancellation; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.event_occurrence_cancellation (id, event_occurrence_id, date) FROM stdin;
@@ -2659,7 +2998,7 @@ COPY public.event_occurrence_cancellation (id, event_occurrence_id, date) FROM s
 
 
 --
--- Data for Name: event_occurrence_recurrence; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: event_occurrence_recurrence; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.event_occurrence_recurrence (id, event_occurrence_id, month, day, week) FROM stdin;
@@ -2667,7 +3006,7 @@ COPY public.event_occurrence_recurrence (id, event_occurrence_id, month, day, we
 
 
 --
--- Data for Name: file; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: file; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.file (id, md5, mime_type, name, object_type, object_id, create_timestamp, grp, description, parent_id, path, private) FROM stdin;
@@ -2675,7 +3014,7 @@ COPY public.file (id, md5, mime_type, name, object_type, object_id, create_times
 
 
 --
--- Data for Name: geo_division; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: geo_division; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.geo_division (id, parent_id, type, cod, name, geom) FROM stdin;
@@ -2683,7 +3022,7 @@ COPY public.geo_division (id, parent_id, type, cod, name, geom) FROM stdin;
 
 
 --
--- Data for Name: job; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: job; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.job (id, name, iterations, iterations_count, interval_string, create_timestamp, next_execution_timestamp, last_execution_timestamp, metadata, status) FROM stdin;
@@ -2691,7 +3030,7 @@ COPY public.job (id, name, iterations, iterations_count, interval_string, create
 
 
 --
--- Data for Name: metadata; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: metadata; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.metadata (object_id, object_type, key, value) FROM stdin;
@@ -2699,7 +3038,7 @@ COPY public.metadata (object_id, object_type, key, value) FROM stdin;
 
 
 --
--- Data for Name: metalist; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: metalist; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.metalist (id, object_type, object_id, grp, title, description, value, create_timestamp, "order") FROM stdin;
@@ -2707,7 +3046,7 @@ COPY public.metalist (id, object_type, object_id, grp, title, description, value
 
 
 --
--- Data for Name: notification; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: notification; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.notification (id, user_id, request_id, message, create_timestamp, action_timestamp, status) FROM stdin;
@@ -2715,7 +3054,7 @@ COPY public.notification (id, user_id, request_id, message, create_timestamp, ac
 
 
 --
--- Data for Name: notification_meta; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: notification_meta; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.notification_meta (id, object_id, key, value) FROM stdin;
@@ -2723,15 +3062,15 @@ COPY public.notification_meta (id, object_id, key, value) FROM stdin;
 
 
 --
--- Data for Name: opportunity; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: opportunity; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
-COPY public.opportunity (id, parent_id, agent_id, type, name, short_description, long_description, registration_from, registration_to, published_registrations, registration_categories, create_timestamp, update_timestamp, status, subsite_id, object_type, object_id, avaliable_evaluation_fields) FROM stdin;
+COPY public.opportunity (id, parent_id, agent_id, type, name, short_description, long_description, registration_from, registration_to, published_registrations, registration_categories, create_timestamp, update_timestamp, status, subsite_id, object_type, object_id, avaliable_evaluation_fields, publish_timestamp, auto_publish) FROM stdin;
 \.
 
 
 --
--- Data for Name: opportunity_meta; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: opportunity_meta; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.opportunity_meta (id, object_id, key, value) FROM stdin;
@@ -2739,7 +3078,7 @@ COPY public.opportunity_meta (id, object_id, key, value) FROM stdin;
 
 
 --
--- Data for Name: pcache; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: pcache; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.pcache (id, user_id, action, create_timestamp, object_type, object_id) FROM stdin;
@@ -2747,7 +3086,7 @@ COPY public.pcache (id, user_id, action, create_timestamp, object_type, object_i
 
 
 --
--- Data for Name: permission_cache_pending; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: permission_cache_pending; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.permission_cache_pending (id, object_id, object_type, status) FROM stdin;
@@ -2755,7 +3094,7 @@ COPY public.permission_cache_pending (id, object_id, object_type, status) FROM s
 
 
 --
--- Data for Name: procuration; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: procuration; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.procuration (token, usr_id, attorney_user_id, action, create_timestamp, valid_until_timestamp) FROM stdin;
@@ -2763,15 +3102,15 @@ COPY public.procuration (token, usr_id, attorney_user_id, action, create_timesta
 
 
 --
--- Data for Name: project; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: project; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
-COPY public.project (id, name, short_description, long_description, create_timestamp, status, agent_id, is_verified, type, parent_id, registration_from, registration_to, update_timestamp, subsite_id) FROM stdin;
+COPY public.project (id, name, short_description, long_description, create_timestamp, status, agent_id, is_verified, type, parent_id, starts_on, ends_on, update_timestamp, subsite_id) FROM stdin;
 \.
 
 
 --
--- Data for Name: project_event; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: project_event; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.project_event (id, event_id, project_id, type, status) FROM stdin;
@@ -2779,7 +3118,7 @@ COPY public.project_event (id, event_id, project_id, type, status) FROM stdin;
 
 
 --
--- Data for Name: project_meta; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: project_meta; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.project_meta (object_id, key, value, id) FROM stdin;
@@ -2787,7 +3126,7 @@ COPY public.project_meta (object_id, key, value, id) FROM stdin;
 
 
 --
--- Data for Name: registration; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: registration; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.registration (id, opportunity_id, category, agent_id, create_timestamp, sent_timestamp, status, agents_data, subsite_id, consolidated_result, number, valuers_exceptions_list, space_data) FROM stdin;
@@ -2795,7 +3134,7 @@ COPY public.registration (id, opportunity_id, category, agent_id, create_timesta
 
 
 --
--- Data for Name: registration_evaluation; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: registration_evaluation; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.registration_evaluation (id, registration_id, user_id, result, evaluation_data, status, create_timestamp, update_timestamp) FROM stdin;
@@ -2803,23 +3142,23 @@ COPY public.registration_evaluation (id, registration_id, user_id, result, evalu
 
 
 --
--- Data for Name: registration_field_configuration; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: registration_field_configuration; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
-COPY public.registration_field_configuration (id, opportunity_id, title, description, categories, required, field_type, field_options, max_size, display_order, config) FROM stdin;
+COPY public.registration_field_configuration (id, opportunity_id, title, description, categories, required, field_type, field_options, max_size, display_order, config, conditional, conditional_field, conditional_value) FROM stdin;
 \.
 
 
 --
--- Data for Name: registration_file_configuration; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: registration_file_configuration; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
-COPY public.registration_file_configuration (id, opportunity_id, title, description, required, categories, display_order) FROM stdin;
+COPY public.registration_file_configuration (id, opportunity_id, title, description, required, categories, display_order, conditional, conditional_field, conditional_value) FROM stdin;
 \.
 
 
 --
--- Data for Name: registration_meta; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: registration_meta; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.registration_meta (object_id, key, value, id) FROM stdin;
@@ -2827,7 +3166,7 @@ COPY public.registration_meta (object_id, key, value, id) FROM stdin;
 
 
 --
--- Data for Name: request; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: request; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.request (id, request_uid, requester_user_id, origin_type, origin_id, destination_type, destination_id, metadata, type, create_timestamp, action_timestamp, status) FROM stdin;
@@ -2835,7 +3174,7 @@ COPY public.request (id, request_uid, requester_user_id, origin_type, origin_id,
 
 
 --
--- Data for Name: role; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: role; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.role (id, usr_id, name, subsite_id) FROM stdin;
@@ -2844,7 +3183,7 @@ COPY public.role (id, usr_id, name, subsite_id) FROM stdin;
 
 
 --
--- Data for Name: seal; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: seal; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.seal (id, agent_id, name, short_description, long_description, valid_period, create_timestamp, status, certificate_text, update_timestamp, subsite_id, locked_fields) FROM stdin;
@@ -2853,7 +3192,7 @@ COPY public.seal (id, agent_id, name, short_description, long_description, valid
 
 
 --
--- Data for Name: seal_meta; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: seal_meta; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.seal_meta (id, object_id, key, value) FROM stdin;
@@ -2861,7 +3200,7 @@ COPY public.seal_meta (id, object_id, key, value) FROM stdin;
 
 
 --
--- Data for Name: seal_relation; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: seal_relation; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.seal_relation (id, seal_id, object_id, create_timestamp, status, object_type, agent_id, owner_id, validate_date, renovation_request) FROM stdin;
@@ -2869,7 +3208,7 @@ COPY public.seal_relation (id, seal_id, object_id, create_timestamp, status, obj
 
 
 --
--- Data for Name: space; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: space; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.space (id, parent_id, location, _geo_location, name, short_description, long_description, create_timestamp, status, type, agent_id, is_verified, public, update_timestamp, subsite_id) FROM stdin;
@@ -2877,7 +3216,7 @@ COPY public.space (id, parent_id, location, _geo_location, name, short_descripti
 
 
 --
--- Data for Name: space_meta; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: space_meta; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.space_meta (object_id, key, value, id) FROM stdin;
@@ -2885,7 +3224,7 @@ COPY public.space_meta (object_id, key, value, id) FROM stdin;
 
 
 --
--- Data for Name: space_relation; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: space_relation; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.space_relation (id, space_id, object_id, create_timestamp, status, object_type) FROM stdin;
@@ -2893,7 +3232,7 @@ COPY public.space_relation (id, space_id, object_id, create_timestamp, status, o
 
 
 --
--- Data for Name: spatial_ref_sys; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: spatial_ref_sys; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.spatial_ref_sys (srid, auth_name, auth_srid, srtext, proj4text) FROM stdin;
@@ -2901,7 +3240,7 @@ COPY public.spatial_ref_sys (srid, auth_name, auth_srid, srtext, proj4text) FROM
 
 
 --
--- Data for Name: subsite; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: subsite; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.subsite (id, name, create_timestamp, status, agent_id, url, namespace, alias_url, verified_seals) FROM stdin;
@@ -2909,7 +3248,7 @@ COPY public.subsite (id, name, create_timestamp, status, agent_id, url, namespac
 
 
 --
--- Data for Name: subsite_meta; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: subsite_meta; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.subsite_meta (object_id, key, value, id) FROM stdin;
@@ -2917,7 +3256,15 @@ COPY public.subsite_meta (object_id, key, value, id) FROM stdin;
 
 
 --
--- Data for Name: term; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: system_role; Type: TABLE DATA; Schema: public; Owner: mapas
+--
+
+COPY public.system_role (id, slug, name, subsite_context, permissions, create_timestamp, update_timestamp, status) FROM stdin;
+\.
+
+
+--
+-- Data for Name: term; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.term (id, taxonomy, term, description) FROM stdin;
@@ -2925,7 +3272,7 @@ COPY public.term (id, taxonomy, term, description) FROM stdin;
 
 
 --
--- Data for Name: term_relation; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: term_relation; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.term_relation (term_id, object_type, object_id, id) FROM stdin;
@@ -2933,7 +3280,7 @@ COPY public.term_relation (term_id, object_type, object_id, id) FROM stdin;
 
 
 --
--- Data for Name: user_app; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: user_app; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.user_app (public_key, private_key, user_id, name, status, create_timestamp, subsite_id) FROM stdin;
@@ -2941,7 +3288,7 @@ COPY public.user_app (public_key, private_key, user_id, name, status, create_tim
 
 
 --
--- Data for Name: user_meta; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: user_meta; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.user_meta (object_id, key, value, id) FROM stdin;
@@ -2951,7 +3298,7 @@ COPY public.user_meta (object_id, key, value, id) FROM stdin;
 
 
 --
--- Data for Name: usr; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: usr; Type: TABLE DATA; Schema: public; Owner: mapas
 --
 
 COPY public.usr (id, auth_provider, auth_uid, email, last_login_timestamp, create_timestamp, status, profile_id) FROM stdin;
@@ -2960,7 +3307,7 @@ COPY public.usr (id, auth_provider, auth_uid, email, last_login_timestamp, creat
 
 
 --
--- Data for Name: geocode_settings; Type: TABLE DATA; Schema: tiger; Owner: -
+-- Data for Name: geocode_settings; Type: TABLE DATA; Schema: tiger; Owner: mapas
 --
 
 COPY tiger.geocode_settings (name, setting, unit, category, short_desc) FROM stdin;
@@ -2968,7 +3315,7 @@ COPY tiger.geocode_settings (name, setting, unit, category, short_desc) FROM std
 
 
 --
--- Data for Name: pagc_gaz; Type: TABLE DATA; Schema: tiger; Owner: -
+-- Data for Name: pagc_gaz; Type: TABLE DATA; Schema: tiger; Owner: mapas
 --
 
 COPY tiger.pagc_gaz (id, seq, word, stdword, token, is_custom) FROM stdin;
@@ -2976,7 +3323,7 @@ COPY tiger.pagc_gaz (id, seq, word, stdword, token, is_custom) FROM stdin;
 
 
 --
--- Data for Name: pagc_lex; Type: TABLE DATA; Schema: tiger; Owner: -
+-- Data for Name: pagc_lex; Type: TABLE DATA; Schema: tiger; Owner: mapas
 --
 
 COPY tiger.pagc_lex (id, seq, word, stdword, token, is_custom) FROM stdin;
@@ -2984,7 +3331,7 @@ COPY tiger.pagc_lex (id, seq, word, stdword, token, is_custom) FROM stdin;
 
 
 --
--- Data for Name: pagc_rules; Type: TABLE DATA; Schema: tiger; Owner: -
+-- Data for Name: pagc_rules; Type: TABLE DATA; Schema: tiger; Owner: mapas
 --
 
 COPY tiger.pagc_rules (id, rule, is_custom) FROM stdin;
@@ -2992,7 +3339,7 @@ COPY tiger.pagc_rules (id, rule, is_custom) FROM stdin;
 
 
 --
--- Data for Name: topology; Type: TABLE DATA; Schema: topology; Owner: -
+-- Data for Name: topology; Type: TABLE DATA; Schema: topology; Owner: mapas
 --
 
 COPY topology.topology (id, name, srid, "precision", hasz) FROM stdin;
@@ -3000,7 +3347,7 @@ COPY topology.topology (id, name, srid, "precision", hasz) FROM stdin;
 
 
 --
--- Data for Name: layer; Type: TABLE DATA; Schema: topology; Owner: -
+-- Data for Name: layer; Type: TABLE DATA; Schema: topology; Owner: mapas
 --
 
 COPY topology.layer (topology_id, layer_id, schema_name, table_name, feature_column, feature_type, level, child_id) FROM stdin;
@@ -3008,364 +3355,378 @@ COPY topology.layer (topology_id, layer_id, schema_name, table_name, feature_col
 
 
 --
--- Name: _mesoregiao_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: _mesoregiao_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public._mesoregiao_gid_seq', 1, false);
 
 
 --
--- Name: _microregiao_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: _microregiao_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public._microregiao_gid_seq', 1, false);
 
 
 --
--- Name: _municipios_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: _municipios_gid_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public._municipios_gid_seq', 1, false);
 
 
 --
--- Name: agent_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: agent_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.agent_id_seq', 1, true);
 
 
 --
--- Name: agent_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: agent_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.agent_meta_id_seq', 1, false);
 
 
 --
--- Name: agent_relation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: agent_relation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.agent_relation_id_seq', 1, false);
 
 
 --
--- Name: chat_message_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: chat_message_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.chat_message_id_seq', 1, false);
 
 
 --
--- Name: chat_thread_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: chat_thread_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.chat_thread_id_seq', 1, false);
 
 
 --
--- Name: entity_revision_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: entity_revision_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.entity_revision_id_seq', 1, true);
 
 
 --
--- Name: evaluation_method_configuration_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: evaluation_method_configuration_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.evaluation_method_configuration_id_seq', 1, false);
 
 
 --
--- Name: evaluationmethodconfiguration_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: evaluationmethodconfiguration_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.evaluationmethodconfiguration_meta_id_seq', 1, false);
 
 
 --
--- Name: event_attendance_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: event_attendance_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.event_attendance_id_seq', 1, false);
 
 
 --
--- Name: event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.event_id_seq', 1, false);
 
 
 --
--- Name: event_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: event_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.event_meta_id_seq', 1, false);
 
 
 --
--- Name: event_occurrence_cancellation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: event_occurrence_cancellation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.event_occurrence_cancellation_id_seq', 1, false);
 
 
 --
--- Name: event_occurrence_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: event_occurrence_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.event_occurrence_id_seq', 1, false);
 
 
 --
--- Name: event_occurrence_recurrence_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: event_occurrence_recurrence_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.event_occurrence_recurrence_id_seq', 1, false);
 
 
 --
--- Name: file_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: file_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.file_id_seq', 1, false);
 
 
 --
--- Name: geo_division_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: geo_division_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.geo_division_id_seq', 1, false);
 
 
 --
--- Name: metalist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: metalist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.metalist_id_seq', 1, false);
 
 
 --
--- Name: notification_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: notification_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.notification_id_seq', 1, false);
 
 
 --
--- Name: notification_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: notification_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.notification_meta_id_seq', 1, false);
 
 
 --
--- Name: occurrence_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: occurrence_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.occurrence_id_seq', 100000, false);
 
 
 --
--- Name: opportunity_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: opportunity_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.opportunity_id_seq', 1, false);
 
 
 --
--- Name: opportunity_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: opportunity_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.opportunity_meta_id_seq', 1, false);
 
 
 --
--- Name: pcache_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: pcache_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.pcache_id_seq', 1, false);
 
 
 --
--- Name: permission_cache_pending_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: permission_cache_pending_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.permission_cache_pending_seq', 1, false);
 
 
 --
--- Name: project_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: project_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.project_event_id_seq', 1, false);
 
 
 --
--- Name: project_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: project_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.project_id_seq', 1, false);
 
 
 --
--- Name: project_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: project_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.project_meta_id_seq', 1, false);
 
 
 --
--- Name: pseudo_random_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: pseudo_random_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.pseudo_random_id_seq', 1, false);
 
 
 --
--- Name: registration_evaluation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: registration_evaluation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.registration_evaluation_id_seq', 1, false);
 
 
 --
--- Name: registration_field_configuration_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: registration_field_configuration_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.registration_field_configuration_id_seq', 1, false);
 
 
 --
--- Name: registration_file_configuration_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: registration_file_configuration_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.registration_file_configuration_id_seq', 1, false);
 
 
 --
--- Name: registration_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: registration_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.registration_id_seq', 1, false);
 
 
 --
--- Name: registration_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: registration_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.registration_meta_id_seq', 1, false);
 
 
 --
--- Name: request_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: request_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.request_id_seq', 1, false);
 
 
 --
--- Name: revision_data_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: revision_data_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.revision_data_id_seq', 10, true);
 
 
 --
--- Name: role_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: role_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.role_id_seq', 2, true);
 
 
 --
--- Name: seal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: seal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.seal_id_seq', 1, false);
 
 
 --
--- Name: seal_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: seal_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.seal_meta_id_seq', 1, false);
 
 
 --
--- Name: seal_relation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: seal_relation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.seal_relation_id_seq', 1, false);
 
 
 --
--- Name: space_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: space_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.space_id_seq', 1, false);
 
 
 --
--- Name: space_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: space_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.space_meta_id_seq', 1, false);
 
 
 --
--- Name: space_relation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: space_relation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.space_relation_id_seq', 1, false);
 
 
 --
--- Name: subsite_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: subsite_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.subsite_id_seq', 1, false);
 
 
 --
--- Name: subsite_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: subsite_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.subsite_meta_id_seq', 1, false);
 
 
 --
--- Name: term_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: system_role_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
+--
+
+SELECT pg_catalog.setval('public.system_role_id_seq', 1, false);
+
+
+--
+-- Name: term_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.term_id_seq', 1, false);
 
 
 --
--- Name: term_relation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: term_relation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.term_relation_id_seq', 1, false);
 
 
 --
--- Name: user_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: user_meta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.user_meta_id_seq', 2, true);
 
 
 --
--- Name: usr_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: usr_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mapas
 --
 
 SELECT pg_catalog.setval('public.usr_id_seq', 1, true);
 
 
 --
--- Name: _mesoregiao _mesoregiao_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: topology_id_seq; Type: SEQUENCE SET; Schema: topology; Owner: mapas
+--
+
+SELECT pg_catalog.setval('topology.topology_id_seq', 1, false);
+
+
+--
+-- Name: _mesoregiao _mesoregiao_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public._mesoregiao
@@ -3373,7 +3734,7 @@ ALTER TABLE ONLY public._mesoregiao
 
 
 --
--- Name: _microregiao _microregiao_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: _microregiao _microregiao_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public._microregiao
@@ -3381,7 +3742,7 @@ ALTER TABLE ONLY public._microregiao
 
 
 --
--- Name: _municipios _municipios_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: _municipios _municipios_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public._municipios
@@ -3389,7 +3750,7 @@ ALTER TABLE ONLY public._municipios
 
 
 --
--- Name: agent_meta agent_meta_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: agent_meta agent_meta_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.agent_meta
@@ -3397,7 +3758,7 @@ ALTER TABLE ONLY public.agent_meta
 
 
 --
--- Name: agent agent_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: agent agent_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.agent
@@ -3405,7 +3766,7 @@ ALTER TABLE ONLY public.agent
 
 
 --
--- Name: agent_relation agent_relation_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: agent_relation agent_relation_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.agent_relation
@@ -3413,7 +3774,7 @@ ALTER TABLE ONLY public.agent_relation
 
 
 --
--- Name: chat_message chat_message_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: chat_message chat_message_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.chat_message
@@ -3421,7 +3782,7 @@ ALTER TABLE ONLY public.chat_message
 
 
 --
--- Name: chat_thread chat_thread_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: chat_thread chat_thread_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.chat_thread
@@ -3429,7 +3790,7 @@ ALTER TABLE ONLY public.chat_thread
 
 
 --
--- Name: db_update db_update_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: db_update db_update_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.db_update
@@ -3437,7 +3798,7 @@ ALTER TABLE ONLY public.db_update
 
 
 --
--- Name: entity_revision_data entity_revision_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: entity_revision_data entity_revision_data_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.entity_revision_data
@@ -3445,7 +3806,7 @@ ALTER TABLE ONLY public.entity_revision_data
 
 
 --
--- Name: entity_revision entity_revision_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: entity_revision entity_revision_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.entity_revision
@@ -3453,7 +3814,7 @@ ALTER TABLE ONLY public.entity_revision
 
 
 --
--- Name: entity_revision_revision_data entity_revision_revision_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: entity_revision_revision_data entity_revision_revision_data_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.entity_revision_revision_data
@@ -3461,7 +3822,7 @@ ALTER TABLE ONLY public.entity_revision_revision_data
 
 
 --
--- Name: evaluation_method_configuration evaluation_method_configuration_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: evaluation_method_configuration evaluation_method_configuration_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.evaluation_method_configuration
@@ -3469,7 +3830,7 @@ ALTER TABLE ONLY public.evaluation_method_configuration
 
 
 --
--- Name: evaluationmethodconfiguration_meta evaluationmethodconfiguration_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: evaluationmethodconfiguration_meta evaluationmethodconfiguration_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.evaluationmethodconfiguration_meta
@@ -3477,7 +3838,7 @@ ALTER TABLE ONLY public.evaluationmethodconfiguration_meta
 
 
 --
--- Name: event_attendance event_attendance_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: event_attendance event_attendance_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_attendance
@@ -3485,7 +3846,7 @@ ALTER TABLE ONLY public.event_attendance
 
 
 --
--- Name: event_meta event_meta_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: event_meta event_meta_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_meta
@@ -3493,7 +3854,7 @@ ALTER TABLE ONLY public.event_meta
 
 
 --
--- Name: event_occurrence_cancellation event_occurrence_cancellation_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: event_occurrence_cancellation event_occurrence_cancellation_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_occurrence_cancellation
@@ -3501,7 +3862,7 @@ ALTER TABLE ONLY public.event_occurrence_cancellation
 
 
 --
--- Name: event_occurrence event_occurrence_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: event_occurrence event_occurrence_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_occurrence
@@ -3509,7 +3870,7 @@ ALTER TABLE ONLY public.event_occurrence
 
 
 --
--- Name: event_occurrence_recurrence event_occurrence_recurrence_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: event_occurrence_recurrence event_occurrence_recurrence_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_occurrence_recurrence
@@ -3517,7 +3878,7 @@ ALTER TABLE ONLY public.event_occurrence_recurrence
 
 
 --
--- Name: event event_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: event event_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event
@@ -3525,7 +3886,7 @@ ALTER TABLE ONLY public.event
 
 
 --
--- Name: file file_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: file file_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.file
@@ -3533,7 +3894,7 @@ ALTER TABLE ONLY public.file
 
 
 --
--- Name: geo_division geo_divisions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: geo_division geo_divisions_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.geo_division
@@ -3541,7 +3902,7 @@ ALTER TABLE ONLY public.geo_division
 
 
 --
--- Name: job job_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: job job_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.job
@@ -3549,7 +3910,7 @@ ALTER TABLE ONLY public.job
 
 
 --
--- Name: metadata metadata_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: metadata metadata_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.metadata
@@ -3557,7 +3918,7 @@ ALTER TABLE ONLY public.metadata
 
 
 --
--- Name: metalist metalist_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: metalist metalist_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.metalist
@@ -3565,7 +3926,7 @@ ALTER TABLE ONLY public.metalist
 
 
 --
--- Name: notification_meta notification_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: notification_meta notification_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.notification_meta
@@ -3573,7 +3934,7 @@ ALTER TABLE ONLY public.notification_meta
 
 
 --
--- Name: notification notification_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: notification notification_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.notification
@@ -3581,7 +3942,7 @@ ALTER TABLE ONLY public.notification
 
 
 --
--- Name: opportunity_meta opportunity_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: opportunity_meta opportunity_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.opportunity_meta
@@ -3589,7 +3950,7 @@ ALTER TABLE ONLY public.opportunity_meta
 
 
 --
--- Name: opportunity opportunity_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: opportunity opportunity_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.opportunity
@@ -3597,7 +3958,7 @@ ALTER TABLE ONLY public.opportunity
 
 
 --
--- Name: pcache pcache_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: pcache pcache_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.pcache
@@ -3605,7 +3966,7 @@ ALTER TABLE ONLY public.pcache
 
 
 --
--- Name: permission_cache_pending permission_cache_pending_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: permission_cache_pending permission_cache_pending_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.permission_cache_pending
@@ -3613,7 +3974,7 @@ ALTER TABLE ONLY public.permission_cache_pending
 
 
 --
--- Name: procuration procuration_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: procuration procuration_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.procuration
@@ -3621,7 +3982,7 @@ ALTER TABLE ONLY public.procuration
 
 
 --
--- Name: project_event project_event_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: project_event project_event_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.project_event
@@ -3629,7 +3990,7 @@ ALTER TABLE ONLY public.project_event
 
 
 --
--- Name: project_meta project_meta_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: project_meta project_meta_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.project_meta
@@ -3637,7 +3998,7 @@ ALTER TABLE ONLY public.project_meta
 
 
 --
--- Name: project project_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: project project_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.project
@@ -3645,7 +4006,7 @@ ALTER TABLE ONLY public.project
 
 
 --
--- Name: registration_evaluation registration_evaluation_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: registration_evaluation registration_evaluation_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.registration_evaluation
@@ -3653,7 +4014,7 @@ ALTER TABLE ONLY public.registration_evaluation
 
 
 --
--- Name: registration_field_configuration registration_field_configuration_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: registration_field_configuration registration_field_configuration_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.registration_field_configuration
@@ -3661,7 +4022,7 @@ ALTER TABLE ONLY public.registration_field_configuration
 
 
 --
--- Name: registration_file_configuration registration_file_configuration_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: registration_file_configuration registration_file_configuration_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.registration_file_configuration
@@ -3669,7 +4030,7 @@ ALTER TABLE ONLY public.registration_file_configuration
 
 
 --
--- Name: registration_meta registration_meta_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: registration_meta registration_meta_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.registration_meta
@@ -3677,7 +4038,7 @@ ALTER TABLE ONLY public.registration_meta
 
 
 --
--- Name: registration registration_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: registration registration_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.registration
@@ -3685,7 +4046,7 @@ ALTER TABLE ONLY public.registration
 
 
 --
--- Name: request request_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: request request_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.request
@@ -3693,7 +4054,7 @@ ALTER TABLE ONLY public.request
 
 
 --
--- Name: role role_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: role role_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.role
@@ -3701,7 +4062,7 @@ ALTER TABLE ONLY public.role
 
 
 --
--- Name: subsite saas_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: subsite saas_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.subsite
@@ -3709,7 +4070,7 @@ ALTER TABLE ONLY public.subsite
 
 
 --
--- Name: seal_meta seal_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: seal_meta seal_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.seal_meta
@@ -3717,7 +4078,7 @@ ALTER TABLE ONLY public.seal_meta
 
 
 --
--- Name: seal seal_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: seal seal_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.seal
@@ -3725,7 +4086,7 @@ ALTER TABLE ONLY public.seal
 
 
 --
--- Name: seal_relation seal_relation_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: seal_relation seal_relation_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.seal_relation
@@ -3733,7 +4094,7 @@ ALTER TABLE ONLY public.seal_relation
 
 
 --
--- Name: space_meta space_meta_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: space_meta space_meta_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.space_meta
@@ -3741,7 +4102,7 @@ ALTER TABLE ONLY public.space_meta
 
 
 --
--- Name: space space_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: space space_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.space
@@ -3749,7 +4110,7 @@ ALTER TABLE ONLY public.space
 
 
 --
--- Name: space_relation space_relation_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: space_relation space_relation_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.space_relation
@@ -3757,7 +4118,7 @@ ALTER TABLE ONLY public.space_relation
 
 
 --
--- Name: subsite_meta subsite_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: subsite_meta subsite_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.subsite_meta
@@ -3765,7 +4126,15 @@ ALTER TABLE ONLY public.subsite_meta
 
 
 --
--- Name: term term_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: system_role system_role_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
+--
+
+ALTER TABLE ONLY public.system_role
+    ADD CONSTRAINT system_role_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: term term_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.term
@@ -3773,7 +4142,7 @@ ALTER TABLE ONLY public.term
 
 
 --
--- Name: term_relation term_relation_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: term_relation term_relation_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.term_relation
@@ -3781,7 +4150,7 @@ ALTER TABLE ONLY public.term_relation
 
 
 --
--- Name: user_app user_app_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: user_app user_app_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.user_app
@@ -3789,7 +4158,7 @@ ALTER TABLE ONLY public.user_app
 
 
 --
--- Name: user_meta user_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: user_meta user_meta_pkey; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.user_meta
@@ -3797,7 +4166,7 @@ ALTER TABLE ONLY public.user_meta
 
 
 --
--- Name: usr usr_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: usr usr_pk; Type: CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.usr
@@ -3805,665 +4174,700 @@ ALTER TABLE ONLY public.usr
 
 
 --
--- Name: agent_meta_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: agent_meta_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX agent_meta_key_idx ON public.agent_meta USING btree (key);
 
 
 --
--- Name: agent_meta_owner_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: agent_meta_owner_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX agent_meta_owner_idx ON public.agent_meta USING btree (object_id);
 
 
 --
--- Name: agent_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: agent_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX agent_meta_owner_key_idx ON public.agent_meta USING btree (object_id, key);
 
 
 --
--- Name: agent_relation_all; Type: INDEX; Schema: public; Owner: -
+-- Name: agent_relation_has_control; Type: INDEX; Schema: public; Owner: mapas
 --
 
-CREATE INDEX agent_relation_all ON public.agent_relation USING btree (agent_id, object_type, object_id);
+CREATE INDEX agent_relation_has_control ON public.agent_relation USING btree (has_control);
 
 
 --
--- Name: alias_url_index; Type: INDEX; Schema: public; Owner: -
+-- Name: agent_relation_owner; Type: INDEX; Schema: public; Owner: mapas
+--
+
+CREATE INDEX agent_relation_owner ON public.agent_relation USING btree (object_type, object_id);
+
+
+--
+-- Name: agent_relation_owner_agent; Type: INDEX; Schema: public; Owner: mapas
+--
+
+CREATE INDEX agent_relation_owner_agent ON public.agent_relation USING btree (object_type, object_id, agent_id);
+
+
+--
+-- Name: agent_relation_owner_id; Type: INDEX; Schema: public; Owner: mapas
+--
+
+CREATE INDEX agent_relation_owner_id ON public.agent_relation USING btree (object_id);
+
+
+--
+-- Name: agent_relation_owner_type; Type: INDEX; Schema: public; Owner: mapas
+--
+
+CREATE INDEX agent_relation_owner_type ON public.agent_relation USING btree (object_type);
+
+
+--
+-- Name: agent_relation_status; Type: INDEX; Schema: public; Owner: mapas
+--
+
+CREATE INDEX agent_relation_status ON public.agent_relation USING btree (status);
+
+
+--
+-- Name: alias_url_index; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX alias_url_index ON public.subsite USING btree (alias_url);
 
 
 --
--- Name: evaluationmethodconfiguration_meta_owner_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: evaluationmethodconfiguration_meta_owner_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX evaluationmethodconfiguration_meta_owner_idx ON public.evaluationmethodconfiguration_meta USING btree (object_id);
 
 
 --
--- Name: evaluationmethodconfiguration_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: evaluationmethodconfiguration_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX evaluationmethodconfiguration_meta_owner_key_idx ON public.evaluationmethodconfiguration_meta USING btree (object_id, key);
 
 
 --
--- Name: event_attendance_type_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: event_attendance_type_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX event_attendance_type_idx ON public.event_attendance USING btree (type);
 
 
 --
--- Name: event_meta_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: event_meta_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX event_meta_key_idx ON public.event_meta USING btree (key);
 
 
 --
--- Name: event_meta_owner_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: event_meta_owner_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX event_meta_owner_idx ON public.event_meta USING btree (object_id);
 
 
 --
--- Name: event_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: event_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX event_meta_owner_key_idx ON public.event_meta USING btree (object_id, key);
 
 
 --
--- Name: event_occurrence_status_index; Type: INDEX; Schema: public; Owner: -
+-- Name: event_occurrence_status_index; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX event_occurrence_status_index ON public.event_occurrence USING btree (status);
 
 
 --
--- Name: file_group_index; Type: INDEX; Schema: public; Owner: -
+-- Name: file_group_index; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX file_group_index ON public.file USING btree (grp);
 
 
 --
--- Name: file_owner_grp_index; Type: INDEX; Schema: public; Owner: -
+-- Name: file_owner_grp_index; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX file_owner_grp_index ON public.file USING btree (object_type, object_id, grp);
 
 
 --
--- Name: file_owner_index; Type: INDEX; Schema: public; Owner: -
+-- Name: file_owner_index; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX file_owner_index ON public.file USING btree (object_type, object_id);
 
 
 --
--- Name: geo_divisions_geom_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: geo_divisions_geom_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX geo_divisions_geom_idx ON public.geo_division USING gist (geom);
 
 
 --
--- Name: idx_1a0e9a30232d562b; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_1a0e9a30232d562b; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_1a0e9a30232d562b ON public.space_relation USING btree (object_id);
 
 
 --
--- Name: idx_1a0e9a3023575340; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_1a0e9a3023575340; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_1a0e9a3023575340 ON public.space_relation USING btree (space_id);
 
 
 --
--- Name: idx_209c792e9a34590f; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_209c792e9a34590f; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_209c792e9a34590f ON public.registration_file_configuration USING btree (opportunity_id);
 
 
 --
--- Name: idx_22781144c79c849a; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_22781144c79c849a; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_22781144c79c849a ON public.user_app USING btree (subsite_id);
 
 
 --
--- Name: idx_268b9c9dc79c849a; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_268b9c9dc79c849a; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_268b9c9dc79c849a ON public.agent USING btree (subsite_id);
 
 
 --
--- Name: idx_2972c13ac79c849a; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_2972c13ac79c849a; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_2972c13ac79c849a ON public.space USING btree (subsite_id);
 
 
 --
--- Name: idx_2e186c5c833d8f43; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_2e186c5c833d8f43; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_2e186c5c833d8f43 ON public.registration_evaluation USING btree (registration_id);
 
 
 --
--- Name: idx_2e186c5ca76ed395; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_2e186c5ca76ed395; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_2e186c5ca76ed395 ON public.registration_evaluation USING btree (user_id);
 
 
 --
--- Name: idx_2e30ae30c79c849a; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_2e30ae30c79c849a; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_2e30ae30c79c849a ON public.seal USING btree (subsite_id);
 
 
 --
--- Name: idx_2fb3d0eec79c849a; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_2fb3d0eec79c849a; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_2fb3d0eec79c849a ON public.project USING btree (subsite_id);
 
 
 --
--- Name: idx_350dd4be140e9f00; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_350dd4be140e9f00; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_350dd4be140e9f00 ON public.event_attendance USING btree (event_occurrence_id);
 
 
 --
--- Name: idx_350dd4be23575340; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_350dd4be23575340; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_350dd4be23575340 ON public.event_attendance USING btree (space_id);
 
 
 --
--- Name: idx_350dd4be71f7e88b; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_350dd4be71f7e88b; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_350dd4be71f7e88b ON public.event_attendance USING btree (event_id);
 
 
 --
--- Name: idx_350dd4bea76ed395; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_350dd4bea76ed395; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_350dd4bea76ed395 ON public.event_attendance USING btree (user_id);
 
 
 --
--- Name: idx_3bae0aa7c79c849a; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_3bae0aa7c79c849a; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_3bae0aa7c79c849a ON public.event USING btree (subsite_id);
 
 
 --
--- Name: idx_3d853098232d562b; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_3d853098232d562b; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_3d853098232d562b ON public.pcache USING btree (object_id);
 
 
 --
--- Name: idx_3d853098a76ed395; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_3d853098a76ed395; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_3d853098a76ed395 ON public.pcache USING btree (user_id);
 
 
 --
--- Name: idx_57698a6ac79c849a; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_57698a6ac79c849a; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_57698a6ac79c849a ON public.role USING btree (subsite_id);
 
 
 --
--- Name: idx_60c85cb1166d1f9c; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_60c85cb1166d1f9c; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_60c85cb1166d1f9c ON public.registration_field_configuration USING btree (opportunity_id);
 
 
 --
--- Name: idx_60c85cb19a34590f; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_60c85cb19a34590f; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_60c85cb19a34590f ON public.registration_field_configuration USING btree (opportunity_id);
 
 
 --
--- Name: idx_62a8a7a73414710b; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_62a8a7a73414710b; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_62a8a7a73414710b ON public.registration USING btree (agent_id);
 
 
 --
--- Name: idx_62a8a7a79a34590f; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_62a8a7a79a34590f; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_62a8a7a79a34590f ON public.registration USING btree (opportunity_id);
 
 
 --
--- Name: idx_62a8a7a7c79c849a; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_62a8a7a7c79c849a; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_62a8a7a7c79c849a ON public.registration USING btree (subsite_id);
 
 
 --
--- Name: idx_fab3fc16727aca70; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_fab3fc16727aca70; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_fab3fc16727aca70 ON public.chat_message USING btree (parent_id);
 
 
 --
--- Name: idx_fab3fc16a76ed395; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_fab3fc16a76ed395; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_fab3fc16a76ed395 ON public.chat_message USING btree (user_id);
 
 
 --
--- Name: idx_fab3fc16c47d5262; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_fab3fc16c47d5262; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX idx_fab3fc16c47d5262 ON public.chat_message USING btree (chat_thread_id);
 
 
 --
--- Name: job_next_execution_timestamp_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: job_next_execution_timestamp_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX job_next_execution_timestamp_idx ON public.job USING btree (next_execution_timestamp);
 
 
 --
--- Name: job_search_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: job_search_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX job_search_idx ON public.job USING btree (next_execution_timestamp, iterations_count, status);
 
 
 --
--- Name: notification_meta_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: notification_meta_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX notification_meta_key_idx ON public.notification_meta USING btree (key);
 
 
 --
--- Name: notification_meta_owner_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: notification_meta_owner_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX notification_meta_owner_idx ON public.notification_meta USING btree (object_id);
 
 
 --
--- Name: notification_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: notification_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX notification_meta_owner_key_idx ON public.notification_meta USING btree (object_id, key);
 
 
 --
--- Name: opportunity_entity_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: opportunity_entity_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX opportunity_entity_idx ON public.opportunity USING btree (object_type, object_id);
 
 
 --
--- Name: opportunity_meta_owner_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: opportunity_meta_owner_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX opportunity_meta_owner_idx ON public.opportunity_meta USING btree (object_id);
 
 
 --
--- Name: opportunity_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: opportunity_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX opportunity_meta_owner_key_idx ON public.opportunity_meta USING btree (object_id, key);
 
 
 --
--- Name: opportunity_owner_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: opportunity_owner_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX opportunity_owner_idx ON public.opportunity USING btree (agent_id);
 
 
 --
--- Name: opportunity_parent_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: opportunity_parent_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX opportunity_parent_idx ON public.opportunity USING btree (parent_id);
 
 
 --
--- Name: owner_index; Type: INDEX; Schema: public; Owner: -
+-- Name: owner_index; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX owner_index ON public.term_relation USING btree (object_type, object_id);
 
 
 --
--- Name: pcache_owner_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: pcache_owner_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX pcache_owner_idx ON public.pcache USING btree (object_type, object_id);
 
 
 --
--- Name: pcache_permission_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: pcache_permission_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX pcache_permission_idx ON public.pcache USING btree (object_type, object_id, action);
 
 
 --
--- Name: pcache_permission_user_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: pcache_permission_user_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX pcache_permission_user_idx ON public.pcache USING btree (object_type, object_id, action, user_id);
 
 
 --
--- Name: procuration_attorney_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: procuration_attorney_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX procuration_attorney_idx ON public.procuration USING btree (attorney_user_id);
 
 
 --
--- Name: procuration_usr_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: procuration_usr_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX procuration_usr_idx ON public.procuration USING btree (usr_id);
 
 
 --
--- Name: project_meta_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: project_meta_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX project_meta_key_idx ON public.project_meta USING btree (key);
 
 
 --
--- Name: project_meta_owner_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: project_meta_owner_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX project_meta_owner_idx ON public.project_meta USING btree (object_id);
 
 
 --
--- Name: project_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: project_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX project_meta_owner_key_idx ON public.project_meta USING btree (object_id, key);
 
 
 --
--- Name: registration_meta_owner_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: registration_meta_owner_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX registration_meta_owner_idx ON public.registration_meta USING btree (object_id);
 
 
 --
--- Name: registration_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: registration_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX registration_meta_owner_key_idx ON public.registration_meta USING btree (object_id, key);
 
 
 --
--- Name: request_uid; Type: INDEX; Schema: public; Owner: -
+-- Name: request_uid; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE UNIQUE INDEX request_uid ON public.request USING btree (request_uid);
 
 
 --
--- Name: requester_user_index; Type: INDEX; Schema: public; Owner: -
+-- Name: requester_user_index; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX requester_user_index ON public.request USING btree (requester_user_id, origin_type, origin_id);
 
 
 --
--- Name: seal_meta_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: seal_meta_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX seal_meta_key_idx ON public.seal_meta USING btree (key);
 
 
 --
--- Name: seal_meta_owner_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: seal_meta_owner_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX seal_meta_owner_idx ON public.seal_meta USING btree (object_id);
 
 
 --
--- Name: seal_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: seal_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX seal_meta_owner_key_idx ON public.seal_meta USING btree (object_id, key);
 
 
 --
--- Name: space_location; Type: INDEX; Schema: public; Owner: -
+-- Name: space_location; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX space_location ON public.space USING gist (_geo_location);
 
 
 --
--- Name: space_meta_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: space_meta_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX space_meta_key_idx ON public.space_meta USING btree (key);
 
 
 --
--- Name: space_meta_owner_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: space_meta_owner_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX space_meta_owner_idx ON public.space_meta USING btree (object_id);
 
 
 --
--- Name: space_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: space_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX space_meta_owner_key_idx ON public.space_meta USING btree (object_id, key);
 
 
 --
--- Name: space_type; Type: INDEX; Schema: public; Owner: -
+-- Name: space_type; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX space_type ON public.space USING btree (type);
 
 
 --
--- Name: subsite_meta_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: subsite_meta_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX subsite_meta_key_idx ON public.subsite_meta USING btree (key);
 
 
 --
--- Name: subsite_meta_owner_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: subsite_meta_owner_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX subsite_meta_owner_idx ON public.subsite_meta USING btree (object_id);
 
 
 --
--- Name: subsite_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: subsite_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX subsite_meta_owner_key_idx ON public.subsite_meta USING btree (object_id, key);
 
 
 --
--- Name: taxonomy_term_unique; Type: INDEX; Schema: public; Owner: -
+-- Name: taxonomy_term_unique; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE UNIQUE INDEX taxonomy_term_unique ON public.term USING btree (taxonomy, term);
 
 
 --
--- Name: uniq_330cb54c9a34590f; Type: INDEX; Schema: public; Owner: -
+-- Name: uniq_330cb54c9a34590f; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE UNIQUE INDEX uniq_330cb54c9a34590f ON public.evaluation_method_configuration USING btree (opportunity_id);
 
 
 --
--- Name: url_index; Type: INDEX; Schema: public; Owner: -
+-- Name: url_index; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX url_index ON public.subsite USING btree (url);
 
 
 --
--- Name: user_meta_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: user_meta_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX user_meta_key_idx ON public.user_meta USING btree (key);
 
 
 --
--- Name: user_meta_owner_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: user_meta_owner_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX user_meta_owner_idx ON public.user_meta USING btree (object_id);
 
 
 --
--- Name: user_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: user_meta_owner_key_idx; Type: INDEX; Schema: public; Owner: mapas
 --
 
 CREATE INDEX user_meta_owner_key_idx ON public.user_meta USING btree (object_id, key);
 
 
 --
--- Name: agent trigger_clean_orphans_agent; Type: TRIGGER; Schema: public; Owner: -
+-- Name: agent trigger_clean_orphans_agent; Type: TRIGGER; Schema: public; Owner: mapas
 --
 
 CREATE TRIGGER trigger_clean_orphans_agent AFTER DELETE ON public.agent FOR EACH ROW EXECUTE FUNCTION public.fn_clean_orphans('MapasCulturais\Entities\Agent');
 
 
 --
--- Name: chat_message trigger_clean_orphans_chat_message; Type: TRIGGER; Schema: public; Owner: -
+-- Name: chat_message trigger_clean_orphans_chat_message; Type: TRIGGER; Schema: public; Owner: mapas
 --
 
 CREATE TRIGGER trigger_clean_orphans_chat_message AFTER DELETE ON public.chat_message FOR EACH ROW EXECUTE FUNCTION public.fn_clean_orphans('MapasCulturais\Entities\ChatMessage');
 
 
 --
--- Name: chat_thread trigger_clean_orphans_chat_thread; Type: TRIGGER; Schema: public; Owner: -
+-- Name: chat_thread trigger_clean_orphans_chat_thread; Type: TRIGGER; Schema: public; Owner: mapas
 --
 
 CREATE TRIGGER trigger_clean_orphans_chat_thread AFTER DELETE ON public.chat_thread FOR EACH ROW EXECUTE FUNCTION public.fn_clean_orphans('MapasCulturais\Entities\ChatThread');
 
 
 --
--- Name: evaluation_method_configuration trigger_clean_orphans_evaluation_method_configuration; Type: TRIGGER; Schema: public; Owner: -
+-- Name: evaluation_method_configuration trigger_clean_orphans_evaluation_method_configuration; Type: TRIGGER; Schema: public; Owner: mapas
 --
 
 CREATE TRIGGER trigger_clean_orphans_evaluation_method_configuration AFTER DELETE ON public.evaluation_method_configuration FOR EACH ROW EXECUTE FUNCTION public.fn_clean_orphans('MapasCulturais\Entities\EvaluationMethodConfiguration');
 
 
 --
--- Name: event trigger_clean_orphans_event; Type: TRIGGER; Schema: public; Owner: -
+-- Name: event trigger_clean_orphans_event; Type: TRIGGER; Schema: public; Owner: mapas
 --
 
 CREATE TRIGGER trigger_clean_orphans_event AFTER DELETE ON public.event FOR EACH ROW EXECUTE FUNCTION public.fn_clean_orphans('MapasCulturais\Entities\Event');
 
 
 --
--- Name: notification trigger_clean_orphans_notification; Type: TRIGGER; Schema: public; Owner: -
+-- Name: notification trigger_clean_orphans_notification; Type: TRIGGER; Schema: public; Owner: mapas
 --
 
 CREATE TRIGGER trigger_clean_orphans_notification AFTER DELETE ON public.notification FOR EACH ROW EXECUTE FUNCTION public.fn_clean_orphans('MapasCulturais\Entities\Notification');
 
 
 --
--- Name: opportunity trigger_clean_orphans_opportunity; Type: TRIGGER; Schema: public; Owner: -
+-- Name: opportunity trigger_clean_orphans_opportunity; Type: TRIGGER; Schema: public; Owner: mapas
 --
 
 CREATE TRIGGER trigger_clean_orphans_opportunity AFTER DELETE ON public.opportunity FOR EACH ROW EXECUTE FUNCTION public.fn_clean_orphans('MapasCulturais\Entities\Opportunity');
 
 
 --
--- Name: project trigger_clean_orphans_project; Type: TRIGGER; Schema: public; Owner: -
+-- Name: project trigger_clean_orphans_project; Type: TRIGGER; Schema: public; Owner: mapas
 --
 
 CREATE TRIGGER trigger_clean_orphans_project AFTER DELETE ON public.project FOR EACH ROW EXECUTE FUNCTION public.fn_clean_orphans('MapasCulturais\Entities\Project');
 
 
 --
--- Name: registration trigger_clean_orphans_registration; Type: TRIGGER; Schema: public; Owner: -
+-- Name: registration trigger_clean_orphans_registration; Type: TRIGGER; Schema: public; Owner: mapas
 --
 
 CREATE TRIGGER trigger_clean_orphans_registration AFTER DELETE ON public.registration FOR EACH ROW EXECUTE FUNCTION public.fn_clean_orphans('MapasCulturais\Entities\Registration');
 
 
 --
--- Name: registration_file_configuration trigger_clean_orphans_registration_file_configuration; Type: TRIGGER; Schema: public; Owner: -
+-- Name: registration_file_configuration trigger_clean_orphans_registration_file_configuration; Type: TRIGGER; Schema: public; Owner: mapas
 --
 
 CREATE TRIGGER trigger_clean_orphans_registration_file_configuration AFTER DELETE ON public.registration_file_configuration FOR EACH ROW EXECUTE FUNCTION public.fn_clean_orphans('MapasCulturais\Entities\RegistrationFileConfiguration');
 
 
 --
--- Name: space trigger_clean_orphans_space; Type: TRIGGER; Schema: public; Owner: -
+-- Name: space trigger_clean_orphans_space; Type: TRIGGER; Schema: public; Owner: mapas
 --
 
 CREATE TRIGGER trigger_clean_orphans_space AFTER DELETE ON public.space FOR EACH ROW EXECUTE FUNCTION public.fn_clean_orphans('MapasCulturais\Entities\Space');
 
 
 --
--- Name: subsite trigger_clean_orphans_subsite; Type: TRIGGER; Schema: public; Owner: -
+-- Name: subsite trigger_clean_orphans_subsite; Type: TRIGGER; Schema: public; Owner: mapas
 --
 
 CREATE TRIGGER trigger_clean_orphans_subsite AFTER DELETE ON public.subsite FOR EACH ROW EXECUTE FUNCTION public.fn_clean_orphans('MapasCulturais\Entities\Subsite');
 
 
 --
--- Name: usr fk_1762498cccfa12b8; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: usr fk_1762498cccfa12b8; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.usr
@@ -4471,7 +4875,7 @@ ALTER TABLE ONLY public.usr
 
 
 --
--- Name: registration_meta fk_18cc03e9232d562b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: registration_meta fk_18cc03e9232d562b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.registration_meta
@@ -4479,7 +4883,7 @@ ALTER TABLE ONLY public.registration_meta
 
 
 --
--- Name: space_relation fk_1a0e9a30232d562b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: space_relation fk_1a0e9a30232d562b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.space_relation
@@ -4487,7 +4891,7 @@ ALTER TABLE ONLY public.space_relation
 
 
 --
--- Name: space_relation fk_1a0e9a3023575340; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: space_relation fk_1a0e9a3023575340; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.space_relation
@@ -4495,7 +4899,7 @@ ALTER TABLE ONLY public.space_relation
 
 
 --
--- Name: registration_file_configuration fk_209c792e9a34590f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: registration_file_configuration fk_209c792e9a34590f; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.registration_file_configuration
@@ -4503,7 +4907,7 @@ ALTER TABLE ONLY public.registration_file_configuration
 
 
 --
--- Name: user_app fk_22781144a76ed395; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: user_app fk_22781144a76ed395; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.user_app
@@ -4511,7 +4915,7 @@ ALTER TABLE ONLY public.user_app
 
 
 --
--- Name: user_app fk_22781144bddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: user_app fk_22781144bddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.user_app
@@ -4519,7 +4923,7 @@ ALTER TABLE ONLY public.user_app
 
 
 --
--- Name: agent fk_268b9c9d727aca70; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: agent fk_268b9c9d727aca70; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.agent
@@ -4527,7 +4931,7 @@ ALTER TABLE ONLY public.agent
 
 
 --
--- Name: agent fk_268b9c9da76ed395; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: agent fk_268b9c9da76ed395; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.agent
@@ -4535,7 +4939,7 @@ ALTER TABLE ONLY public.agent
 
 
 --
--- Name: agent fk_268b9c9dbddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: agent fk_268b9c9dbddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.agent
@@ -4543,7 +4947,7 @@ ALTER TABLE ONLY public.agent
 
 
 --
--- Name: space fk_2972c13a3414710b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: space fk_2972c13a3414710b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.space
@@ -4551,7 +4955,7 @@ ALTER TABLE ONLY public.space
 
 
 --
--- Name: space fk_2972c13a727aca70; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: space fk_2972c13a727aca70; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.space
@@ -4559,7 +4963,7 @@ ALTER TABLE ONLY public.space
 
 
 --
--- Name: space fk_2972c13abddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: space fk_2972c13abddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.space
@@ -4567,7 +4971,7 @@ ALTER TABLE ONLY public.space
 
 
 --
--- Name: opportunity_meta fk_2bb06d08232d562b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: opportunity_meta fk_2bb06d08232d562b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.opportunity_meta
@@ -4575,7 +4979,7 @@ ALTER TABLE ONLY public.opportunity_meta
 
 
 --
--- Name: registration_evaluation fk_2e186c5c833d8f43; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: registration_evaluation fk_2e186c5c833d8f43; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.registration_evaluation
@@ -4583,7 +4987,7 @@ ALTER TABLE ONLY public.registration_evaluation
 
 
 --
--- Name: registration_evaluation fk_2e186c5ca76ed395; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: registration_evaluation fk_2e186c5ca76ed395; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.registration_evaluation
@@ -4591,7 +4995,7 @@ ALTER TABLE ONLY public.registration_evaluation
 
 
 --
--- Name: seal fk_2e30ae303414710b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: seal fk_2e30ae303414710b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.seal
@@ -4599,7 +5003,7 @@ ALTER TABLE ONLY public.seal
 
 
 --
--- Name: seal fk_2e30ae30bddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: seal fk_2e30ae30bddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.seal
@@ -4607,7 +5011,7 @@ ALTER TABLE ONLY public.seal
 
 
 --
--- Name: project fk_2fb3d0ee3414710b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: project fk_2fb3d0ee3414710b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.project
@@ -4615,7 +5019,7 @@ ALTER TABLE ONLY public.project
 
 
 --
--- Name: project fk_2fb3d0ee727aca70; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: project fk_2fb3d0ee727aca70; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.project
@@ -4623,7 +5027,7 @@ ALTER TABLE ONLY public.project
 
 
 --
--- Name: project fk_2fb3d0eebddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: project fk_2fb3d0eebddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.project
@@ -4631,7 +5035,7 @@ ALTER TABLE ONLY public.project
 
 
 --
--- Name: evaluation_method_configuration fk_330cb54c9a34590f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: evaluation_method_configuration fk_330cb54c9a34590f; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.evaluation_method_configuration
@@ -4639,7 +5043,7 @@ ALTER TABLE ONLY public.evaluation_method_configuration
 
 
 --
--- Name: event_attendance fk_350dd4be140e9f00; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: event_attendance fk_350dd4be140e9f00; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_attendance
@@ -4647,7 +5051,7 @@ ALTER TABLE ONLY public.event_attendance
 
 
 --
--- Name: event_attendance fk_350dd4be23575340; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: event_attendance fk_350dd4be23575340; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_attendance
@@ -4655,7 +5059,7 @@ ALTER TABLE ONLY public.event_attendance
 
 
 --
--- Name: event_attendance fk_350dd4be71f7e88b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: event_attendance fk_350dd4be71f7e88b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_attendance
@@ -4663,7 +5067,7 @@ ALTER TABLE ONLY public.event_attendance
 
 
 --
--- Name: event_attendance fk_350dd4bea76ed395; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: event_attendance fk_350dd4bea76ed395; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_attendance
@@ -4671,7 +5075,7 @@ ALTER TABLE ONLY public.event_attendance
 
 
 --
--- Name: event_occurrence_recurrence fk_388eccb140e9f00; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: event_occurrence_recurrence fk_388eccb140e9f00; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_occurrence_recurrence
@@ -4679,7 +5083,7 @@ ALTER TABLE ONLY public.event_occurrence_recurrence
 
 
 --
--- Name: request fk_3b978f9fba78f12a; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: request fk_3b978f9fba78f12a; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.request
@@ -4687,7 +5091,7 @@ ALTER TABLE ONLY public.request
 
 
 --
--- Name: event fk_3bae0aa7166d1f9c; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: event fk_3bae0aa7166d1f9c; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event
@@ -4695,7 +5099,7 @@ ALTER TABLE ONLY public.event
 
 
 --
--- Name: event fk_3bae0aa73414710b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: event fk_3bae0aa73414710b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event
@@ -4703,7 +5107,7 @@ ALTER TABLE ONLY public.event
 
 
 --
--- Name: event fk_3bae0aa7bddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: event fk_3bae0aa7bddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event
@@ -4711,7 +5115,7 @@ ALTER TABLE ONLY public.event
 
 
 --
--- Name: pcache fk_3d853098a76ed395; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: pcache fk_3d853098a76ed395; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.pcache
@@ -4719,7 +5123,7 @@ ALTER TABLE ONLY public.pcache
 
 
 --
--- Name: seal_relation fk_487af6513414710b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: seal_relation fk_487af6513414710b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.seal_relation
@@ -4727,7 +5131,7 @@ ALTER TABLE ONLY public.seal_relation
 
 
 --
--- Name: seal_relation fk_487af65154778145; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: seal_relation fk_487af65154778145; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.seal_relation
@@ -4735,7 +5139,7 @@ ALTER TABLE ONLY public.seal_relation
 
 
 --
--- Name: seal_relation fk_487af6517e3c61f9; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: seal_relation fk_487af6517e3c61f9; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.seal_relation
@@ -4743,7 +5147,7 @@ ALTER TABLE ONLY public.seal_relation
 
 
 --
--- Name: agent_relation fk_54585edd3414710b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: agent_relation fk_54585edd3414710b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.agent_relation
@@ -4751,7 +5155,7 @@ ALTER TABLE ONLY public.agent_relation
 
 
 --
--- Name: role fk_57698a6abddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: role fk_57698a6abddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.role
@@ -4759,7 +5163,7 @@ ALTER TABLE ONLY public.role
 
 
 --
--- Name: role fk_57698a6ac69d3fb; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: role fk_57698a6ac69d3fb; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.role
@@ -4767,7 +5171,7 @@ ALTER TABLE ONLY public.role
 
 
 --
--- Name: registration_field_configuration fk_60c85cb19a34590f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: registration_field_configuration fk_60c85cb19a34590f; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.registration_field_configuration
@@ -4775,7 +5179,7 @@ ALTER TABLE ONLY public.registration_field_configuration
 
 
 --
--- Name: registration fk_62a8a7a73414710b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: registration fk_62a8a7a73414710b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.registration
@@ -4783,7 +5187,7 @@ ALTER TABLE ONLY public.registration
 
 
 --
--- Name: registration fk_62a8a7a79a34590f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: registration fk_62a8a7a79a34590f; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.registration
@@ -4791,7 +5195,7 @@ ALTER TABLE ONLY public.registration
 
 
 --
--- Name: registration fk_62a8a7a7bddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: registration fk_62a8a7a7bddfbe89; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.registration
@@ -4799,7 +5203,7 @@ ALTER TABLE ONLY public.registration
 
 
 --
--- Name: notification_meta fk_6fce5f0f232d562b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: notification_meta fk_6fce5f0f232d562b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.notification_meta
@@ -4807,7 +5211,7 @@ ALTER TABLE ONLY public.notification_meta
 
 
 --
--- Name: subsite_meta fk_780702f5232d562b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: subsite_meta fk_780702f5232d562b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.subsite_meta
@@ -4815,7 +5219,7 @@ ALTER TABLE ONLY public.subsite_meta
 
 
 --
--- Name: agent_meta fk_7a69aed6232d562b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: agent_meta fk_7a69aed6232d562b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.agent_meta
@@ -4823,7 +5227,7 @@ ALTER TABLE ONLY public.agent_meta
 
 
 --
--- Name: opportunity fk_8389c3d73414710b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: opportunity fk_8389c3d73414710b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.opportunity
@@ -4831,7 +5235,7 @@ ALTER TABLE ONLY public.opportunity
 
 
 --
--- Name: opportunity fk_8389c3d7727aca70; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: opportunity fk_8389c3d7727aca70; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.opportunity
@@ -4839,7 +5243,7 @@ ALTER TABLE ONLY public.opportunity
 
 
 --
--- Name: file fk_8c9f3610727aca70; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: file fk_8c9f3610727aca70; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.file
@@ -4847,7 +5251,7 @@ ALTER TABLE ONLY public.file
 
 
 --
--- Name: entity_revision_revision_data fk_9977a8521dfa7c8f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: entity_revision_revision_data fk_9977a8521dfa7c8f; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.entity_revision_revision_data
@@ -4855,7 +5259,7 @@ ALTER TABLE ONLY public.entity_revision_revision_data
 
 
 --
--- Name: entity_revision_revision_data fk_9977a852b4906f58; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: entity_revision_revision_data fk_9977a852b4906f58; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.entity_revision_revision_data
@@ -4863,7 +5267,7 @@ ALTER TABLE ONLY public.entity_revision_revision_data
 
 
 --
--- Name: event_occurrence_cancellation fk_a5506736140e9f00; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: event_occurrence_cancellation fk_a5506736140e9f00; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_occurrence_cancellation
@@ -4871,7 +5275,7 @@ ALTER TABLE ONLY public.event_occurrence_cancellation
 
 
 --
--- Name: seal_meta fk_a92e5e22232d562b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: seal_meta fk_a92e5e22232d562b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.seal_meta
@@ -4879,7 +5283,7 @@ ALTER TABLE ONLY public.seal_meta
 
 
 --
--- Name: user_meta fk_ad7358fc232d562b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: user_meta fk_ad7358fc232d562b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.user_meta
@@ -4887,7 +5291,7 @@ ALTER TABLE ONLY public.user_meta
 
 
 --
--- Name: subsite fk_b0f67b6f3414710b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: subsite fk_b0f67b6f3414710b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.subsite
@@ -4895,7 +5299,7 @@ ALTER TABLE ONLY public.subsite
 
 
 --
--- Name: space_meta fk_bc846ebf232d562b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: space_meta fk_bc846ebf232d562b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.space_meta
@@ -4903,7 +5307,7 @@ ALTER TABLE ONLY public.space_meta
 
 
 --
--- Name: notification fk_bf5476ca427eb8a5; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: notification fk_bf5476ca427eb8a5; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.notification
@@ -4911,7 +5315,7 @@ ALTER TABLE ONLY public.notification
 
 
 --
--- Name: notification fk_bf5476caa76ed395; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: notification fk_bf5476caa76ed395; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.notification
@@ -4919,7 +5323,7 @@ ALTER TABLE ONLY public.notification
 
 
 --
--- Name: event_meta fk_c839589e232d562b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: event_meta fk_c839589e232d562b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_meta
@@ -4927,7 +5331,7 @@ ALTER TABLE ONLY public.event_meta
 
 
 --
--- Name: entity_revision fk_cf97a98ca76ed395; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: entity_revision fk_cf97a98ca76ed395; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.entity_revision
@@ -4935,7 +5339,7 @@ ALTER TABLE ONLY public.entity_revision
 
 
 --
--- Name: procuration fk_d7bae7f3aeb2ed7; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: procuration fk_d7bae7f3aeb2ed7; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.procuration
@@ -4943,7 +5347,7 @@ ALTER TABLE ONLY public.procuration
 
 
 --
--- Name: procuration fk_d7bae7fc69d3fb; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: procuration fk_d7bae7fc69d3fb; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.procuration
@@ -4951,7 +5355,7 @@ ALTER TABLE ONLY public.procuration
 
 
 --
--- Name: evaluationmethodconfiguration_meta fk_d7edf8b2232d562b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: evaluationmethodconfiguration_meta fk_d7edf8b2232d562b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.evaluationmethodconfiguration_meta
@@ -4959,7 +5363,7 @@ ALTER TABLE ONLY public.evaluationmethodconfiguration_meta
 
 
 --
--- Name: event_occurrence fk_e61358dc23575340; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: event_occurrence fk_e61358dc23575340; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_occurrence
@@ -4967,7 +5371,7 @@ ALTER TABLE ONLY public.event_occurrence
 
 
 --
--- Name: event_occurrence fk_e61358dc71f7e88b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: event_occurrence fk_e61358dc71f7e88b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.event_occurrence
@@ -4975,7 +5379,7 @@ ALTER TABLE ONLY public.event_occurrence
 
 
 --
--- Name: term_relation fk_eddf39fde2c35fc; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: term_relation fk_eddf39fde2c35fc; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.term_relation
@@ -4983,7 +5387,7 @@ ALTER TABLE ONLY public.term_relation
 
 
 --
--- Name: project_meta fk_ee63dc2d232d562b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: project_meta fk_ee63dc2d232d562b; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.project_meta
@@ -4991,7 +5395,7 @@ ALTER TABLE ONLY public.project_meta
 
 
 --
--- Name: chat_message fk_fab3fc16727aca70; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: chat_message fk_fab3fc16727aca70; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.chat_message
@@ -4999,7 +5403,7 @@ ALTER TABLE ONLY public.chat_message
 
 
 --
--- Name: chat_message fk_fab3fc16a76ed395; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: chat_message fk_fab3fc16a76ed395; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.chat_message
@@ -5007,7 +5411,7 @@ ALTER TABLE ONLY public.chat_message
 
 
 --
--- Name: chat_message fk_fab3fc16c47d5262; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: chat_message fk_fab3fc16c47d5262; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
 ALTER TABLE ONLY public.chat_message
