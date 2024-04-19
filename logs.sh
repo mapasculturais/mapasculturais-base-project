@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker-compose logs -f --tail=10 $@
+docker compose logs -f --tail=10 $@

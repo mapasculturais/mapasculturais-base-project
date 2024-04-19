@@ -1,0 +1,61 @@
+version: '2'
+services:
+  mapas:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+      
+    command: /var/www/dev/start.sh
+
+    ports:
+      - "80:80"
+    
+    volumes:
+      - ./docker-data/assets:/var/www/html/assets
+      - ./docker-data/public-files:/var/www/html/files
+      - ./docker-data/private-files:/var/www/var/private-files
+      - ./docker-data/logs:/var/www/var/logs
+
+      - ../docker/common/config.d:/var/www/config/common.d
+      - ./config.d:/var/www/config/local.d
+
+      # themes and plugins
+      - ../plugins/SamplePlugin:/var/www/src/plugins/SamplePlugin
+      - ../plugins/MultipleLocalAuth:/var/www/src/plugins/MultipleLocalAuth
+
+    environment:
+      - PENDING_PCACHE_RECREATION_INTERVAL=10
+      - JOBS_INTERVAL=10
+      - REDIS_CACHE=redis
+      - APP_MODE=development
+      - BUILD_ASSETS=1
+
+    depends_on:
+      - db
+      - redis
+      - mailhog
+  
+    stdin_open: true
+    tty: true
+
+
+  redis:
+    image: redis:6
+    command: --maxmemory 256Mb --maxmemory-policy allkeys-lru
+
+  db:
+    image: postgis/postgis:14-master
+    environment:
+      - POSTGRES_PASSWORD=mapas
+      - POSTGRES_USER=mapas
+      - POSTGRES_DB=mapas
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../docker/db:/docker-entrypoint-initdb.d
+      - ./docker-data/db-data:/var/lib/postgresql/data
+
+  mailhog: 
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"

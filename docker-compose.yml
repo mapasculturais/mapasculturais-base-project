@@ -10,10 +10,10 @@ services:
       - ./docker-data/assets:/var/www/html/assets
 
   ##### versão sem ssl
-      - ./compose/production/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/production/nginx.conf:/etc/nginx/conf.d/default.conf
 
   ##### versão com ssl
-    #  - ./compose/production/nginx-ssl.conf:/etc/nginx/conf.d/default.conf
+    #  - ./docker/production/nginx-ssl.conf:/etc/nginx/conf.d/default.conf
     #  - ./docker-data/certs/conf:/etc/letsencrypt
     #  - ./docker-data/certs/www:/var/www/certbot
     ports:
@@ -29,14 +29,18 @@ services:
       - .env
     build:
       context: ./
-      dockerfile: compose/production/Dockerfile
+      dockerfile: docker/Dockerfile
     restart: unless-stopped
     volumes:
       - ./.env:/.env
       - ./docker-data/assets:/var/www/html/assets
       - ./docker-data/public-files:/var/www/html/files
-      - ./docker-data/private-files:/var/www/private-files
-      - ./docker-data/saas-files:/var/www/SaaS
+      - ./docker-data/private-files:/var/www/var/private-files
+      - ./docker-data/saas-files:/var/www/var/saas-files
+      - ./docker-data/sessions:/var/www/var/sessions
+      - ./docker-data/logs:/var/www/var/logs
+
+      - ./docker/production/config.d /var/www/config/prod.d
     links:
       - db
       - redis
@@ -44,6 +48,7 @@ services:
     environment:
       - REDIS_CACHE=redis
       - SESSIONS_SAVE_PATH=tcp://sessions:6379
+
     depends_on:
       - db
       - redis
@@ -51,7 +56,7 @@ services:
 
   redis:
     image: redis:6
-    command: --maxmemory 256Mb --maxmemory-policy allkeys-lru
+    command: --maxmemory 1256Mb --maxmemory-policy allkeys-lru
     restart: unless-stopped
  
   sessions:
@@ -69,7 +74,7 @@ services:
       - POSTGRES_USER=mapas
       - POSTGRES_DB=mapas
     volumes:
-      - ./compose/db:/docker-entrypoint-initdb.d
+      - ./docker/db:/docker-entrypoint-initdb.d
       - ./docker-data/db-data:/var/lib/postgresql/data
     
 
