@@ -26,16 +26,17 @@ Seguindo a lógica do _Versionamento Semântico_, quando chegar o momento do lan
 - **init-letsencrypt.sh** - script para auxiliar a criação e configuração do certificado _Let's Encrypt_
 - **docker-compose.yml** - arquivo de configuração dos serviços utilizados para subir o ambiente de produção/homologação
 - **docker-compose-certbot.yml** - arquivo de configuração dos serviços utilizados na geração do certificado _Let's Encript_
-- **compose/** - arquivos de configuração e outros utilizados pelo docker-compose
-    - **common/** - arquivos de configuração comuns aos ambientes de desenvolvimento e produção
-    - **local/** - arquivos de configuração exclusivos do ambiente de desenvolvimento
+- **docker/** - arquivos de configuração e outros utilizados pelo docker-compose
+    - **common/config.d/** - arquivos de configuração comuns aos ambientes de desenvolvimento e produção
+    - **db/** - arquivo com dump.sql padrão
     - **production/** - arquivos de configuração exclusivos do ambiente de produção
-- **dev-scripts/** - scripts auxiliares para o desenvolvimento
-    - **start-dev.sh** - script que inicializa o ambiente de desenvolvimento
+- **dev/** - scripts auxiliares para o desenvolvimento
+    - **start.sh** - script que inicializa o ambiente de desenvolvimento
     - **bash.sh** - entra no container da aplicação
     - **shell.sh** - entra no shell do mapas culturais
     - **psql.sh** - entra no banco de dados da aplicação
     - **docker-compose.local.yml** - arquivo de definição do docker-compose utilizado pelos scripts acima
+    - **watch.sh** - arquivo para compilar assets do thema atual
 - **plugins** - pasta com os plugins desenvolvidos exclusivamente para o projeto
     - **SamplePlugin** - esqueleto de plugin para demostração e para servir de base para o desenvolvimento de outros plugins
 - **themes** - pasta com os temas desenvolvidos exclusivaente para o projeto
@@ -73,10 +74,10 @@ To github.com:organizacao/meu-mapas
 ## Ambiente de desenvolvimento
 
 ### Iniciando o ambiente de desenvolvimento
-Para subir o ambiente de desenvolvimento basta entrar na pasta `dev-scripts` e rodar o script `start-dev.sh`.
+Para subir o ambiente de desenvolvimento basta entrar na pasta `dev` e rodar o script `start.sh`.
 
 ```sh
-mapacultural/dev-scripts/$ sudo ./start-dev.sh
+mapacultural/dev/$ sudo ./start.sh
 ```
 
 acesse no seu navegador http://localhost/
@@ -108,9 +109,9 @@ Usaremos para exemplo o nome de tema `NovoTema`
 meu-mapas/themes$ cp -a SamplesTheme NovoTema
 ```
 
-2. Edite o arquivo `dev-scripts/docker-compose.yml` adicionando uma linha na seção _volumes_ para o tema:
+2. Edite o arquivo `dev/docker-compose.yml` adicionando uma linha na seção _volumes_ para o tema:
 ```yml
-    - ../themes/NovoTema:/var/www/html/protected/application/themes/NovoTema
+    - ../themes/NovoTema:/var/www/src/themes/NovoTema
 ```
 
 3. Edite o arquivo `themes/NovoTema/Theme.php` e substitua o namespace (linha 2) por `NovoTema`:
@@ -131,11 +132,11 @@ meu-mapas/themes git submodule add https://github.com/mapasculturais/theme-SpCul
 
 2. Edite o arquivo `dev-scripts/docker-compose.yml` adicionando uma linha na seção _volumes_ para o tema:
 ```yml
-    - ../themes/MetadataKeyword:/var/www/html/protected/application/themes/SpCultura
+    - ../themes/SpCultura:/var/www/src/themes/SpCultura
 ```
 
 ### Definindo o tema ativo
-Edite o arquivo `compose/common/0.main.php` e defina o valor da chave `themes.active`.
+Edite o arquivo `docker/common/0.main.php` para o ambiente de produção e `dev/0.main.php` para o ambiente de desenvolvimento e defina o valor da chave `themes.active`.
 ```PHP
     // Define o tema ativo no site principal. Deve ser informado o namespace do tema e neste deve existir uma classe Theme.
     'themes.active' => 'SpCultura',
@@ -156,12 +157,13 @@ namespace MeuPlugin;
 ```
 3. Implemente a funcionalidade do plugin. Há um pequeno tutorial de como desenvolver plugins na [documentação para desenvolvedores](https://mapasculturais.gitbook.io/documentacao-para-desenvolvedores/formacao-para-desenvolvedores/plugins).
 
-4. Edite o arquivo `dev-scripts/docker-compose.yml` adicionando uma linha na seção _volumes_ para o plugin:
+4. Para o ambiente de desenvolvimento, edite o arquivo `dev/docker-compose.yml` adicionando uma linha na seção _volumes_ para o plugin:
 ```yml
-    - ../plugins/MeuPlugin:/var/www/html/protected/application/plugins/MeuPlugin
+    - ../plugins/MeuPlugin:/var/www/src/plugins/MeuPlugin
 ```
+Obs.: No ambiente de produção, esse mapeamento é feito atravéz do arquivo Dockerfile em `docker/Dockerfile`
 
-5. Adicione a configuração para habilitar o plugin dentro do array de configuração de plugins no arquivo `compose/common/plugins.php`:
+5. Adicione a configuração para habilitar o plugin dentro do array de configuração de plugins no arquivo `docker/common/plugins.php`:
 ```PHP
 <?php
 
@@ -181,12 +183,12 @@ A melhor maneira de adicionar um plugin já existente é colocando o repositóri
 meu-mapas/plugins$ git submodule add https://github.com/mapasculturais/plugin-MetadataKeyword MetadataKeyword
 ```
 
-2. Edite o arquivo `dev-scripts/docker-compose.yml` adicionando uma linha na seção _volumes_ para o tema:
+2. Edite o arquivo `dev/docker-compose.yml` adicionando uma linha na seção _volumes_ para o tema:
 ```yml
-    - ../plugins/MetadataKeyword:/var/www/html/protected/application/plugins/MetadataKeyword
+    - ../plugins/MetadataKeyword:/var/www/src/plugins/MetadataKeyword
 ```
 
-3. Adicione a configuração para habilitar o plugin dentro do array de configuração de plugins no arquivo `compose/common/plugins.php`:
+3. Adicione a configuração para habilitar o plugin dentro do array de configuração de plugins no arquivo `docker/common/plugins.php`:
 ```PHP
 <?php
 
@@ -254,10 +256,10 @@ Para utilizar o certificado Let's Encrypt diretamente no servidor, primeiro deve
 
 ```sh
   ##### versão sem ssl
-     - ./compose/production/nginx.conf:/etc/nginx/conf.d/default.conf
+     - ./docker/production/nginx.conf:/etc/nginx/conf.d/default.conf
 
   ##### versão com ssl
-    #  - ./compose/production/nginx-ssl.conf:/etc/nginx/conf.d/default.conf
+    #  - ./docker/production/nginx-ssl.conf:/etc/nginx/conf.d/default.conf
     #  - ./docker-data/certs/conf:/etc/letsencrypt
     #  - ./docker-data/certs/www:/var/www/certbot
 ```
@@ -291,18 +293,13 @@ meu-mapas$ sudo ./update.sh
 ```
 
 #### Fixando uma versão
-Para fixar uma versão do core do Mapas Culturais deve-se editar os arquivos _Dockerfile_ de produção (`compose/production/Dockerfile`) e desenvolvimento (`compose/local/Dockerfile`) e no script `update.sh`.
+Para fixar uma versão do core do Mapas Culturais deve-se editar o arquivos _Dockerfile_ em (`docker/Dockerfile`) e no script `update.sh`.
 
 Por exemplo para fixar na versão `5.6`, deixando atualizar somente versões PATCH dentro da MINOR `5.6`, deve-se modificar a primeira linha dos arquivos Dockerfile como a seguir:
 
-- `compose/production/Dockerfile`:
+- `docker/Dockerfile`:
 ```
 FROM hacklab/mapasculturais:5.6
-```
-
-- `compose/local/Dockerfile`:
-```
-FROM hacklab/mapasculturais:5.6-cli
 ```
 
 Deve-se também modificar a linha do `docker pull` no script `update.sh` para que sempre que este seja executado a última versão PATCH dentro da versão MINOR `5.6` seja baixada antes do build:
