@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker-compose exec mapasculturais bash
+docker compose exec mapas bash

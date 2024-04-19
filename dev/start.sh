@@ -24,7 +24,7 @@ case $i in
 	start-dev.sh [-b] [-d]
 
     -b   | --build      builda a imagem Docker
-    -d   | --down       executa o docker-compose down antes do docker-compose run
+    -d   | --down       executa o docker compose down antes do docker compose run
     -h   | --help       Imprime esta mensagem de ajuda
     "
     	    exit
@@ -32,11 +32,11 @@ case $i in
 esac
 done
 if [ $BUILD = "1" ]; then
-   docker-compose build --no-cache --pull
+   docker compose build --no-cache --pull
 fi
 
 if [ $DOWN = "1" ]; then
-   docker-compose down
+   docker compose down
 fi
 
 mkdir -p docker-data/assets
@@ -49,7 +49,7 @@ touch docker-data/logs/app.log
 
 chown -R www-data: docker-data/assets docker-data/logs docker-data/private-files docker-data/public-files docker-data/saas-files
 
-docker-compose run --service-ports mapas
+docker compose run --service-ports mapas
 
-docker-compose down
+docker compose down
 cd $CDIR
