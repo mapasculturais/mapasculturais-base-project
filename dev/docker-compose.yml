@@ -22,6 +22,7 @@ services:
       # themes and plugins
       - ../plugins/SamplePlugin:/var/www/src/plugins/SamplePlugin
       - ../plugins/MultipleLocalAuth:/var/www/src/plugins/MultipleLocalAuth
+      - ../plugins/Accessibility:/var/www/src/plugins/Accessibility
 
     environment:
       - PENDING_PCACHE_RECREATION_INTERVAL=10
