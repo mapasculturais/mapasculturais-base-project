@@ -8,5 +8,6 @@ return [
         'Analytics' => ['namespace' => 'Analytics'],
         'RecreatePCacheOnLogin' => ['namespace' => 'RecreatePCacheOnLogin'],
         'AdminLoginAsUser' => ['namespace' => 'AdminLoginAsUser'],
+        'MapasBlame' => ['namespace' => 'MapasBlame'],
     ]
 ];
