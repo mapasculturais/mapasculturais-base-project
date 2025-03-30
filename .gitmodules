@@ -7,3 +7,6 @@
 [submodule "plugins/Analytics"]
 	path = plugins/Analytics
 	url = https://github.com/mapasculturais/plugin-Analytics
+[submodule "plugins/RecreatePCacheOnLogin"]
+	path = plugins/RecreatePCacheOnLogin
+	url = https://github.com/mapasculturais/plugin-RecreatePCacheOnLogin
