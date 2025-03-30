@@ -10,3 +10,6 @@
 [submodule "plugins/RecreatePCacheOnLogin"]
 	path = plugins/RecreatePCacheOnLogin
 	url = https://github.com/mapasculturais/plugin-RecreatePCacheOnLogin
+[submodule "plugins/AdminLoginAsUser"]
+	path = plugins/AdminLoginAsUser
+	url = https://github.com/mapasculturais/plugin-AdminLoginAsUser
