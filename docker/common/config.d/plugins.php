@@ -9,5 +9,6 @@ return [
         'RecreatePCacheOnLogin' => ['namespace' => 'RecreatePCacheOnLogin'],
         'AdminLoginAsUser' => ['namespace' => 'AdminLoginAsUser'],
         'MapasBlame' => ['namespace' => 'MapasBlame'],
+        'SpamDetector' => ['namespace' => 'SpamDetector'],
     ]
 ];
