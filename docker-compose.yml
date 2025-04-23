@@ -40,6 +40,10 @@ services:
       - ./docker-data/sessions:/var/www/var/sessions
       - ./docker-data/logs:/var/www/var/logs
 
+      //Temas
+      - ../themes/BaseV2:/var/www/src/themes/BaseV2
+      - ../themes/Subsite:/var/www/src/themes/Subsite           
+      
       - ./docker/production/config.d:/var/www/config/prod.d
     links:
       - db
