@@ -8,6 +8,7 @@ return [
     'themes.active' => 'BaseV2',
     'themes.active' => 'Subsite',
     //'themes.active' => 'MapasCulturais\Themes\BaseV2',
+    //'themes.active' => 'MapasCulturais\Themes\Subsite',
 
     // Ids dos selos verificadores. Para utilizar múltiplos selos informe os ids separados por vírgula.
     'app.verifiedSealsIds' => '1', 
