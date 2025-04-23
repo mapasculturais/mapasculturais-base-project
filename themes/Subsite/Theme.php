@@ -1,11 +1,11 @@
 <?php
 namespace Subsite;
-use MapasCulturais\Themes\BaseV1;
+use MapasCulturais\Themes\BaseV2;
 use MapasCulturais\App;
 
 define('SAAS_PATH', realpath(BASE_PATH . '../SaaS'));
 
-class Theme extends BaseV1\Theme{
+class Theme extends BaseV2\Theme{
 
     static protected $config;
 
