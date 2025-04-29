@@ -38,8 +38,8 @@ services:
       - ./docker-data/private-files:/var/www/var/private-files
       - ./docker-data/saas-files:/var/www/var/saas-files
       - ./docker-data/sessions:/var/www/var/sessions
-      - ./docker-data/logs:/var/www/var/logs
-
+      - ./docker-data/logs:/var/www/var/logs         
+      
       - ./docker/production/config.d:/var/www/config/prod.d
     links:
       - db
@@ -67,7 +67,7 @@ services:
       - ./docker-data/sessions:/data
 
   db:
-    image: postgis/postgis:14-master
+    image: mdillon/postgis:11
     restart: unless-stopped
     environment:
       - POSTGRES_PASSWORD=mapas
@@ -75,7 +75,7 @@ services:
       - POSTGRES_DB=mapas
     volumes:
       - ./docker/db:/docker-entrypoint-initdb.d
-      - ./docker-data/db-data:/var/lib/postgresql/data
+      - ./docker-data/postgres:/var/lib/postgresql/data
     
 
 ## Em ambiente de homologação pode ser uma boa ideia utilizar o mailhog para testar 

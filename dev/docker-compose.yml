@@ -22,6 +22,12 @@ services:
       # themes and plugins
       - ../plugins/SamplePlugin:/var/www/src/plugins/SamplePlugin
       - ../plugins/MultipleLocalAuth:/var/www/src/plugins/MultipleLocalAuth
+      - ../plugins/Accessibility:/var/www/src/plugins/Accessibility
+      - ../plugins/Analytics:/var/www/src/plugins/Analytics
+      - ../plugins/RecreatePCacheOnLogin:/var/www/src/plugins/RecreatePCacheOnLogin
+      - ../plugins/AdminLoginAsUser:/var/www/src/plugins/AdminLoginAsUser
+      - ../plugins/MapasBlame:/var/www/src/plugins/MapasBlame
+      - ../plugins/SpamDetector:/var/www/src/plugins/SpamDetector
 
       - ../themes/Funcaju:/var/www/src/themes/Funcaju
 
