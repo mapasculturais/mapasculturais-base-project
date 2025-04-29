@@ -1,0 +1,68 @@
+@use 'sass:color';
+
+// COLORS
+$black: #1E1E1E;
+$error: #B7292E;
+$gray-100: #F5F5F5;
+$gray-300: #C4C4C4;
+$gray-700: #4E4E4E;
+$warning: #F07B07;
+$white: #FFFFFF;
+
+// Default lightness deltas
+$lightness-300: 25%;
+$lightness-700: 25%;
+
+// Brand colors
+$primary-500: #396969;
+$secondary-500: #2D3344;
+
+// Entities colors
+$opportunities-500: #4A978C;
+$events-500: #C19BCF;
+$spaces-500: darken(#C19BCF, 15%);
+$agents-500: #D99C3D;
+$projects-500: #CF6145;
+
+$seals-500: #1E1E1E;
+
+// Feedback colors
+$danger-500: #B7292E;
+$success-500: #498200;
+$warning-500: #FF9F1C;
+$helper-500: #0074C1;
+
+// home
+$home-opportunities: #f5bb50;
+$home-feature: #45B648;
+$home-register: #036293;
+
+// // Neutral colors
+// $low-500: #1E1E1E;
+// $high-500: #FFFFFF;
+
+// // FONTS
+// $font-body: 'Open Sans', sans-serif;
+// $font-headings: 'Open Sans', sans-serif;
+
+// // Borders radius
+// $border-radius-xs: 4px;
+// $border-radius-sm: 8px;
+// $border-radius-pill: 64px;
+
+// // Borders
+// $border-hairline: 1px solid;
+// $border-solid: 2px solid;
+
+// // Shadows
+// $shadow-lv-1: 0px 4px 8px rgba(0, 0, 0, 0.16);
+// $shadow-lv-2: 0px 8px 16px rgba(0, 0, 0, 0.16);
+// $shadow-lv-3: 0px 8px 24px rgba(0, 0, 0, 0.16);
+// $shadow-lv-4: 0px 16px 48px rgba(0, 0, 0, 0.16);
+// $shadow-lv-1-up: 0px -4px 8px rgba(0, 0, 0, 0.16);
+
+@import '../../../BaseV2/assets-src/sass/theme-BaseV2';
+
+.mc-header-logo {
+    max-width: 9rem;
+}
