@@ -309,11 +309,136 @@ docker pull hacklab/mapasculturais:5.6
 ```
 
 ### 6. Backup
-Deve ser feito backup ao menos diário de um dump do banco de dados, que pode ser obtido com o script `dump.sh`
-```sh
-meu-mapas$ sudo ./dump.sh > dump.sql
+
+> O processo de backup tem como objetivo garantir a segurança e a recuperação dos dados da plataforma em caso de falhas, exclusões acidentais ou necessidade de auditoria. Ele consiste na geração diária de um dump completo do banco de dados PostgreSQL utilizado pelo sistema, o que assegura que todas as informações estruturadas (como usuários, inscrições, entidades e metadados) sejam salvas de forma compactada. Além disso, o processo mantém cópias organizadas por dia e por mês, permitindo o resgate de versões anteriores conforme necessário. Também são incluídos no backup os arquivos persistentes da aplicação, como uploads realizados por usuários e registros de log, assim como o arquivo .env que contém variáveis críticas de configuração do ambiente. Essa estratégia visa oferecer uma cópia consistente e completa da aplicação, facilitando a restauração em casos de desastre e assegurando a continuidade dos serviços.
+
+## 📁 Local dos Scripts
+
+Todos os scripts estão localizados no diretório onde o projeto foi clonado.
+
+Exemplo comum:
+
 ```
-e das pastas abaixo: 
-- `docker-data/public-files`
-- `docker-data/private-files`
-- `docker-data/saas-files`
+/dados/mapasculturais/scripts/
+```
+
+> ⚠️ **Importante:** Esse caminho depende de onde você clonou o repositório em seu ambiente.  
+> Altere conforme necessário. Exemplo alternativo:
+>
+> ```
+> /home/usuario/projetos/mapas/scripts/
+> ```
+
+---
+
+## 📌 Objetivo dos Scripts e Como Usar
+
+### 1. `postgres-dump.sh`
+
+Realiza o **dump diário** do banco de dados (`mapas`) rodando em containers Docker que contenham `postgres` ou `postgis` no nome.
+
+- **Como usar**:
+  ```bash
+  bash postgres-dump.sh /caminho/para/backups/
+  ```
+
+- **Parâmetro**:
+  - `$1`: Caminho de destino onde os dumps compactados (`HH.sql.gz`) serão salvos.
+
+- **Comportamento**:
+  - Cria um subdiretório com o nome do container sanitizado.
+  - Executa `pg_dump` dentro do container e salva como gzip.
+
+---
+
+### 2. `backup-day.sh`
+
+Faz uma **cópia diária** do arquivo dump (`00H.sql.gz`) para o nome com o **dia do mês**, mantendo histórico diário.
+
+- **Como usar**:
+  ```bash
+  bash backup-day.sh /caminho/para/backups/
+  ```
+
+- **Parâmetro**:
+  - `$1`: Diretório onde estão os arquivos gerados pelo `postgres-dump.sh`.
+
+- **Comportamento**:
+  - Cria uma cópia como `DD.sql.gz`, com `DD` sendo o dia atual (ex: `11.sql.gz`).
+
+---
+
+### 3. `backup-mon.sh`
+
+Faz uma **cópia mensal** do dump (`00H.sql.gz`) para um arquivo com o **ano e mês atual**.
+
+- **Como usar**:
+  ```bash
+  bash backup-mon.sh /caminho/para/backups/
+  ```
+
+- **Parâmetro**:
+  - `$1`: Diretório onde estão os arquivos gerados pelo `postgres-dump.sh`.
+
+- **Comportamento**:
+  - Cria uma cópia como `YYYY-MM.sql.gz` (ex: `2025-06.sql.gz`).
+
+---
+
+### 4. `backup-files.sh`
+
+Faz backup dos arquivos persistentes da aplicação (`private-files`, `public-files`, `logs`) e do arquivo `.env`.
+
+- **Como usar**:
+  ```bash
+  bash backup-files.sh /caminho/para/projeto /caminho/para/backups/
+  ```
+
+- **Parâmetros**:
+  - `$1`: Caminho do diretório raiz do projeto (deve conter `docker-data/` e `.env`)
+  - `$2`: Diretório de destino dos arquivos de backup
+
+- **Comportamento**:
+  - Usa `rsync` para copiar as pastas:
+    - `docker-data/private-files`
+    - `docker-data/public-files`
+    - `docker-data/logs`
+  - Copia também o arquivo `.env`
+
+---
+
+## 🕑 Exemplo de Crontab
+
+Edite a crontab com:
+
+```bash
+crontab -e
+```
+
+E adicione as linhas (ajuste os caminhos conforme seu ambiente):
+
+```cron
+# Dump do banco de dados diariamente à meia-noite
+00 00 * * * bash /dados/mapasculturais/scripts/postgres-dump.sh /dados/backups/
+
+# Backup diário com data do dia
+00 01 * * * bash /dados/mapasculturais/scripts/backup-day.sh /dados/backups/
+
+# Backup mensal com nome do mês
+00 02 1 * * bash /dados/mapasculturais/scripts/backup-mon.sh /dados/backups/
+
+# Backup dos arquivos da aplicação
+00 03 * * * bash /dados/mapasculturais/scripts/backup-files.sh /dados/mapasculturais /dados/backups/
+```
+
+---
+
+## 🛠 Requisitos para o backup
+
+- Docker instalado e funcional
+- Containers de banco devem conter `postgres` ou `postgis` no nome
+- O banco de dados deve estar acessível via:
+  - Usuário: `mapas`
+  - Nome do banco: `mapas`
+- Diretórios indicados nos parâmetros devem existir e ter permissões adequadas
+
