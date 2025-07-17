@@ -22,6 +22,7 @@ services:
       # themes and plugins
       - ../plugins/SamplePlugin:/var/www/src/plugins/SamplePlugin
       - ../plugins/MultipleLocalAuth:/var/www/src/plugins/MultipleLocalAuth
+      - ../plugins/SpamDetector:/var/www/src/plugins/SpamDetector
 
     environment:
       - PENDING_PCACHE_RECREATION_INTERVAL=10
