@@ -1,0 +1,23 @@
+{
+	"name": "opauth/logincidadao",
+	"description": "Login Cidadao strategy for Opauth",
+	"keywords": ["authentication","auth","facebook"],
+	"homepage": "http://opauth.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Ben Rainir",
+			"email": "benrainir@gmail.com",
+			"homepage": "http://brainupti.com.br"
+		}
+	],
+	"require": {
+		"php": ">=5.2.0",
+		"opauth/opauth": ">=0.2.0"
+	},
+	"autoload": {
+		"psr-0": {
+			"": "."
+		}
+	}
+}

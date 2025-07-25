@@ -1,0 +1,1 @@
+<h1 id="brand-logo"><a href="<?php echo $app->getBaseUrl() ?>"><?php $this->dict('site: name'); ?></a></h1>

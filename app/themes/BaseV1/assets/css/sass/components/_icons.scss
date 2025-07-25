@@ -1,0 +1,265 @@
+/*icones*/
+.icon {
+    @extend %icon;
+}
+h1 .icon {
+    width: 2rem;
+    height: 2rem;
+    margin-right: .75rem;
+    font-size: 2rem;
+    line-height: inherit;
+}
+.icon-show-advanced-search {
+    &:before {
+        content: $unicode-show-advanced-search;
+    }
+}
+.icon-select-arrow {
+    &:before {
+        content: $unicode-select-arrow;
+    }
+}
+.icon-arrow-up {
+    &:before {
+        content: $unicode-arrow-up;
+    }
+}
+.icon-arrow-left {
+    &:before {
+        content: $unicode-arrow-left;
+    }
+}
+.icon-arrow-right {
+    &:before {
+        content: $unicode-arrow-right;
+    }
+}
+.icon-go-back {
+    &:before {
+        content: $unicode-go-back;
+    }
+}
+.icon-return {
+    &:before {
+        content: $unicode-return;
+    }
+}
+.icon-space {
+    &:before {
+        content: $unicode-space;
+    }
+}
+.icon-api {
+    &:before {
+        content: $unicode-api;
+    }
+}
+.icon-event {
+    &:before {
+        content: $unicode-event;
+    }
+}
+.icon-check {
+    margin-right: .5rem;
+    background: #fff;
+    color: $gray;
+    padding: 2px;
+    border-radius: $border-radius-base;
+    line-height: 1;
+    vertical-align: middle;
+    &:before {
+        content: $unicode-check;
+    }
+    &:hover {
+        color: $brand-accent;
+    }
+    &.selected {
+        background: $brand-accent;
+        color: #fff !important;
+    }
+}
+.icon-close {
+    &:before {
+        content: $unicode-close;
+    }
+}
+.icon-notifications {
+    &:before {
+        content: $unicode-notifications;
+    }
+}
+.icon-seal {
+    &:before {
+        content: $unicode-seal;
+    }
+}
+.icon-project {
+    &:before {
+        content: $unicode-project;
+    }
+}
+.icon-opportunity {
+    &:before {
+        content: $unicode-opportunity;
+    }
+}
+.icon-download {
+    &:before {
+        content: $unicode-download;
+    }
+}
+.icon-about {
+    &:before {
+        content: $unicode-about;
+    }
+}
+.icon-panel {
+    &:before {
+        content: $unicode-panel;
+    }
+}
+.icon-group {
+    &:before {
+        content: $unicode-group;
+    }
+}
+.icon-home {
+    &:before {
+        content: $unicode-home;
+    }
+}
+.icon-login {
+    &:before {
+        content: $unicode-login;
+    }
+}
+.icon-private-info {
+    &:before {
+        content: $unicode-private-info;
+    }
+}
+.icon-publication-status-open {
+    &:before {
+        content: $unicode-space-publication-status-open;
+    }
+}
+.icon-publication-status-locked {
+    &:before {
+        content: $unicode-space-publication-status-locked;
+    }
+}
+.icon-show-search-on-map {
+    &:before {
+        content: $unicode-show-search-on-map;
+    }
+}
+.icon-show-search-on-list {
+    &:before {
+        content: $unicode-show-search-on-list;
+    }
+}
+
+.icon-show-map {
+    &:before {
+        content: $unicode-show-map;
+    }
+}
+.icon-add {
+    &:before {
+        content: $unicode-add;
+    }
+}
+.icon-agent {
+    &:before {
+        content: $unicode-agent;
+    }
+}
+.icon-subsite {
+    &:before {
+        content: $unicode-subsite;
+    }
+}
+.icon-help {
+    &:before {
+        content: $unicode-help;
+    }
+}
+.icon-search {
+    &:before {
+        content: $unicode-search;
+    }
+}
+.icon-developers {
+    &:before {
+        content: $unicode-developers;
+    }
+}
+.icon-em-cartaz {
+    &:before {
+        content: $unicode-em-cartaz;
+    }
+}
+
+/* social icons */
+.icon-share {
+    &:before {
+        content: $unicode-share;
+    }
+}
+.icon-twitter {
+    color: #00acee !important;
+    &:before {
+        content: $unicode-twitter;
+    }
+}
+.icon-facebook {
+    color: #3b5998 !important;
+    &:before {
+        content: $unicode-facebook;
+    }
+}
+.icon-googleplus {
+    color: #dd4b39 !important;
+    &:before {
+        content: $unicode-googleplus;
+    }
+}
+.icon-instagram {
+    color: #f0f !important;
+    &:before {
+        content: $unicode-instagram;
+    }
+}
+.icon-linkedin {
+    color: #0A66C2 !important;
+    &:before {
+        content: $unicode-linkedin;
+    }
+}
+.icon-spotify {
+    color: #1CD15D !important;
+    &:before {
+        content: $unicode-spotify;
+    }
+}
+.icon-youtube {
+    color: #FF0000 !important;
+    &:before {
+        content: $unicode-youtube;
+    }
+}
+.icon-pinterest {
+    color: #FF0000 !important;
+    &:before {
+        content: $unicode-pinterest;
+    }
+}
+.icon-login::after {
+    @media screen and (max-width: $screen-tablet) {
+        content: "Entrar";
+        font-size: 10px;
+        position: absolute;
+        top: 18px;
+        right: -1px;
+    }
+}

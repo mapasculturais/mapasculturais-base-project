@@ -1,0 +1,201 @@
+//
+// Buttons
+// --------------------------------------------------
+
+
+//== Base buttons
+//
+//## Different types of buttons used accros the project.
+
+.btn {
+    display: inline-block;
+    box-sizing: border-box;
+    height: 2rem;
+    padding: 0 $padding-small;
+    border-radius: $border-radius-base;
+    line-height: 1.875rem;
+    font-size: $font-size-smaller;
+    font-family: $font-stack-base;
+    font-weight: $btn-font-weight;
+    text-align: center;
+    white-space: nowrap;
+    transition: all .3s;
+    cursor: pointer;
+    &:hover {
+        box-shadow: $box-shadow-button;
+        text-decoration: none;
+    }
+}
+
+// Buttons actions
+// --------------------------------------------------
+
+.add,
+.edit,
+.send,
+.download,
+.delete,
+.insert {
+    color: $btn-default-color;
+    &:hover {
+        color: darken($btn-default-color, 20%);
+    }
+    &:before {
+        @extend %icon;
+        width: 1rem;
+        height: 1rem;
+        font-size: $font-size-base;
+    }
+}
+.delete.item {
+	content: $unicode-delete;
+	background: transparent;
+	background-color: transparent;
+	border: none;
+}
+
+.add:before {
+    content: $unicode-add-button;
+}
+.edit:before {
+    content: $unicode-edit;
+}
+.send:before {
+    content: $unicode-send;
+}
+.download:before {
+    content: $unicode-download;
+}
+.delete:before {
+    content: $unicode-delete;
+}
+.insert:before {
+    content: $unicode-insert;
+}
+
+.btn.add,
+.btn.edit,
+.btn.send,
+.btn.download,
+.btn.delete {
+    &:before {
+        margin-right: 5px;
+    }
+}
+
+
+// Buttons types
+// --------------------------------------------------
+.btn-default {
+    color: $btn-default-color;
+    background-color: $btn-default-bg;
+    border: 1px solid $btn-default-border;
+    &:hover {
+        color: darken($btn-default-color, 20%);
+        background-color: lighten($btn-default-bg, 5%);
+        border: 1px solid darken($btn-default-border, 10%);
+    }
+}
+.btn-primary {
+    color: $btn-primary-color;
+    background-color: $btn-primary-bg;
+    border: 1px solid $btn-primary-border;
+    &:hover {
+        color: $btn-primary-color;
+        background-color: lighten($btn-primary-bg, 5%);
+        border: 1px solid darken($brand-primary, 10%);
+    }
+}
+.btn-accent {
+    color: $btn-accent-color;
+    background-color: $btn-accent-bg;
+    border: 1px solid $btn-accent-border;
+    /* must define below so it overrides button actions colors, when used combined eg: class="btn-accent add" */
+    &:hover {
+        color: $btn-accent-color;
+        background-color: $btn-accent-bg;
+        border: 1px solid $btn-accent-border;
+    }
+}
+.btn-success {
+    color: $btn-success-color;
+    background-color: $btn-success-bg;
+    border: 1px solid $btn-success-border;
+    &:hover {
+        color: $btn-success-color;
+        background-color: lighten($btn-success-bg, 5%);
+        border: 1px solid darken($brand-success, 10%);
+    }
+}
+.btn-info {
+    color: $btn-info-color;
+    background-color: $btn-info-bg;
+    border: 1px solid $btn-info-border;
+    &:hover {
+        color: $btn-info-color;
+        background-color: lighten($btn-info-bg, 5%);
+        border: 1px solid darken($brand-info, 10%);
+    }
+}
+.btn-warning {
+    color: $btn-warning-color;
+    background-color: $btn-warning-bg;
+    border: 1px solid $btn-warning-border;
+    &:hover {
+        color: $btn-warning-color;
+        background-color: lighten($btn-warning-bg, 5%);
+        border: 1px solid darken($brand-warning, 10%);
+    }
+}
+.btn-danger {
+    color: $btn-danger-color;
+    background-color: $btn-danger-bg;
+    border: 1px solid $btn-danger-border;
+    &:hover {
+        color: $btn-danger-color;
+        background-color: lighten($btn-danger-bg, 5%);
+        border: 1px solid darken($brand-danger, 10%);
+    }
+}
+.btn-verified {
+    color: $btn-verified-color;
+    background-color: $btn-verified-bg;
+    background-image: url(../img/verified-icon.png);
+    background-position: 8px center;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+    &.selected {
+        color: #fff;
+        background-color: #000;
+    }
+}
+
+// Buttons states
+// --------------------------------------------------
+
+.btn.disabled {
+    opacity: .65;
+    cursor: not-allowed;
+    &:hover {
+        box-shadow: none;
+    }
+}
+
+// Buttons sizes
+// --------------------------------------------------
+
+.btn-small {
+    height: 1.5rem;
+    padding: 0 $padding-small;
+    line-height: 1.375rem;
+    font-weight: normal;
+}
+.btn-large {
+    height: 2.5rem;
+    line-height: 2.5rem;
+    font-size: $font-size-small;
+}
+
+.js-registration-action.selected {
+    cursor: default !important;
+}

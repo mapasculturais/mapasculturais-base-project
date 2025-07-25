@@ -1,0 +1,22 @@
+.logged-as-user {
+    position: sticky;
+    top:0;
+    text-align: center;
+    z-index:1000;   
+}
+
+.logged-as-user a {
+    position:absolute;
+    right: 1em;
+    top:10px;
+    z-index:1001;
+}
+
+.login {
+    background-color: var(--mc-gray-100); 
+    color: var(--mc-black);
+}
+
+.login .iconify {
+    font-size: 1rem;
+}

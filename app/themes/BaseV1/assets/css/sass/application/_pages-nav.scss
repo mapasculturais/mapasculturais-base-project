@@ -1,0 +1,28 @@
+nav.sidebar-panel ul {
+    list-style: none;
+    margin: 0 (-$padding-base);
+    font-size: $font-size-small;
+    a {
+        display: block;
+        padding: $padding-base;
+        border-left: $gray 6px solid;
+        transition: all .3s;
+        &.active {
+            background: #fff;
+            border-left-color: $brand-primary;
+        }
+        &:hover {
+            background: $brand-primary;
+            border-left-color: $brand-primary;
+            color: #fff;
+            text-decoration: none;
+        }
+    }
+    .icon {
+        vertical-align: initial;
+        margin-right: 5px;
+    }
+    @media screen and (min-width: $screen-lg-desktop){
+        margin: 0 (-$padding-large);
+    }
+}

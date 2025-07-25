@@ -1,0 +1,56 @@
+.alignleftmg {
+    float: left;
+}
+.alignrightmg {
+    float: right;
+}
+
+/* =Como usar
+-------------------------------------------------------------- */
+.como-usar {
+    padding-bottom: 3rem;
+    margin-bottom: 3rem;
+    border-bottom: $thin-row;
+}
+.como-usar-img,
+.como-usar-content {
+    width: 50%;
+}
+.como-usar-content {
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+.como-usar-content.alignleft {
+    padding-right: 3rem;
+}
+.como-usar-content.alignright {
+    padding-left: 3rem;
+}
+.como-usar-content h2 {
+    color: $brand-primary;
+    font-family: $font-stack-base;
+    font-weight: normal;
+}
+.como-usar-content.titulo {
+    color: $brand-primary;
+    font-family: $font-stack-base;
+    font-weight: normal;    
+}
+.como-usar-img {
+    box-shadow: $box-shadow-image;
+}
+
+.como-usar-img.alignleftmg {
+    margin-right: 2rem;    
+}
+
+.como-usar-img.alignrightmg {
+    margin-left: 2rem;    
+}
+
+/* =Sobre
+-------------------------------------------------------------- */
+.sobre-logo-prefeitura {
+    margin: -10px 0 0 30px;
+    max-width: 115px;
+}

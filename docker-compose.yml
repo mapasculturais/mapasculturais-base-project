@@ -1,4 +1,3 @@
-version: '3'
 services:
   nginx:
     image: nginx:latest
@@ -41,6 +40,9 @@ services:
       - ./docker-data/logs:/var/www/var/logs         
       
       - ./docker/production/config.d:/var/www/config/prod.d
+
+      - ./docker/production/config.d/lgpd-terms:/var/www/config/common.d/lgpd-terms
+      - ./app:/var/www/src
     links:
       - db
       - redis
@@ -67,7 +69,7 @@ services:
       - ./docker-data/sessions:/data
 
   db:
-    image: mdillon/postgis:11
+    image: postgis/postgis:16-master
     restart: unless-stopped
     environment:
       - POSTGRES_PASSWORD=mapas

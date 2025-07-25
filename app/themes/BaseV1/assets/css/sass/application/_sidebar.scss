@@ -1,0 +1,229 @@
+/* =Barra lateral
+-------------------------------------------------------------- */
+#sidebars {
+    position: sticky;
+    top: 78px;
+    display: contents;
+    justify-content: space-between;
+
+    @media (max-width: $screen-md-max) {
+        flex-direction: column;
+    }
+}
+
+.sidebar {
+    position: relative;
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    padding: $padding-base;
+    @media screen and (min-width: $screen-desktop) {
+        padding: $padding-large;
+    }
+    .avatar {
+        float: left;
+        width: 3rem;
+        height: 3rem;
+        margin-right: .75rem;
+        background-size: cover;
+    }
+    &:before {
+        left: 50%;
+        margin-left: -8px;
+        margin-top: 8px;
+    }
+} // .sidebar
+
+.sidebar-left {
+    overflow: visible;
+    position: relative;
+    height: calc(100vh - 78px);
+    float: left;
+
+    //tablet
+    @media screen and (min-width: $screen-tablet) and (max-width: $screen-md-max) {
+        float: right;
+        padding-bottom: 0;
+        margin-bottom: 0;
+        overflow: visible;
+    }
+
+    @media screen and (max-width: $screen-md-max) {
+        height: 100%;
+        /* width: 25%; */
+    }
+    
+    //note
+    @media screen and (min-width: $screen-lg-desktop) and (max-width: 1366px) {
+        float: left;
+        width: 20%;
+        overflow: visible;
+        &.sidebar {
+            border-top: none;
+        }
+    }
+    @media screen and (min-width: 1367px) {
+        float: left;
+        width: 15%;
+        overflow: visible;
+    }
+
+    .widget {
+        float: none;
+        padding-bottom: 1.5rem;
+    }
+
+    @media screen and (max-width: 1100px) {
+        #registrations-list-container{
+            display:none;
+        }
+    }
+
+    #registrations-list-container {
+        display: block;
+        font-size: .75em;
+        width: 100%;
+
+        h4 { margin-bottom: 10px; }
+
+        input#registrations-list--filter { width: 95%; }
+
+        .registrations-list {
+            max-height:615px;
+            overflow-y: auto;
+            margin: -1px;
+
+            .registration-item {
+                border-bottom: 1px solid $gray-light;
+                cursor: pointer !important;
+                padding: .5em;
+
+                &:hover { background: $alert-warning-bg; }
+
+                a {
+                    font-weight: normal;
+                    &:hover { text-decoration: none; }
+                }
+
+                &.missing { background-color: $alert-info-bg !important; }
+                &.valid { background-color: $alert-success-bg !important;}
+                &.invalid { background-color: $alert-danger-bg !important; }
+                &.current { background: white !important; }
+                &.finish { background: #fcfcfc !important; }
+
+                .registration-evaluated {
+                    font-style: italic;
+                    font-size: 10px;
+                    color: $gray-dark;
+                }
+                .registration-number   { font-weight: bold; }
+                .registration-category { font-style: italic; }
+
+            } // .registration-item
+        }
+
+    } // #registrations-list-container
+
+} // .sidebar-left
+
+.sidebar-right {
+    float: right;
+    @media screen and (min-width: $screen-tablet) {
+        float: right;
+    }
+    @media screen and (min-width: $screen-tablet) and (max-width: $screen-md-max) {
+        width: 100%;
+    }
+    @media screen and (min-width: $screen-lg-desktop) and (max-width: 1366px) {
+        width: 20%;
+    }
+    @media screen and (min-width: 1367px) {
+        width: 25%;
+    }
+
+    .evaluation-form {
+        position: unset;
+        width: 100%;
+        padding: 0;
+        overflow: hidden;
+    }
+}
+body.action-single {
+    .sidebar-left {
+        @media screen and (min-width: $screen-tablet) {
+            border-top-width: 12px;
+            border-top-style: solid;
+            &:before {
+                @include arrow(down, $caret-width-base, #fff);
+            }
+        }
+    }
+    .sidebar-right {
+        @media screen and (min-width: $screen-lg-desktop) {
+            border-top-width: 12px;
+            border-top-style: solid;
+            &:before {
+                @include arrow(down, $caret-width-base, #fff);
+            }
+        }
+    }
+}
+
+.sidebar.event {
+    border-top-color: $brand-event;
+    &:before {
+        border-top-color: $brand-event !important;
+    }
+    .event-project-link,
+    .widget-list-item > a {
+        color: $brand-event;
+    }
+}
+.sidebar.agent {
+    border-top-color: $brand-agent;
+    &:before {
+        border-top-color: $brand-agent !important;
+    }
+    .widget-list-item > a {
+        color: $brand-agent;
+    }
+    /* @media only screen and (max-width: 982px) {
+        margin-top: 20%;
+    } */
+}
+.sidebar.space {
+    border-top-color: $brand-space;
+    &:before {
+        border-top-color: $brand-space !important;
+    }
+    .widget-list-item > a {
+        color: $brand-space;
+    }
+}
+.sidebar.project {
+    border-top-color: $brand-project;
+    &:before {
+        border-top-color: $brand-project !important;
+    }
+    .widget-list-item > a {
+        color: $brand-project;
+    }
+}
+.sidebar.registration, .sidebar.opportunity {
+    border-top-color: $brand-opportunity;
+    &:before {
+        border-top-color: $brand-opportunity !important;
+    }
+    .widget-list-item > a {
+        color: $brand-opportunity;
+    }
+}
+
+.sidebar.seal {
+    border-top-color: $brand-seal;
+    &:before {
+        border-top-color: $brand-seal !important;
+    }
+    .widget-list-item > a {
+        color: $brand-seal;
+    }
+}

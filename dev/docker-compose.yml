@@ -29,7 +29,7 @@ services:
       - ../plugins/MapasBlame:/var/www/src/plugins/MapasBlame
       - ../plugins/SpamDetector:/var/www/src/plugins/SpamDetector
 
-      - ../themes/Funcaju:/var/www/src/themes/Funcaju
+      - ../themes/Funcap:/var/www/src/themes/Funcap
 
     environment:
       - PENDING_PCACHE_RECREATION_INTERVAL=10

@@ -1,0 +1,28 @@
+.image-gallery-item {
+    position: relative;
+    float: left;
+    width: 4.5rem;
+    height: 4.5rem;
+    margin-right: .75rem;
+    margin-bottom: $line-height-base;
+    background: $gray;
+    .btn {
+        display: none;
+        position: absolute;
+        top: 2.25rem;
+        left: 2.25rem;
+        margin-top: -1rem;
+        margin-left: -1rem;
+        &:before {
+            margin-right: 0;
+        }
+    }
+    &:hover .btn {
+        display: block;
+    }
+}
+.gallery-footer {
+    border-top: $thin-row;
+    padding: $padding-base 0 0;
+    text-align: right;
+}

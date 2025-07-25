@@ -1,0 +1,33 @@
+{
+    "notification": [
+        "minecraft",
+        "nazismo",
+        "fascismo",
+        "hitler",
+        "premium",
+        "download",
+        "baixar",
+        "vadia",
+        "puta",
+        "canalha",
+        "farmácia",
+        "farma"
+    ],
+    "blocked": [
+        "citotec",
+        "c1totec",
+        "cytotec",
+        "cyto",
+        "sytotec",
+        "sitotec",
+        "s1totec",
+        "apk",
+        "mysoprosotol",
+        "myzoprosotol",
+        "misoprosotol",
+        "mizoprozotol",
+        "abortivos",
+        "miso",
+        "mizo"
+    ]
+}

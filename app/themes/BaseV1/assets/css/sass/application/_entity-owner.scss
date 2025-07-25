@@ -1,0 +1,22 @@
+.owner {
+	clear: both;
+    margin: $line-height-base 0;
+    padding-top: $padding-large;
+    border-top: $thin-row;
+    font-size: $font-size-small;
+    h6 {
+    	margin-bottom: $line-height-half;
+    }
+    .avatar {
+	    width: 3rem;
+	    height: 3rem;
+	    margin-bottom: $line-height-half;
+	}
+	.owner-description {
+		clear: both;
+	    font-style: italic;
+	}
+	@media screen and (max-width: $screen-tablet) {
+		padding-top:  4.5rem;
+	}
+}

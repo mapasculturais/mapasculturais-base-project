@@ -1,0 +1,483 @@
+//
+// Registration Form
+// --------------------------------------------------
+
+
+//## .highlighted-message that shows on projects tab "Sobre".
+.registration-dates {
+    box-sizing: border-box;
+    margin-bottom: $line-height-half;
+    @media screen and (min-width: $screen-tablet) {
+        float: left;
+        width: 100%;
+        margin-bottom: 0;
+        padding-right: 125px;
+    }
+}
+article.project .highlighted-message .btn {
+    @media screen and (min-width: $screen-tablet) {
+        float: none !important;
+        margin-left: 0 !important;
+    }
+}
+article.opportunity .highlighted-message .btn {
+    @media screen and (min-width: $screen-tablet) {
+        float: none !important;
+        margin-left: 0 !important;
+    }
+}
+
+article.project .highlighted-message button {
+    @media screen and (min-width: $screen-tablet) {
+        float: none !important;
+        margin-left: 0 !important;
+    }
+}
+
+article.opportunity .editable-buttons button {
+    @media screen and (min-width: $screen-tablet) {
+        float: none !important;
+        margin-left: 0 !important;
+    }
+}
+
+
+//## Registration form that shows on opportunities tab "Inscritos" when logged in and on view mode.
+
+.registration-form {
+    box-sizing: border-box;
+	border: $thin-row;
+	border-radius: $border-radius-base;
+	padding: $padding-large;
+	margin-bottom: 2*$line-height-base;
+	> div {
+		float: left;
+		box-sizing: border-box;
+        width: 50%;
+        &:first-child {
+    		padding-right: .75rem;
+        }
+	}
+    .input-text {
+        box-sizing: border-box;
+        height: 2rem;
+        margin-right: 5px;
+        padding: 3px 6px;
+        overflow: hidden;
+        white-space: nowrap;
+        vertical-align: top; //to fix white space below due to hidden overflow
+        background: #fff;
+        border: 1px solid $gray;
+        border-radius: $border-radius-base;
+        color: $gray-dark;
+        font-family: $font-stack-base;
+        font-size: $font-size-smaller;
+    }
+}
+
+
+//## Registration form that shows on opportunities tab "Inscritos" when editing.
+.registration .alert.success {
+    @media print {
+        border: none;
+        padding: 0;
+        color: #000;
+        &:before {
+            content:"";
+        }
+    }
+}
+.registration-header {
+	background-color: $registration-header-bg;
+	color: $registration-header-color;
+	padding: $padding-base;
+	border-radius: $border-radius-base;
+    @media print {
+        display: none;
+    }
+}
+.registration-fieldset {
+	margin-bottom: $line-height-base;
+	padding: $padding-large;
+	border: $thin-row;
+	border-radius: $border-radius-base;
+	&.project-edit-mode:hover {
+		background-color: #f4f4f4;
+	}
+	h4 {
+		margin-bottom: $line-height-half;
+
+      &.opportunity-toggle-form {
+        margin-bottom: 0 !important;
+        cursor: pointer;
+      }
+	}
+    .evaluationFields{
+        > span {
+            margin-bottom: 0.5em;
+            display: block;
+            border-bottom: 1px dotted #eee;
+            padding-bottom: 0.5em;
+        }
+        .evaluation-fields-filter{
+            width: 100%;
+        }
+    }
+    .opportunity-togglable-form-content {
+      margin-top: $line-height-half;
+    }
+
+    .dropdown {
+        width: 125px;
+    }
+    .invalid {
+        .dropdown {
+            background-color: #000;
+            .placeholder {
+                color: #fff;
+            }
+        }
+    }
+    .approved {
+        .dropdown {
+            background-color: $brand-success;
+            .placeholder {
+                color: #fff;
+            }
+        }
+    }
+    .notapproved {
+        .dropdown {
+            background-color: $brand-danger;
+            .placeholder {
+                color: #fff;
+            }
+        }
+    }
+    .waitlist {
+        .dropdown {
+            background-color: $brand-warning;
+            .placeholder {
+                color: #fff;
+            }
+        }
+    }
+
+    .status {
+        width: 100px;
+    }
+    .support-link {
+        display: block;
+        width: 100%;
+        overflow: hidden;
+    }
+    @media print {
+        padding: 0 0 $padding-base;
+        border: none;
+        border-bottom: $thin-row;
+        border-radius: 0;
+        h4 {
+            font-size: 1rem;
+            line-height: 1;
+        }
+    }
+    @media screen and (min-width: $screen-desktop) {
+        padding: $padding-large;
+    }
+}
+.registration-help {
+	font-style: italic;
+	color: #999;
+}
+.registration-id {
+	font-size: 2rem;
+	line-height: 1;
+    @media print {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+}
+.registration-agent {
+	.warning {
+		display: none;
+	}
+	&.pendent {
+		.warning {
+			display: block;
+		}
+	}
+	.registration-agent-avatar {
+		float: left;
+		width: 2rem;
+		height: 2rem;
+		margin-right: $line-height-half;
+	}
+    .registration-agent-details {
+        font-size: $font-size-smaller;
+        padding-top: $padding-base;
+    }
+}
+
+.registration-space-details {
+    font-size: $font-size-smaller;
+    padding-top: $padding-base;
+    margin-left: 1rem;
+}
+
+.registration-space-avatar {
+    margin-left: 0.75rem;
+    margin-right: $line-height-half;
+    margin-top: 1rem;
+    float: left;
+    width: 2rem;
+    height: 2rem;
+}
+
+.btn-add-space-relation {
+    float: right;
+}
+
+.space-edit-buttons, .space-add-button {
+    float: right;
+    margin-top: -2rem;
+    margin-right: 1rem;
+}
+
+.space-relation-message {
+    margin-top: 1rem;
+    padding-top: 1rem;
+}
+
+.space-single-view-message {
+    margin-top: 1rem;
+    float: left;
+}
+
+.registration-list, .registration-space-relation {
+	margin: 0;
+	list-style: none;
+    .registration-list-item {
+        position: relative;
+        padding: $padding-base;
+        border-bottom: $thin-row;
+        .registration-agent {
+            a {
+            	font-weight: normal;
+            }
+        }
+        .registration-label {
+        	font-weight: bold;
+        }
+        .registration-description {
+        	font-size: $font-size-smaller;
+        	color: #999;
+        	margin-bottom: $line-height-half;
+            @media print {
+                display: none;
+            }
+        }
+        .btn-group {
+            position: relative;
+            bottom: 2em;
+            right: $padding-base;
+            text-align: right;
+        }
+        &:hover {
+        	background: $gray-lighter;
+        }
+        &:last-child {
+            border-bottom: none;
+        }
+        @media print {
+            padding: 0 0 $padding-base;
+            margin-bottom: $padding-base;
+        }
+    }
+}
+.registration-seals {
+    list-style: none;
+    margin: 0 0 1.5rem;
+    li {
+        display: inline-block;
+        margin: 0 0.5rem 0.5rem 0;
+        position: relative;
+        img {
+            max-height: 70px;
+            max-width: 70px;
+        }
+        .botoes {
+            position: absolute;
+            top: -12px;
+            right: -6px;
+            a {
+                background-color: #fff;
+                border-radius: 100%;
+                &:before {
+                    line-height: 180%;
+                }
+            }
+        }
+    }
+}
+
+.attachment-list {
+	margin: 0;
+	list-style: none;
+    .attachment-list-item {
+        position: relative;
+        padding: $padding-base 14.5rem $padding-base $padding-base;
+        border-bottom: $thin-row;
+        font-size: .8em;
+        @media screen and (max-width: $screen-tablet) {
+            padding: $padding-base $padding-base $padding-base $padding-base;
+        }
+        .attachment-title {
+            font-size: $font-size-smaller;
+            font-weight: normal;
+            word-wrap: break-word;
+        	&:before {
+        		@extend %icon;
+        		content: $unicode-attachment;
+                margin-right: 3px;
+        	}
+        }
+        .attachment-description {
+            word-wrap: break-word;
+        	font-size: $font-size-smaller;
+        	color: #999;
+        	margin-bottom: $line-height-half;
+        }
+        .attachment-template {
+            font-size: $font-size-smaller;
+            font-weight: normal;
+            &:before {
+                @extend %icon;
+                content: $unicode-download;
+                margin-right: 3px;
+            }
+        }
+        .btn-group {
+            position: absolute;
+            bottom: $padding-base;
+            right: $padding-base;
+        }
+        
+        &:last-child {
+            border-bottom: none;
+        }
+        &.project-edit-mode:hover {
+        	background: $gray-lighter;
+        }
+        &.registration-edit-mode {
+            padding-right: 1em 14rem 1em 1em;
+            p {
+                margin-bottom: 0;
+            }
+        }
+
+        &.registration-view-mode {
+            padding: .75em 1em;
+            font-size: 0.75em;
+            word-wrap: break-word;
+            label {
+                font-weight: bold;
+                color:#333;
+            }
+
+            a {
+                font-weight: normal;
+                text-decoration: underline;
+            }
+        }
+        
+        &.attachment-list-item-type-section {
+        
+            border-top: $thick-row;
+            border-bottom: none;
+            padding-top: 1.5rem;
+            padding-bottom: 0px;
+            
+            .label {
+                font-size: 1.5em;
+            }
+        
+        }
+        &:first-child {
+            border-top: none;
+        }
+        
+    }
+
+    .field-id {
+        // float:right;
+        font-weight: normal;
+        cursor:pointer;
+        color:darkgreen;
+        &:before {
+            content:"#";
+        }
+    }
+}
+
+
+.evaluation-form {
+    position:fixed;
+    width:22%;
+    overflow-y: scroll;
+    padding:10px;
+}
+
+@media screen and (max-width: 1366px) and (min-width: 1200px) {
+    .evaluation-form {
+        width:18%;
+    }
+}
+
+.evaluations-config--intro {
+    label { font-size: .8em; }
+    textarea {
+        min-width: 300px;
+        width: 50%;
+        height:80px;
+    }
+}
+
+#registration-attachments{
+    textarea{
+        white-space: nowrap;
+        min-height: 75px;
+    }
+}
+
+.validation-fields-errors{
+    
+    .title{
+        text-align: center;
+        font-size: 14px;
+        font-weight: bolder;
+        font-family: Open Sans,Helvetica,Arial,sans-serif;
+        color: red;
+    }
+    .text{
+        text-align: center;
+        font-size: 16px;
+        font-weight: 150;
+        font-family: Open Sans,Helvetica,Arial,sans-serif;
+        color: red;
+    }
+    a span{
+        font-size: 12px;
+        font-weight: 100;
+        cursor: pointer;
+        font-weight: bolder;
+        display:inline-block;
+        color: red
+    }
+    
+    a span:hover{
+    text-decoration:underline;
+    text-decoration-color: red;
+    color: red;
+    }
+
+}

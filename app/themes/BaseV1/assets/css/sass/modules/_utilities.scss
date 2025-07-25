@@ -1,0 +1,111 @@
+/* =General classes
+-------------------------------------------------------------- */
+.small {
+    font-size: $font-size-smaller;
+}
+.bottom {
+    margin-bottom: 0 !important;
+    padding-bottom: 0;
+}
+.aligncenter {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    clear: both;
+}
+.alignleft {
+    float: left;
+}
+.alignright {
+    float: right;
+}
+.textcenter {
+    text-align: center;
+}
+.textleft {
+    text-align: left;
+}
+.textright {
+    text-align: right;
+}
+.clearfix:after {
+    content: '.';
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.clear {
+    clear: both;
+}
+.first {
+    margin-left: 0;
+}
+.last {
+    margin-right: 0;
+}
+
+//responsive
+@media screen and (min-width: $screen-tablet) {
+    .hide-tablet {
+        display: none;
+    }
+}
+
+.hidden {
+    display: none;
+}
+.visible {
+    display: block !important;
+}
+/* Text meant only for screen readers */
+.screen-reader-text {
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.sombra {
+    box-shadow: $box-shadow-header;
+    @media print {
+        box-shadow: none;
+    }
+}
+.url {
+    word-wrap: break-word;
+    word-break: break-all;
+}
+.box {
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    padding: $padding-large;
+}
+//renomear
+.descricao {
+    margin-bottom: 3rem;
+}
+
+.js-metalist-form .danger.alert {
+    display: none;
+}
+
+.mc-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px;
+    line-height: 0;
+    border-color: transparent transparent $brand-accent transparent;
+}
+
+.bg-agent { background-color: $brand-agent !important; }
+.bg-event { background-color: $brand-event !important; }
+.bg-space { background-color: $brand-space !important; }
+.bg-project { background-color: $brand-project !important; }
+.bg-opportunity { background-color: $brand-opportunity !important; }
+
+.color-agent { color: $brand-agent !important; }
+.color-event { color: $brand-event !important; }
+.color-space { color: $brand-space !important; }
+.color-project { color: $brand-project !important; }
+.color-opportunity { color: $brand-opportunity !important; }

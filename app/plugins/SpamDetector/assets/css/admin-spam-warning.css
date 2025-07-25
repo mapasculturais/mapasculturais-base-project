@@ -1,0 +1,22 @@
+.spam-alert {
+    position: relative;
+    top: 20px;
+    text-align: center;
+    z-index: 1000;
+    padding: 10px;
+}
+
+.spam-alert .spam-click {
+    background: none;
+    color: white;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.spam-alert .warning .spam-click {
+    color: black;
+}

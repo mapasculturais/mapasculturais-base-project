@@ -1,0 +1,18 @@
+.controller-auth {
+    background-color: var(--mc-gray-100);
+
+    .mc-card {
+        padding: 25px 45px;
+
+        &.no-title {
+            .mc-card__title {
+                display: none;
+            }
+        }
+    }
+
+    // adds inner space on hover popper
+    .v-popper__inner {
+        padding: 3px 10px;
+    }
+}

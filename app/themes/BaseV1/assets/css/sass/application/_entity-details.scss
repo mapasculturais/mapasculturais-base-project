@@ -1,0 +1,65 @@
+.ficha-spcultura {
+    margin-bottom: $line-height-base;
+    padding: $padding-base;
+    background: #f5f5f5;
+    border-radius: $border-radius-base;
+    font-size: 0.75rem;
+    color: #888;
+    @media screen and (min-width: $screen-tablet) {
+        padding: $padding-large;
+    }
+}
+.servico {
+    margin-bottom: $line-height-base;
+    padding-top: $padding-large;
+    border-top: 1px solid #ddd;
+}
+.servico > p,
+.infos p {
+    margin-bottom: 0;
+    font-size: $font-size-smaller;
+    color: #888;
+}
+.mapa {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 408px;
+    margin-bottom: $line-height-base;
+}
+
+.sobre-info-geo-bt{
+    margin-top: 20px;
+
+    &::before{
+        float: right;
+        margin-top: .1rem;
+        margin-left: .1rem;
+
+        transform-origin: 50% 50%;
+
+        transform:         rotate(180deg);
+        -moz-transform:    rotate(180deg);
+        -webkit-transform: rotate(180deg);
+        -o-transform:      rotate(180deg);
+        -ms-transform:     rotate(180deg);
+
+        -moz-transition:    all 0.2s ease-in;
+	    -webkit-transition: all 0.2s ease-in;
+	    -o-transition:      all 0.2s ease-in;
+	    transition:         all 0.2s ease-in;
+    }
+
+    &.open{
+        &::before{
+            transform:         rotate(0deg);
+			-moz-transform:    rotate(0deg);
+			-webkit-transform: rotate(0deg);
+			-o-transform:      rotate(0deg);
+			-ms-transform:     rotate(0deg);
+        }
+    }
+}
+
+.sobre-info-geo{
+    margin-left: 1.1rem;
+}

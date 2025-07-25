@@ -1,0 +1,41 @@
+.br-sign-in{
+    background-color: #eee;
+}
+
+.br-sign-in img {
+    margin-left: 6px;
+    width: 23% !important;
+    -webkit-filter: none !important;
+    filter: none !important;
+}
+
+.gov-br-sign-in{
+    background-color: #eee;
+    float: left;
+    width: 25%;
+    border-radius: 4px;
+    padding: 3px;
+    text-align: center;
+    position: absolute;
+}
+
+.gov-br-sign-in span{
+    position: relative;
+    background-color: #eee;
+    color:#000;
+    top: -1.4em;
+}
+
+.gov-br-sign-in img {
+    margin-left: 6px;
+    width: 50% !important;
+    -webkit-filter: none !important;
+    filter: none !important;
+}
+
+.gov-br-auth img {
+    margin-left: 6px;
+    width: 40% !important;
+    -webkit-filter: none !important;
+    filter: none !important;
+}

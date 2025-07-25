@@ -1,0 +1,102 @@
+//
+// Right Sidebar Widgets
+// --------------------------------------------------
+
+
+//**  Widgets structure.
+.widget {
+    position: relative;
+    padding-bottom: $padding-large;
+    border-bottom: 1px solid #fff;
+    font-size: $font-size-small;
+	> h3 {
+	    margin-bottom: 0;
+	    font-size: .70rem;
+	    line-height: $line-height-base;
+	    font-family: $font-stack-base;
+        font-weight: bold;
+	    letter-spacing: .1em;
+	    text-transform: uppercase;
+	    color: #888;
+	}
+    a.add {
+        position: absolute;
+        top: 0;
+        right: 0;
+        &:hover {
+            color: $gray-darker;
+        }
+        &.btn {
+            display: none;
+            position: static;
+            @media screen and (min-width: $screen-tablet) {
+                display: inline-block;
+            }
+        }
+
+    }
+    > hr{
+        margin-bottom: 0em;
+    }    
+    @media print {
+        .slimScrollDiv, .js-slimScroll {
+            overflow: auto !important;
+            max-height: none !important;
+        }
+    }
+    
+}
+//**  Widget list.
+
+    
+
+.widget-list {
+    margin: 0;
+
+    &.horizontalScroll {
+        overflow-x: auto !important;
+        max-width: $screen-md-max !important;
+    }
+
+    .widget-list-item {
+        position: relative;
+        padding-bottom: $padding-small;
+        > a {
+            display: block;
+            text-overflow: ellipsis;
+            span {
+                white-space: nowrap;
+            }
+        }
+
+    }
+    //**  Widget list item when being edited. Editing buttons (edit & delete buttons) show on hover
+    .is-editable {
+        padding-right: 4rem;
+        min-height: $line-height-base;
+        .botoes {
+            display: none;
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin-right: 3px;
+        }
+        &:hover {
+            background: $gray-light;
+            border-radius: $border-radius-base;
+            .botoes {
+                display: inline-block;
+            }
+        }
+    }
+    a.delete,
+    a.edit {
+        margin-left: 5px;
+        cursor: pointer;
+    }
+    a.icon {
+        font-size: 1.5rem;
+    }
+}
+
+

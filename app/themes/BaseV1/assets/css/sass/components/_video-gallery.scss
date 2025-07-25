@@ -1,0 +1,51 @@
+/* galeria de videos */
+.video {
+    height: 489.5px;
+}
+.js-videogallery {
+    margin-left: 0;
+    li {
+        position: relative;
+        float: left;
+        width: 150px;
+        margin-right: .75rem;
+        padding: $padding-small;
+        border-radius: $border-radius-base;
+        list-style: none;
+        h1 {
+            height: $line-height-base;;
+            margin-bottom: 0;
+            overflow: hidden;
+            font-size: $font-size-smaller;
+            line-height: $line-height-base;
+            font-family: 'Open Sans', sans-serif;
+            word-wrap: break-word;
+        }
+        .btn {
+            position: absolute;
+            display: none;
+            top: .7rem;
+            right: .7rem;
+            .edit {
+                margin-right: 5px;
+            }
+        }
+        &.active {
+            background: $gray-lighter;
+        }
+        &:hover {
+            background: $gray-lighter;
+            .btn {
+                display: block;
+            }
+        }
+    }
+    .thumbnail_med_wide {
+        width: 150px;
+        height: 84px;
+    }
+}
+.js-metalist-item-display {
+    display: block;
+    cursor: pointer;
+}

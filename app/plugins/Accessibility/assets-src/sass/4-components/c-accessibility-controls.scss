@@ -1,0 +1,42 @@
+div[vw] {
+    top: 440px !important;
+}
+
+div[vw-plugin-wrapper].active {
+    @media (max-width: 1070px) {
+        height: 375px;
+    }
+} 
+
+.accessibility-controls {
+    position: relative;
+
+    &__controls {
+        z-index: 1000;
+        position: fixed;
+        top: 110px;
+        right: 10px;
+    }
+
+    &__actions-itens {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        border: var(--mc-border-hairline) #ebe9e9;
+        border-radius: 10px;
+        padding: 10px;
+        gap: 5px;
+
+        .itens {
+            display: flex;
+        }
+
+        .item {
+            svg {
+                height: 30px;
+                width: 30px;
+            }
+        }
+    }
+}

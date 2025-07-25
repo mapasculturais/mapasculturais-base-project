@@ -1,0 +1,210 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Multiple Local Auth\n"
+"POT-Creation-Date: 2017-01-12 02:36-0300\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: _e;__;esc_attr_e;i::__\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: Provider.php:119
+msgid "Minha conta"
+msgstr "Mi cuenta"
+
+#: Provider.php:152
+msgid "A senha deve conter no mínimo 6 caracteres"
+msgstr "La contraseña debe contener al menos 6 caracteres"
+
+#: Provider.php:155
+msgid "As senhas não conferem"
+msgstr "Las contraseñas no coinciden"
+
+#: Provider.php:173
+msgid "Por favor, informe seu nome"
+msgstr "Por favor, ingrese su nombre"
+
+#: Provider.php:178
+msgid "Este endereço de email já está em uso"
+msgstr "Esta dirección de email ya está en uso"
+
+#: Provider.php:182
+msgid "Por favor, informe um email válido"
+msgstr "Por favor, ingrese un email válido"
+
+#: Provider.php:207
+msgid "Email alterado com sucesso"
+msgstr "Email cambiado con éxito"
+
+#: Provider.php:210
+msgid "Informe um email válido"
+msgstr "Ingrese un email válido"
+
+#: Provider.php:227
+msgid "Email e senha alterados com sucecsso"
+msgstr "Email y contraseña cambiados con éxito"
+
+#: Provider.php:227
+msgid "Senha alterada com sucesso"
+msgstr "Contraseña cambiada con éxito"
+
+#: Provider.php:234
+msgid "Senha inválida"
+msgstr "Contraseña incorrecta"
+
+#: Provider.php:269 Provider.php:279
+msgid "Email ou token inválidos"
+msgstr "Email o token incorrectos"
+
+#: Provider.php:290
+msgid "Este token expirou"
+msgstr "Este token expiró"
+
+#: Provider.php:305
+msgid "Senha alterada com sucesso! Você pode fazer login agora"
+msgstr "Contraseña cambiada con éxito! Ahora puede ingresar"
+
+#: Provider.php:318
+msgid "Email não encontrado"
+msgstr "Email no encontrado"
+
+#: Provider.php:337
+#, php-format
+msgid "Pedido de recuperação de senha para %s"
+msgstr "Pedido de recuperación de contraseña para %s"
+
+#: Provider.php:338
+#, php-format
+msgid ""
+"Alguém solicitou a recuperação da senha utilizada em %s por este email.\n"
+"\n"
+"Para recuperá-la, acesse o link: %s. /n/n Se você não pediu a recuperação "
+"desta senha, apenas ignore esta mensagem."
+msgstr ""
+"Alguien solicitó la recuperación de contraseña utilizada en %s por este "
+"email.\n"
+"\n"
+"Para recuperarla, haga clic en el link: %s./n/n Si usted no pidió la "
+"recuperación de esta contraseña, ignore este mensaje."
+
+#: Provider.php:355
+msgid ""
+"Sucesso: Um e-mail foi enviado com instruções para recuperação da senha."
+msgstr ""
+"Un mensaje de correo electrónico fue enviado con instrucciones para "
+"recuperar la contraseña."
+
+#: Provider.php:358
+msgid ""
+"Erro ao enviar email de recuperação. Entre em contato com os administradors "
+"do site."
+msgstr ""
+"Error al enviar el correo electrónico de recuperación. Entre en contacto con "
+"los administradores del sitio."
+
+#: Provider.php:384 Provider.php:397
+msgid "Usuário ou senha inválidos"
+msgstr "Usuario o contraseña incorrectos"
+
+#: Provider.php:598
+msgid "É preciso estar autenticado para realizar esta ação"
+msgstr "Es preciso está autenticado para realizar esta acción"
+
+#: views/auth/multiple-local.php:22 views/auth/multiple-local.php:33
+msgid "Entrar"
+msgstr "Ingresar"
+
+#: views/auth/multiple-local.php:27 views/auth/multiple-local.php:48
+#: views/auth/multiple-local.php:72 views/auth/pass-recover.php:16
+msgid "E-mail"
+msgstr "E-mail"
+
+#: views/auth/multiple-local.php:30 views/auth/multiple-local.php:75
+#: views/auth/pass-recover.php:19
+msgid "Senha"
+msgstr "Contraseña"
+
+#: views/auth/multiple-local.php:35 views/auth/multiple-local.php:43
+msgid "Esqueci minha senha"
+msgstr "Olvidé mi contraseña"
+
+#: views/auth/multiple-local.php:47
+msgid "Para recuperar sua senha, informe o e-mail utilizado no cadastro."
+msgstr ""
+"Para recuperar su contraseña, informe el e-mail utilizado en su registro."
+
+#: views/auth/multiple-local.php:52 views/auth/pass-recover.php:3
+msgid "Recuperar senha"
+msgstr "Recuperar contraseña"
+
+#: views/auth/multiple-local.php:54
+msgid "Cancelar"
+msgstr "Cancelar"
+
+#: views/auth/multiple-local.php:63 views/auth/multiple-local.php:81
+msgid "Registrar-se"
+msgstr "Registrarse"
+
+#: views/auth/multiple-local.php:69
+msgid "Nome"
+msgstr "Nombre"
+
+#: views/auth/multiple-local.php:78 views/auth/pass-recover.php:22
+msgid "Confirmar senha"
+msgstr "Confirmar contraseña"
+
+#: views/auth/multiple-local.php:88
+msgid "Redes Sociais"
+msgstr "Redes Sociales"
+
+#: views/auth/multiple-local.php:91
+msgid "Utilize sua conta em outros serviços para autenticar-se"
+msgstr "Utilice su cuenta en otros servicios para autenticarse"
+
+#: views/auth/pass-recover.php:25
+msgid "Recuperar"
+msgstr "Recuperar"
+
+#: views/panel/my-account.php:15 views/panel/my-account.php:18
+msgid "Email"
+msgstr "E-mail"
+
+#: views/panel/my-account.php:22 views/panel/my-account.php:35
+msgid "Guardar alteraçoes"
+msgstr "Guardar cambios"
+
+#: views/panel/my-account.php:24
+msgid "Trocar Senha"
+msgstr "Cambiar contraseña"
+
+#: views/panel/my-account.php:26
+msgid "Senha atual"
+msgstr "Contraseña actual"
+
+#: views/panel/my-account.php:29
+msgid "Nova senha"
+msgstr "Nueva contraseña"
+
+#: views/panel/my-account.php:32
+msgid "Confirmar nova senha"
+msgstr "Confirmar nueva contraseña"
+
+#~ msgid "Clique para marcar/desmarcar este"
+#~ msgstr "Haga clic para marcar/desmarcar este"
+
+#~ msgid "Este"
+#~ msgstr "Este"
+
+#~ msgid "Para relacionar o selo ao"
+#~ msgstr "Para relacionar el sello al"
+
+#~ msgid "teste pt"
+#~ msgstr "teste es"

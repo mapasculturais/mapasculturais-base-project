@@ -1,0 +1,318 @@
+//
+// Registrations Tables
+// --------------------------------------------------
+
+//**  Stuff that shows on opportunities tab "Inscritos" before the table.
+#header-inscritos {
+	h3 {
+		@media screen and (min-width: 536px) {
+			float: left;
+		}
+	}
+	.btn {
+		margin-bottom: $line-height-base;
+		margin-left:10px;
+		@media screen and (min-width: 536px) {
+			float: right;
+		}
+	}
+}
+#status-info {
+	display: none;
+	@media screen and (min-width: 536px) {
+		display: block;
+	}
+}
+
+/* Filtro da lista de inscritos */
+#filtro-inscritos {
+	border-top: 1px solid $gray;
+	border-bottom:1px solid $gray;
+	padding: 10px 0 10px 0;
+	margin: 10px 0 10px 0;
+
+	input {
+		width: 100%;
+	}
+}
+
+.header-inscritos {
+	@media screen and (max-width: $screen-desktop) {
+		text-align: right;
+	}
+}
+
+//**  Table that shows on opportunities tab "Inscritos".
+.registrations-table {
+	// display: none;
+	width: 100%;
+	max-width: 100%;
+	margin-bottom: 2*$line-height-base;
+	table-layout: fixed;
+	@media screen and (max-width: $screen-desktop) {
+		font-size: .70rem;
+		th, td {
+			padding: .25rem;
+		}
+		.dropdown {
+			font-size: .70rem;
+		}
+	}
+	thead {
+		background-color: $gray-light;
+		> tr {
+			th {
+                                position: relative;
+                                background-color: $gray-light;
+				border-left: 1px solid #fff;
+				border-bottom: none;
+				line-height: 1.875rem; // to match .dropdown's
+				.dropdown {
+					background-color: transparent;
+					.submenu-dropdown {
+						background-color: #fff;
+						&:before {
+							color: #fff;
+						}
+					}
+				}
+			}
+			th:first-child {
+				border-radius: $border-radius-base 0 0 0;
+				border-left: none;
+			}
+			th:last-child {
+				border-radius: 0 $border-radius-base 0 0;
+			}
+		}
+	}
+	tbody {
+		tr {
+			border-left: 3px solid $gray-lighter;
+			border-right: $thin-row;
+			&:nth-child(odd) {
+				background-color: lighten($gray-lighter, 3%);
+				border-left: 3px solid $gray-light;
+			}
+			&:hover {
+				background-color: $gray-lighter;
+				border-left: 3px solid $gray;
+			}
+			&.approved {
+				border-left: 3px solid $brand-success;
+				background-color: #cfc;
+				&:hover {
+					background-color: lighten(#cfc, 5%);
+				}
+				td {
+					border-bottom: 1px solid #fff;
+				}
+				.dropdown {
+					background-color: $brand-success;
+					.placeholder {
+						color: #fff;
+					}
+				}
+			}
+			&.draft {
+				border-left: 3px solid $brand-draft;
+				background-color: #b5dae6;
+				&:hover {
+					background-color: lighten(#b5dae6, 5%);
+				}
+				td {
+					border-bottom: 1px solid #fff;
+				}
+				.dropdown {
+					background-color: $brand-draft;
+					.placeholder {
+						color: #fff;
+					}
+				}
+			}
+			&.notapproved {
+				border-left: 3px solid $brand-danger;
+				background-color: #fcc;
+				&:hover {
+					background-color: lighten(#fcc, 5%);
+				}
+				td {
+					border-bottom: 1px solid #fff;
+				}
+				.dropdown {
+					background-color: $brand-danger;
+					.placeholder {
+						color: #fff;
+					}
+				}
+			}
+			&.waitlist {
+				border-left: 3px solid $brand-warning;
+				background-color: #ffc;
+				&:hover {
+					background-color: lighten(#ffc, 5%);
+				}
+				td {
+					border-bottom: 1px solid #fff;
+				}
+				.dropdown {
+					background-color: $brand-warning;
+					.placeholder {
+						color: #fff;
+					}
+				}
+			}
+			&.invalid {
+				border-left: 3px solid #000;
+				background-color: #999;
+				&:hover {
+					background-color: lighten(#999, 5%);
+				}
+				.dropdown {
+					background-color: #000;
+					.placeholder {
+						color: #fff;
+					}
+				}
+			}
+			td {
+				word-wrap: break-word;
+			}
+		}
+		p {
+			margin-bottom: $line-height-half;
+			line-height: 1.5;
+		}
+		a {
+			color: $brand-opportunity;
+			&.icon-download {
+				width: 100%;
+				vertical-align: top;
+			}
+		}
+		ul {
+			margin: 0;
+			list-style: none;
+		}
+	}
+	.registration-id-col {
+		width: 18%;
+	}
+	.registration-option-col {
+		width: 24%;
+		text-align: left;
+	}
+	.registration-agents-col {
+		width: 24%;
+		text-align: left;
+	}
+	.registration-attachments-col {
+		width: 10%;
+		.download {
+		    width: 1rem;
+		    height: 1rem;
+		}
+		.icon.download:before {
+		    font-size: $font-size-base;
+		}
+	}
+	.registration-status-col {
+		width: 24%;
+		.dropdown {
+			width: 100%;
+			text-align: left;
+		}
+	}
+	//** Table that shows on opportunities tab "Resultados".
+	&.registrations-results {
+		.registration-id-col {
+			width: 22%;
+		}
+		.registration-agents-col {
+			width: 29%;
+			text-align: left;
+		}
+		.registration-option-col {
+			width: 29%;
+			text-align: left;
+		}
+	}
+	//** Table that doesn't have registration-option-col.
+	&.no-options {
+		.registration-agents-col {
+			width: 50%;
+			text-align: left;
+		}
+	}
+	//** Table that doesn't have registration-attachments-col.
+	&.no-attachments {
+		.registration-agents-col {
+			width: 37%;
+			text-align: left;
+		}
+	}
+	//** Table that doesn't have either registration-option-col or registration-attachments-col.
+	&.no-options.no-attachments {
+		.registration-agents-col {
+			width: 62%;
+			text-align: left;
+		}
+	}
+	@media screen and (min-width: 536px) {
+		display: table;
+	}
+}
+
+.published-registration-table{
+    display: table !important;
+}
+#btn-publish-results {
+	display: none;
+	@media screen and (min-width: 536px) {
+		display: inline-block;
+		float: right;
+	}
+}
+//** Table that shows on opportunities tab "Inscricoes when user is logged in and has already started at least one registration.
+.my-registrations {
+	@extend .registrations-table;
+	.registration-agents-col {
+		width: 46%;
+	}
+	.registration-status-col {
+		width: 36%;
+		text-align: left;
+		a.btn {
+			color: #fff;
+		}
+	}
+}
+
+.status {
+	display: block;
+    height: 2rem;
+    padding: 0 $padding-small;
+    border-radius: $border-radius-base;
+    font-size: $font-size-smaller;
+    line-height: 1.875rem;
+    text-align: center;
+    color: #fff;
+}
+.status-sent {
+	background-color: $gray-light;
+}
+.status-approved {
+	background-color: $brand-success;
+}
+.status-notapproved {
+	background-color: $brand-danger;
+}
+.status-waitlist {
+	background-color: $brand-warning;
+}
+.status-invalid {
+	background-color: #000;
+}
+.status-draft {
+	background-color: $brand-draft;
+}

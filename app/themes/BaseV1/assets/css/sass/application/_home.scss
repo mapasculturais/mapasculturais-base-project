@@ -1,0 +1,447 @@
+//
+// Homepage styles
+// --------------------------------------------------
+
+
+//** Background image
+#home-watermark {
+    position: fixed;
+    z-index: $z-index-home-watermark;
+    left: 0;
+    right: 0;
+    top: 80px;
+    bottom: 0;
+    background-position: 80% bottom;
+    background-repeat: no-repeat;
+}
+//** Nav between sections
+#home-nav {
+    position: fixed;
+    z-index: $z-index-home-nav;
+    top: 50%;
+    bottom: 0;
+    ul {
+        margin: -160px 0 0;
+        list-style: none;
+        li {
+            position: relative;
+            a {
+                position: relative;
+                z-index: $z-index-home-nav;
+                display: block;
+                     box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                width: 40px;
+                height: 40px;
+                color: #fff;
+                background: inherit;
+                line-height: 40px;
+                text-align: center;
+                &.up, &.down {
+                    width: 40px;
+                    padding: 0;
+                    background: $brand-accent;
+                    text-indent: 0;
+                    text-align: center;
+                    font-size: 2rem;
+                }
+            }
+            &:hover a {
+                text-decoration: none;
+            }
+        }
+    }
+    // hides #home-nav when it doesn't fit in viewport's height
+    @media screen and (max-height: 500px) {
+        display: none;
+    }
+    @media print {
+        display: none;
+    }
+}
+.nav-title {
+    position: absolute;
+    z-index: $z-index-nav-title;
+    top: 0;
+    display: block;
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 40px;
+    margin-left: -200px /*overriden by js */;
+    padding: 0 8px;
+    color: #fff;
+    line-height: 40px;
+    font-weight: bold;
+    background: inherit;
+}
+#nav-intro {
+    background: $brand-primary;
+}
+#nav-events {
+    background: $brand-event;
+}
+#nav-agents {
+    background: $brand-agent;
+}
+#nav-spaces {
+    background: $brand-space;
+}
+#nav-projects {
+    background: $brand-project;
+}
+#nav-opportunities {
+    background: $brand-opportunity;
+}
+#nav-subsite {
+    background: $brand-subsite;
+}
+#nav-seals {
+    background: $brand-seal;
+}
+#nav-developers {
+    background: $brand-developer;
+}
+.up {
+    border-top-right-radius: 2px;
+}
+.down {
+    border-bottom-right-radius: 2px;
+}
+//** Home sections
+.home-entity {
+    min-height: 100vh;
+    color: #fff;
+    h2,
+    h3,
+    h1,
+    h4,
+    h5,
+    h6 {
+        color: #fff;
+    }
+    h1 .icon {
+        vertical-align: initial;
+    }
+    .box {
+        position: relative;
+        z-index: $z-index-home-nav;
+        h4 {
+            font-family: 'Open Sans';
+            font-size: $font-size-base;
+        }
+    }
+    .abas {
+        margin-bottom: 0;
+        border-bottom: none;
+         li {
+            margin-left: 4px;
+            border-radius: $border-radius-base $border-radius-base 0 0 ;
+            border: 1px solid rgba(255,255,255, .4);
+            border-bottom: none;
+            a {
+                color: #fff;
+            }
+            &.active, &:hover {
+                border: 1px solid $brand-accent;
+                a {
+                    color: $brand-accent;
+                }
+            }
+        }
+    }
+    .statistics {
+        float: left;
+        margin-right: 10px;
+        margin-bottom: $line-height-base;
+        padding-left: 5px;
+        border-left: 1px solid #fff;
+    }
+    .statistic {
+        font-size: 2rem;
+        line-height: 2rem;
+        font-weight: bold;
+    }
+    .statistic-label {
+        font-size: $font-size-smaller;
+    }
+    .random-feature {
+        position: relative;
+        width: 100%;
+        margin-bottom: $line-height-base;
+        border-radius: $border-radius-base;
+        overflow: hidden;
+        background-color: #fff;
+        //background-image is inserted dynamically inline
+        background-position: center;
+        background-size: contain;
+        //Hack to make height proportional to its width - 4x3
+        &:before {
+            content: "";
+            display: block;
+            padding-top: 75%;
+        }
+        .feature-content {
+            display: block;
+            position: absolute;
+            top: 70%;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow: hidden;
+            background-color: $brand-accent;
+            border: $padding-small solid $brand-accent;
+            border-radius: 0 0 $border-radius-base $border-radius-base;
+            color: #fff;
+            font-weight: normal;
+            font-size: $font-size-small;
+            -webkit-transition: top .5s;
+                    transition: top .5s;
+            &:hover {
+                text-decoration: none;
+            }
+            h3 {
+                display: none;
+                font-size: $font-size-smaller;
+                line-height: $line-height-base;
+                font-family: 'Open Sans';
+                text-transform: uppercase;
+                margin-bottom: 0;
+
+            }
+            h2 {
+                font-size: $font-size-base;
+                line-height: $line-height-base;
+            }
+        }
+        &.no-image {
+            .feature-content {
+                top: 0;
+            }
+        }
+        @media screen and (min-width: $screen-tablet) {
+            margin-top: 4.5rem;
+        }
+        @media screen and (min-width: $screen-desktop) {
+            .feature-content {
+                    border-width: $padding-large;
+                }
+        }
+        @media screen and (min-width: $screen-lg-desktop) {
+            .feature-content {
+                top: 100%;
+                border-radius: $border-radius-base;
+                h2 {
+                    font-size: $line-height-base;
+                }
+                h3 {
+                    display: block;
+                }
+            }
+            &:hover {
+                .feature-content {
+                    top: 0;
+                    -webkit-transition: top .5s;
+                            transition: top .5s;
+                }
+            }
+        }
+    }
+    .tag-box {
+        border: 1px solid $brand-accent;
+        padding: $padding-base;
+        border-radius: $border-radius-base;
+    }
+    @media screen and (max-width: $screen-sm-max) and (min-height: 501px) {
+        padding-left: 40px; // to fit nav.home-nav
+    }
+    @media screen and (min-width: $screen-tablet) {
+        width: 75%;
+        padding: 0 12.5%;
+        .box {
+            float: left;
+            width: 50%;
+        }
+        .tag-box {
+            margin-bottom: $line-height-base;
+        }
+        .btn-large {
+            margin-bottom: $line-height-half;
+        }
+    }
+    @media print {
+        color: #000;
+        h2,h3,h1,h4,h5,h6 {
+            color: #000;
+        }
+    }
+}
+//** Intro Section
+#home-intro {
+    min-height: calc(100vh - 4.875rem); // viewport height minus header height
+    background: $brand-primary;
+    .box {
+        float: none;
+        width: auto;
+    }
+    .btn-large {
+        display: block;
+        width: 100%;
+        max-width: 272px;
+        margin: auto;
+    }
+    .view-more {
+        position: relative;
+        z-index: $z-index-home-watermark + 1;
+        margin-left: -2rem;
+        font-size: 4rem;
+        text-align: center;
+        line-height: 1;
+    }
+}
+//** Intro search
+#home-search-form {
+    text-align: center;
+    max-width: 500px;
+    margin: auto;
+    padding-right: 125px;
+    .search-field {
+        float: left;
+        width: 100%;
+        height: 2.5rem;
+             box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        border: none;
+        font-size: $font-size-small;
+    }
+    input[type='submit'] {
+        height: 2.5rem;
+        &:focus {
+            outline: none;
+        }
+    }
+    .check {
+        vertical-align: middle;
+        margin-left: .5rem;
+    }
+    @media print {
+        display: none;
+    }
+}
+//** Search filters
+#home-search-filter {
+    float: right;
+    width: 122px;
+    height: 2.5rem;
+    margin-right: -125px;
+    background: $brand-accent;
+    color: #fff;
+    font-size: $font-size-small;
+    line-height: 2.5rem;
+    font-weight: bold;
+    text-align: left;
+    .placeholder {
+        padding-right: 2.5rem;
+        &:after {
+            margin-right: .5rem;
+            line-height: 2.5rem;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+    }
+    li {
+        padding: 0 $padding-base;
+        cursor: pointer;
+    }
+    .submenu-dropdown {
+        background: $brand-accent;
+        &:before {
+            border-bottom-color: $brand-accent;
+        }
+    }
+    .icon {
+        margin-right: 5px;
+        vertical-align: initial;
+        font-size: $font-size-base;
+    }
+}
+#events-filter:hover,
+#events-filter:focus {
+    background-color: $brand-event;
+}
+#agents-filter:hover,
+#agents-filter:focus {
+    background-color: $brand-agent;
+}
+#spaces-filter:hover,
+#spaces-filter:focus {
+    background-color: $brand-space;
+}
+#projects-filter:hover,
+#projects-filter:focus {
+    background-color: $brand-project;
+}
+#opportunities-filter:hover,
+#opportunities-filter:focus {
+    background-color: $brand-opportunity;
+}
+#seals-filter:hover,
+#seals-filter:focus {
+    background-color: $brand-seal;
+}
+//** Events section
+#home-events {
+    background: $brand-event;
+    .abas li.active {
+        border-bottom-color: $brand-event;
+    }
+}
+//** Agents section
+#home-agents {
+    background: $brand-agent;
+        .abas li.active {
+        border-bottom-color: $brand-agent;
+    }
+}
+//** Spaces section
+#home-spaces {
+    background: $brand-space;
+    .abas li.active {
+        border-bottom-color: $brand-space;
+    }
+}
+//** Projects section
+#home-projects {
+    background: $brand-project;
+    .abas li.active {
+        border-bottom-color: $brand-project;
+    }
+}
+//** Opportunities section
+#home-opportunities {
+    background: $brand-opportunity;
+    .abas li.active {
+        border-bottom-color: $brand-opportunity;
+    }
+}
+//** Subsite section
+#home-subsite {
+    background: $brand-subsite;
+    .abas li.active {
+        border-bottom-color: $brand-subsite;
+    }
+}
+//** Seals section
+#home-seals {
+    background: $brand-seal;
+    .abas li.active {
+        border-bottom-color: $brand-seal;
+    }
+}
+//** Developers section
+#home-developers {
+    background: $brand-developer;
+    .box {
+        float: none;
+        width: auto;
+    }
+}

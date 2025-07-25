@@ -1,0 +1,68 @@
+/* header do objeto*/
+.entity-list-header {
+    display: none;
+    position: relative;
+    margin-bottom: 5px;
+    padding: .5625rem;
+    background: #fff;
+    border-left-style: solid;
+    border-left-width: 3rem;
+    border-right-style: solid;
+    border-right-width: 3rem;
+    @media screen and (min-width: $screen-tablet) {
+        display: block;
+    }
+    h1 {
+        float: left;
+        width: auto;
+        height: 1.875rem;
+        margin-bottom: 0;
+        font-size: 1.5rem;
+        line-height: 1.875rem;
+        .icon {
+            width: $line-height-base;;
+            height: 1.875rem;
+            line-height: 1.875rem;
+            font-size: 1.5rem;
+        }
+    }
+    .icon {
+        vertical-align: initial;
+    }
+    .btn {
+        float: right;
+        margin: -1px $line-height-base;
+    }
+    @media print {
+        display: block;
+        border: none;
+        .btn {
+            display: none;
+        }
+    }
+}
+
+#event-list-header {
+    border-left-color: $brand-event;
+    border-right-color: $brand-event;
+}
+#agent-list-header {
+    border-left-color: $brand-agent;
+    border-right-color: $brand-agent;
+}
+#space-list-header {
+    border-left-color: $brand-space;
+    border-right-color: $brand-space;
+}
+#project-list-header {
+    border-left-color: $brand-project;
+    border-right-color: $brand-project;
+}
+#opportunity-list-header {
+    border-left-color: $brand-opportunity;
+    border-right-color: $brand-opportunity;
+}
+#seal-list-header {
+    border-left-color: $brand-seal;
+    border-right-color: $brand-seal;
+}

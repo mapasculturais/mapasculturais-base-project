@@ -1,5 +1,5 @@
 #!/bin/bash
-git pull hacklab/mapasculturais:7.5.40
+git pull hacklab/mapasculturais:latest
 
 git submodule update
 

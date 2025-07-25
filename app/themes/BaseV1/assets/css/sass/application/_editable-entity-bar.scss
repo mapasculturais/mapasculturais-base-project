@@ -1,0 +1,59 @@
+#editable-entity {
+    position: fixed;
+    z-index: $z-index-editable-entity;
+         box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    min-height: 42px;
+    padding: .25rem 142px;
+    border-left: 8px solid $brand-primary;
+    background: $gray-light;
+    text-align: center;
+    &.editable-entity-edit {
+        padding: .25rem 240px;
+        @media screen and (max-width: $screen-tablet) {
+            padding: .25rem 0;
+        }
+    }
+    &.can-edit-roles {
+        padding: .25rem 380px;
+    }
+    .info {
+        display: none;
+        margin-bottom: 0;
+        padding: .25rem $padding-base .25rem 2.5rem;
+        @media screen and (max-width: $screen-tablet) {
+            width: 100%;
+        }
+    }
+    .controles {
+        position: absolute;
+        top: .25rem;
+        right: .75rem;
+        width: 370px;
+        text-align: right;
+    }
+    @media screen and (max-width: $screen-tablet) {
+        display: block;
+    }
+}
+#small-brand {
+    position: absolute;
+    left: .75rem;
+    font-size: 1rem;
+    line-height: 2rem;
+    margin-bottom: 0;
+    a {
+        color: $small-brand-color;
+    }
+    img {
+        display: block;
+        height: 2.2rem;
+        width: auto;
+    }
+}
+#funcao-do-agente {
+    width: 135px;
+    text-align: left;
+    vertical-align: middle;
+}

@@ -1,0 +1,133 @@
+#user-log {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#user-log .filter-title {
+    line-height: 32px;
+    margin: 0 15px 0 5px;
+    float: left;
+    width: 100%;
+}
+#user-log .filter.filter-action {
+    width: unset;
+}
+#user-log .filter.filter-datetime {
+    width: unset;
+}
+#user-log .filter-submit {
+    float: right;
+}
+
+#user-log .history-table>thead>tr>th:nth-child(1) {
+    width: 10%;
+}
+#user-log .history-table>thead>tr>th:nth-child(2) {
+    width: 50%;
+    background-color: red;
+}
+#user-log .history-table>thead>tr>th:nth-child(3) {
+    width: 15%;
+}
+#user-log .history-table>thead>tr>th:nth-child(4) {
+    width: 15%;
+}
+#user-log .history-table>thead>tr>th:nth-child(5) {
+    width: 20%;
+}
+
+#user-log .history-table>tbody>tr>td:nth-child(2) {
+    line-break: anywhere;
+}
+
+/* div version */
+#user-log .logUnit {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #DFDFDF;
+    font-size: 14px;
+    padding: 20px 0;
+    position: relative;
+}
+#user-log .logUnit:first-child {
+    border-top: 1px solid #DFDFDF;
+}
+#user-log .logUnit .colapse {
+    content: 'expandir';
+    position: absolute;
+    right: 10px;
+    font-size: 10px;
+    cursor: pointer;
+}
+#user-log .logUnit.active {
+    background-color: #EFEFEF; 
+}
+#user-log .logUnit.active .colapse {
+    content: 'retrair';
+    position: absolute;
+    right: 10px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+#user-log .logUnit:hover {
+    background-color: #EFEFEF; /* rbga(200, 200, 200, .5); */
+}
+
+#user-log .logUnit .partII {
+    border-top: 1px solid #EFEFEF;
+    border-bottom: 1px solid #EFEFEF;
+    align-items: center;    
+}
+#user-log .logUnit .partII span {
+    display: flex;
+    align-items: baseline;
+}
+#user-log .logUnit .partII p {
+    margin: 0 5px;
+}
+#user-log .logUnit .partI,
+#user-log .logUnit .partII {
+    width: 100%;  
+    display: flex;
+}
+#user-log .logUnit .partI>*,
+#user-log .logUnit .partII>* {
+    padding: 2px 10px;
+}
+
+#user-log .logUnit .logDetails {
+    padding: 5px 10px;
+    gap: 20px;
+    display: none;
+    border-top: 1px solid #EFEFEF;
+}
+.logUnit .logDetails.show {
+    display: flex !important;
+}
+
+#user-log .logUnit>* label {
+    font-weight: bold;
+    font-size: 12px;
+}
+#user-log .logUnit>* p {
+    margin: 2px 0 2px 15px;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+
+#user-log .load-more {
+    display: flex;
+    justify-content: center;
+}
+#user-log .load-more a {
+    padding: 10px 25px;
+    text-decoration: none !important;
+}
+
+#user-log .show-more {
+    background-color: red;
+    width: 100%;
+}

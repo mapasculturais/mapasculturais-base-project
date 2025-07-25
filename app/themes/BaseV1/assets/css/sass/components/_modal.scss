@@ -1,0 +1,253 @@
+/* =Modal
+-------------------------------------------------------------- */
+.js-dialog {
+    position: absolute;
+    display: none;
+    margin-top: 15px;
+    padding: $padding-large;
+    z-index: $z-index-tip;
+    background: #fff;
+    border-top: 4px solid $brand-primary;
+    border-radius: $border-radius-base;
+    box-shadow: $box-shadow-modal;
+}
+.js-dialog-content {
+    padding-right: 1rem;
+}
+.js-dialog h2 {
+    margin-right: 3rem;
+    margin-bottom: .5rem;
+    font-size: 1.5rem;
+}
+.js-dialog h3 {
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+}
+.js-dialog h4 {
+    font-size: $font-size-small;
+    line-height: $line-height-base;
+}
+.js-dialog h5 {
+    font-size: $font-size-smaller;
+    line-height: $line-height-base;
+}
+.js-dialog h6 {
+    font-size: $font-size-smaller;
+    line-height: $line-height-base;
+}
+.js-dialog a.js-close {
+    position: absolute;
+    top: $line-height-base;
+    right: $line-height-base;
+    font-size: 2rem;
+    color: #999;
+}
+.js-dialog .js-close:hover {
+    color: $brand-accent;
+}
+.js-dialog input[type=submit],
+.js-dialog button {
+    float: right;
+    margin-bottom: 0;
+    margin-left: 5px;
+}
+.js-dialog footer {
+    border-top: $thin-row;
+    padding-top: $padding-base;
+}
+.js-metalist-form input[type=text],
+.js-metalist-form textarea {
+    display: block;
+    width: 60%;
+}
+.js-dialog .dropdown,
+.js-dialog .dropdown .submenu-dropdown {
+    margin-bottom: $line-height-base;
+    background-color: #fff;
+    border: 1px solid $gray;
+}
+.js-dialog .dropdown {
+    width: 120px;
+}
+.js-dialog .dropdown .submenu-dropdown {
+    top: 31px;
+    left: -1px;
+    width: 122px;
+    border-top: none;
+    border-radius: 0 0 $border-radius-base $border-radius-base;
+}
+.js-dialog .dropdown .submenu-dropdown:before {
+    content: none;
+}
+.js-dialog .dropdown .submenu-dropdown li:hover {
+    background: $gray-light;
+    color: $brand-accent;
+}
+.js-dialog .grupo-de-campos {
+    float: left;
+    width: 20%;
+    min-width: 100px;
+    margin-right: 5%;
+}
+.js-dialog .check {
+    border: 1px solid $gray;
+}
+/*ocorrencias de eventos*/
+#dialog-event-occurrence .editable {
+    margin-bottom: $line-height-half;
+}
+.horario-da-ocorrencia {
+    width: 50px;
+    margin-right: $line-height-base;
+}
+.data-da-ocorrencia {
+    width: 81px;
+    margin-right: $line-height-base;
+}
+.descricao-horario-legivel {
+    width: 100% !important;
+}
+.descricao-horario-legivel input[type='text'] {
+    width: 100%;
+}
+.grupo-descricao-automatica {
+    padding-right: 2.5rem;
+    position: relative;
+}
+.grupo-descricao-automatica .alert {
+    margin-bottom: $line-height-half;
+}
+.grupo-descricao-automatica .btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+#dialog-event-occurrence label {
+    white-space: nowrap;
+}
+
+.entity-modal {
+    max-width: 100%;
+    width: 800px;
+
+    form.create-entity {
+        clear: both;
+    }
+
+    .modal-loading {
+        img { width: 5%; }
+    }
+
+    .flash-message {
+        text-align: center;
+        border: 1px solid $gray-light;
+        background: ghostwhite;
+        padding: 20px 0 5px 0;
+        font-size: 12px;
+
+        .entidade {
+            font-weight: bolder;
+            display: block;
+            width: 100%;
+            font-size: 22px;
+        }
+
+        .edit-entity {
+            width: 20%;
+            display: block;
+            margin: 10px auto;
+            cursor: pointer;
+            background: $brand-primary;
+            color: white;
+        }
+    }
+
+    input[type='checkbox'] {
+        float: left;
+        width: 3%;
+    }
+
+    label { display: inline-block; }
+
+    input, textarea { width: 100%; }
+
+    select {
+        display: block !important;
+        max-width: 100%;
+    }
+
+    .actions {
+        float: left;
+        width: 100%;
+
+        button, input {
+            float: left;
+            display: inline-block;
+        }
+        input {
+            width: auto;
+            float: right;
+        }
+    }
+
+    .modal-required { color: darkred; }
+
+    button.close-attached-modal {
+        float: left;
+        margin: 0 0 20px 0;
+        width: 15%;
+    }
+
+    .entity-modal-footer {
+        color: $gray-dark;
+        font-size: $font-size-smaller;
+    }
+}
+
+#evt-date-local {
+    .btn-toggle-attached-modal {
+        margin-bottom: 20px;
+    }
+}
+
+.js-event-occurrence {
+    list-style-type: none;
+}
+
+.event-occurrence-list{
+    padding: 5px 5px 5px 15px;
+    height: auto;
+    border-left: 3px solid #1C5690;
+    margin: 30px 0;
+
+}
+
+.event-occurrence-list ul{
+  margin-left: 0;
+}
+
+.event-occurrence-list li{
+    border-radius: 5px;
+    margin-top: 10px;
+    background-color: #00000014;
+    padding: 10px;
+}
+
+#dialog-event-occurrence {
+    margin-left: -403px !important;
+    width: 40% !important;
+    z-index: 1901 !important;
+}
+
+.tip-yellowsimple{
+    z-index: 1901 !important;   
+}
+
+.select-owner-entity{
+    display: none ;
+    margin-bottom: 20px !important;
+}
+
+.select-owner-entity.active{
+    display: block;
+}

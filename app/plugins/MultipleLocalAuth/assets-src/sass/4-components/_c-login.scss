@@ -1,0 +1,218 @@
+.login {
+    max-width: 602px;
+    margin: 32px auto;
+    padding: 0 16px;
+
+    @media (max-width: 500px) {
+        margin: 24px auto;
+    }
+
+    &__card {
+        padding: 24px 48px;
+        background-color: var(--mc-white);
+        border-radius: var(--mc-border-radius-xs);
+        display: grid;
+        gap: 16px;    
+
+        @media (max-width: 500px) {
+            padding: 16px;
+        }
+
+        &__header {
+            display: grid;
+            gap: 5px;
+        }
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    &__fields {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        @media (max-width: 500px) {
+            gap: 8px;
+        }
+    }
+
+    &__recover-link {
+        color: var(--mc-primary-500);
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 19px;
+        text-align: right;
+        text-decoration: none;
+        margin-top: 8px;
+    }
+
+    &__buttons {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+
+        &__divider {
+
+        }
+    }
+
+    &__social-buttons {
+        display: grid;
+
+        gap: 31px;
+
+        &--multiple {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .social-login {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+    
+            &--button {
+    
+                &.google {
+                    border: var(--mc-border-hairline) var(--mc-low-500);
+                    color: var(--mc-low-700);
+                }
+    
+                &.govbr {
+                    background-color: #1351B4;
+                    border: var(--mc-border-hairline) #1351B4;
+                    color: var(--mc-high-500);
+                }
+    
+                @media (max-width: 380px) {
+                    &.google, &.govbr {
+                        font-size: 13px;
+                    }
+                }
+            }        
+        }
+    }
+
+    .divider {
+        width: 100%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &::before {
+            content: '';
+            width: 100%;
+            height: 1px;
+            background-color: var(--mc-gray-300);
+            position: absolute;
+        }
+
+        &__text {
+            background: var(--mc-white);
+            z-index: 1;
+            padding: 0 16px;
+        }
+    }
+
+    .field {
+        .recover {
+            color: var(--mc-primary-500);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 19px;
+            text-align: right;
+            text-decoration: none;
+        }
+    }
+
+    .g-recaptcha {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__action {
+
+        .mc-card {
+            @media (max-width: 500px) {
+                padding: 16px;
+            }
+        }
+
+        .create {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .password {
+            position: relative;
+            
+            .seePassword {
+                background: url('https://api.iconify.design/carbon/view-filled.svg');
+                background-repeat: no-repeat;
+                background-size: 22.5px;
+                background-position-x: center;
+                background-position-y: center;
+                content: "";
+                height: 48px;
+                position: absolute;
+                right: 0;
+                top: 27px;
+                width: 48px;
+            }
+        }
+    }
+
+    &__recovery {
+        &--request {
+            .header {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+
+                &__title {
+                    font-weight: 700;
+                    font-size: 24px;
+                    line-height: 28px;
+                }
+
+                &__icon {
+                    color: green;
+                    font-size: 96px;
+                }
+
+                &__label {
+                    font-weight: 400;
+                    font-size: 16px;
+                    line-height: 22px;
+                    text-align: center;
+                }
+            }
+        }
+
+        &--action {
+            .password {
+                &-rules {
+                    font-size: 14px;
+                    line-height: 19px;
+                    margin-top:1em;
+
+                    strong {
+                        color: var(--mc-danger-500);
+                    }
+                }
+            }
+        }
+    }
+}

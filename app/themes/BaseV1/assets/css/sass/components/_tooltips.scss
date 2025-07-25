@@ -1,0 +1,90 @@
+/*tips*/
+.hltip-box {
+    min-width: 60px;
+    max-width: 160px;
+    border-color: $brand-accent;
+}
+.hltip-box .hltip-arrow-top {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 6px;
+    line-height: 0;
+    border-color: transparent transparent $brand-accent transparent;
+}
+.hltip-box .hltip-arrow-bottom {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 6px;
+    line-height: 0;
+    border-color: $brand-accent transparent transparent transparent;
+}
+.hltip-box .hltip-title {
+    font-size: $font-size-small;
+}
+.hltip-box .hltip-text {
+    padding: $padding-small;
+    font-size: $font-size-smaller;
+    line-height: 1rem;
+    text-align: center;
+    border-radius: $border-radius-base;
+    color: #fff;
+    background-color: $brand-accent;
+    box-shadow: $box-shadow-button;
+}
+
+.hltip-danger .hltip-arrow-top {
+    border-color: transparent transparent $brand-danger transparent;
+}
+.hltip-danger .hltip-arrow-bottom {
+    border-color: $brand-danger transparent transparent transparent;
+}
+.hltip-danger .hltip-text {
+    background: $brand-danger;
+    color: #fff;
+}
+
+.hltip-warning .hltip-arrow-top {
+    border-color: transparent transparent $brand-warning transparent;
+}
+.hltip-warning .hltip-arrow-bottom {
+    border-color: $brand-warning transparent transparent transparent;
+}
+.hltip-warning .hltip-text {
+    background: $brand-warning;
+    color: #fff;
+}
+
+.hltip-primary .hltip-arrow-top {
+    border-color: transparent transparent $brand-primary transparent;
+}
+.hltip-primary .hltip-arrow-bottom {
+    border-color: $brand-primary transparent transparent transparent;
+}
+.hltip-primary .hltip-text {
+    background: $brand-primary;
+    color: #fff;
+}
+
+.hltip-default .hltip-arrow-top {
+    border-color: transparent transparent $brand-default transparent;
+}
+.hltip-default .hltip-arrow-bottom {
+    border-color: $brand-default transparent transparent transparent;
+}
+.hltip-default .hltip-text {
+    background: $brand-default;
+    color: #000;
+}
+
+.hltip-success .hltip-arrow-top {
+    border-color: transparent transparent $brand-success transparent;
+}
+.hltip-success .hltip-arrow-bottom {
+    border-color: $brand-success transparent transparent transparent;
+}
+.hltip-success .hltip-text {
+    background: $brand-success;
+    color: #fff;
+}

@@ -1,0 +1,313 @@
+.mc-breadcrumb {
+    li {
+        display: flex;
+        color: var(--mc-primary-500);
+
+        &::before {
+            content: url('https://api.iconify.design/fe/arrow-left.svg?width=16&height=16');
+            height: 16px;
+            margin-inline-end: 5px;
+            width: 16px;
+            color: var(--mc-primary-500);
+        }
+    }
+}
+
+.create-account {
+    max-width: 602px;
+    margin: 32px auto;
+    padding: 0 16px;
+
+    .mc-card {
+        padding: 24px;
+        
+        &.card-created {
+            margin: 80px 0;
+        }
+    }
+    
+    &__title {
+        margin: 35px 0;
+
+        @media (max-width: 760px) {
+            margin: 58px 0 35px;
+        }
+
+        label {
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 28px;
+        }
+
+        p {
+            margin: 8px 0 0;
+            font-size: 14px;
+            line-height: 19px;
+        }
+    }
+
+    &__timeline {
+        margin-bottom: 24px;
+        width: 100%;
+        
+        .stepper {
+            overflow: hidden;
+            margin: 0px -3.7%;
+            width: 108%;
+        }
+
+        @media (max-width: 560px) {
+            .stepper {
+                .step {
+                    min-width: unset;
+
+                    &::before {
+                        top: 16px;
+                    }
+                    
+                    .count {
+                        width: 32px;
+                        height: 32px;
+                    }
+                }
+            }
+        }
+    }
+
+    &__step {
+        .title {
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 25px;
+            margin: 8px 0 4px;
+
+            .subtitle {
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 19px;
+                margin-top: 16px;
+            }
+        }
+
+        .document-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .question {
+                display: flex;
+                gap: 4px;
+                align-items: center;
+                background: unset;
+                border: unset;
+            }
+        }
+
+        .password {     
+            position: relative;           
+            &-rules {
+                margin-top:1em;
+                font-size: 14px;
+                line-height: 19px;
+                >strong{
+                    color: var(--mc-secondary-500);
+                }
+            }
+
+            .seePassword {
+                background: url('https://api.iconify.design/carbon/view-filled.svg');
+                background-repeat: no-repeat;
+                background-size: 22.5px;
+                background-position-x: center;
+                background-position-y: center;
+                content: "";
+                height: 48px;
+                position: absolute;
+                right: 0;
+                top: 27px;
+                width: 48px;
+            }
+        }
+
+        
+
+        .g-recaptcha {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .divider {
+            width: 100%;
+            border-bottom: 1px solid #BBBBBB;
+        }
+
+        .social-login {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+
+            &--button {
+                text-align: center;
+                display: block;
+    
+                .img {
+                    width: 50px;
+                    float: left;
+                    text-align: left;
+                    display: flex;
+                    align-items: center;
+    
+                    img {
+                        height: 16px;    
+                    }
+
+                    @media (max-width: 500px) {
+                        width: 39px;
+                        img {
+                            height: 14px;
+                        }
+                    }
+                }
+    
+                &.google {
+                    border: var(--mc-border-hairline) var(--mc-low-500);
+                    color: var(--mc-low-700);
+                }
+    
+                &.govbr {
+                    border: var(--mc-border-hairline) #1351B4;
+                    background-color: #1351B4;
+                    color: var(--mc-high-500);
+                }
+
+                @media (max-width: 380px) {
+                    &.google,
+                    &.govbr {
+                        font-size: 13px;
+                    }
+                }
+            }   
+        }
+
+        .term {
+            padding-right: 20px;
+
+            /* entire scrollbar */
+            &::-webkit-scrollbar {
+                width: 6px; 
+            }
+            
+            /* tracking area */
+            &::-webkit-scrollbar-track {
+                background: unset;
+            }
+            
+            /* scroll thumb */
+            &::-webkit-scrollbar-thumb {
+                background-color: #6C6C6C;
+                border-radius: var(--mc-border-radius-pill);
+            }
+
+
+            @media (max-width: 500px) {
+                ol {
+                    padding: 0;
+                    margin-top: 16px;
+                    padding-left: 16px;
+
+                    &:first-child {
+                        margin-top: 0;
+                    }
+
+                    li {
+                        margin-top: 16px;
+
+                        &:first-child {
+                            margin-top: 0;
+                        }
+                    }
+                }
+
+                ul {
+                    padding-left: 25px;
+                }
+            }
+        }
+
+        .button--text {
+            color: var(--mc-primary-500);
+        }
+    }
+
+    &__created {
+        .title {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+
+            &__icon {
+                color: green;
+                font-size: 96px;
+            }
+
+            &__label {
+                font-weight: 700;
+                font-size: 24px;
+                line-height: 28px;
+                text-align: center;
+            }
+
+        }
+        .emailSent {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 19px;
+            margin: 0;
+            text-align: center;
+        }
+    }
+
+}
+
+.progressbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    progress[value] {
+        appearance: none;
+        height: 8px;
+        width: 210px;
+
+        &::-webkit-progress-bar {
+            background-color: var(--mc-low-300);
+            border-radius: var(--mc-border-radius-sm);
+        }
+
+        &::-webkit-progress-value {                       
+            border-radius: var(--mc-border-radius-sm);
+            transition: 1s;
+        }
+
+        &.fraco {
+            &::-webkit-progress-value {
+                background: red;    
+            }
+        }
+
+        &.medio {
+            &::-webkit-progress-value {
+                background: yellow;   
+            }
+        }
+
+        &.forte {
+            &::-webkit-progress-value {
+                background: green;    
+            }
+        }
+    }
+}

@@ -1,0 +1,153 @@
+.technical-evaluation-configuration .btn {
+    margin-left:10px;
+}
+
+.technical-evaluation-configuration input {
+    border:1px solid transparent;
+    cursor: pointer;
+}
+.technical-evaluation-configuration .criteria-fields{
+    width: 100%;
+}
+
+.technical-evaluation-configuration input:focus {
+    border:1px solid #888;
+    cursor: text;
+}
+
+.technical-evaluation-configuration input.section-name{
+    font-size: 1.3em;
+    font-weight: bold;
+    width: 80%;
+}
+
+.technical-evaluation-configuration table {
+    width:100%;
+}
+.technical-evaluation-configuration table th .btn {
+    text-align: right
+}
+
+.technical-evaluation-configuration table input {
+}
+
+.technical-evaluation-configuration .criterion-title {
+    width: 60%;
+}
+
+.technical-evaluation-configuration .criterion-num {
+    width: 10%;
+}
+
+.technical-evaluation-configuration .criterion-num input{
+    font-weight: bold;
+    text-align: center;
+    font-size: 13px;
+}
+
+
+/* Bônus por pontuaçãos */
+.technical-evaluation-configuration .policy-roof {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.technical-evaluation-configuration .policy-roof p {
+    font-size: 12px; 
+    margin: 0; 
+    white-space: nowrap;
+    width: 100%;
+}
+.technical-evaluation-configuration .policy-roof span.detail {
+    font-size: 12px; 
+    margin: 0 0 0 15px; 
+}
+.technical-evaluation-configuration .policy-roof input {
+    margin: 0 5px;
+    margin-right: 5px;
+}
+
+.technical-evaluation-configuration .policy-field,
+.technical-evaluation-configuration .policy-percent {
+    width: 20%;
+}
+
+.technical-evaluation-configuration .policy-value {
+    width: 50%;
+}
+
+.technical-evaluation-configuration .policy-value select {
+    width: 100%;
+}
+.technical-evaluation-configuration .policy-value .check {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+.technical-evaluation-configuration .policy-value .check span {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 5px;
+    align-items: center;
+}
+.technical-evaluation-configuration .policy-value .check span input{
+    margin-right: 5px;
+}
+
+
+.technical-evaluation-configuration td.policy-field select {
+    width: 100%;
+    margin: 0;
+}
+
+.technical-evaluation-configuration td.policy-percent input {
+    width: 80% !important;
+    margin: 0;
+    border-bottom: 1px solid #EEE;
+}
+.technical-evaluation-configuration td.policy-percent input:focus{
+    border-bottom: 1px solid #888;
+}
+
+/* evaluation form */
+
+.technical-evaluation-form table{
+    width:100%;
+    border:1px solid #bbb;
+    padding:5px;
+}
+
+.technical-evaluation-form table th{
+    background-color: #ddd;
+}
+
+.technical-evaluation-form table td{
+    padding:0 10px;
+    text-align: left;
+}
+
+.technical-evaluation-form table tr td:last-of-type{
+    vertical-align: bottom;
+    text-align: right;
+    padding:0;
+}
+
+.technical-evaluation-form table td input{
+    width:50px;
+}
+
+
+.technical-evaluation-form table tr.subtotal {
+    background-color: #ddd;
+}
+
+.technical-evaluation-form table tr.subtotal td{
+    padding: 5px 10px;
+    font-weight: bold;
+}
+
+.technical-evaluation-form textarea {
+    width: 100%;
+    height:150px;
+}

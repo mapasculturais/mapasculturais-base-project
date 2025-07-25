@@ -1,0 +1,30 @@
+.compliant-suggestion-box {
+    float: right;
+
+    @media screen and (max-width: $screen-tablet) {
+      float: none;
+      margin-top: 2%;
+    }
+}
+
+.button-form-compliant-suggestion {
+    border: 1px solid #143d65;
+    cursor: pointer;
+    color: white;
+}
+
+.form-complaint-suggestion {
+  background: #f5f5f5;
+  padding-left: 18px;
+  padding-top: 32px;
+  border-left: 3px solid  #143d65;
+
+}
+
+.input-name {
+    width: 350px;
+}
+
+.input-email {
+    width: 350px;
+}

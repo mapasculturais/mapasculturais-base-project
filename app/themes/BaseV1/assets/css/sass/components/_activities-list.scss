@@ -1,0 +1,20 @@
+.panel-activities header h2 {
+	font-size: 1.5rem;
+	line-height: 1;
+}
+.activity {
+    margin-bottom: $line-height-base;
+    padding-bottom: $padding-large;
+    border-bottom: $thin-row;
+    p {
+	    margin-bottom: $line-height-half;
+	    font-size: $font-size-small;
+	    @media screen and (min-width: $screen-tablet) {
+	    	font-size: $font-size-base;
+	    }
+	}
+}
+
+.panel-list {
+	margin-bottom: 2em;
+}

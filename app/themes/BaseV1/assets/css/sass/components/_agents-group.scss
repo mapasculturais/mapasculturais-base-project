@@ -1,0 +1,50 @@
+.agentes {
+    position: relative;
+    .avatar {
+        @media screen and (min-width: 768px) {
+            position: relative;
+            &:hover {
+                .descricao-do-agente {
+                    display: block;
+                }
+            }
+        }
+        &.pending {
+            img {
+                opacity: .3;
+            }
+        }
+        .descricao-do-agente {
+            display: none;
+            position: absolute;
+            z-index: $z-index-descricao-do-agente;
+            top: 0;
+            left: calc(50% - 110px);
+            width: 220px;
+            padding: $padding-base;
+            font-size: $font-size-smaller;
+            background: #fff;
+            border-radius: $border-radius-base;
+            box-shadow: $box-shadow-dropdown;
+            box-sizing: border-box;
+            @media screen and (min-width: 768px) {
+                left: initial;
+                right: -.75rem;
+                top: 3.5rem;
+                &:before {
+                    @include arrow(up, $caret-width-base, #fff);
+                    left: initial;
+                    right: $padding-large;
+                }
+            }
+            h1 {
+                font-size: $font-size-base;
+                line-height: $line-height-base;
+                margin-bottom: 0;
+            }
+            .btn {
+                margin-top: $line-height-half;
+            }
+        }
+    }
+}

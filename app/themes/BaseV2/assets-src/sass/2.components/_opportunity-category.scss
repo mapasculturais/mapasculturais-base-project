@@ -1,0 +1,18 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-category {
+  margin-bottom: size(16);
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: size(8);
+    margin-bottom: size(16);
+  }
+
+  &__content {
+    & > .field__title {
+      margin: 0;
+    }
+  }
+}

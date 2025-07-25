@@ -1,0 +1,92 @@
+@use '../0.settings/mixins' as *;
+
+.mc-multiselect {
+    &--input {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/contain;
+        background-color: var(--mc-white);
+        background-size: size(20);
+    }
+
+    &__filter {
+        padding: size(5) size(10);
+        display: flex;
+        gap: size(8);
+        justify-content: flex-end;
+        border-bottom: var(--mc-border-hairline);
+    }
+
+    &__filter-input {
+        width: 100%;
+        padding: size(6) size(16);
+        font-family: var(--mc-font-body);
+    }
+
+    &__close {
+        display: flex;
+        align-items: center;
+        padding: size(10);
+        cursor: pointer;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__confirm-button {
+        padding: size(5) size(10);
+        display: flex;
+        border-top: var(--mc-border-hairline);
+    }
+
+    &__options {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        overflow-y: auto;
+        padding: 0;
+        width: 100%;
+        margin: 0;
+        max-height: size(256);
+    }
+
+    &__option {
+        display: flex;
+        gap: size(8);
+        border-radius: var(--mc-border-radius-xs);
+        color: var(--mc-low-500);
+        cursor: pointer;
+        padding: size(5) size(10);
+
+        &:hover {
+            background-color: var(--mc-gray-300);
+        }
+    }
+
+    &__popper {
+        .popover__content {
+            background-color: var(--mc-white);
+            border-radius: var(--mc-border-radius-xs);
+            border: var(--mc-border-hairline) var(--mc-gray-500);
+            padding: 0;
+        }
+
+        &.v-popper {
+            &__popper {
+                .v-popper {
+                    &__inner {
+                        border: none;
+                    }
+
+                    &__arrow-container {
+                        display: none;
+                    }
+                }
+            }
+
+        }
+    }
+}

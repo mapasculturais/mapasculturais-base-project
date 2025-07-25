@@ -1,0 +1,55 @@
+@use '../2-atoms/a-mixins' as *;
+
+.spam-add-config {
+
+    &__content {
+        display: grid;
+        grid-template-columns: 1fr size(1) 1fr;
+        gap: size(15) size(25);
+        align-items: start;
+    }
+
+    &__add {
+        display: grid;
+        gap: size(8);
+    }
+
+    &__title {
+        font-size: var(--mc-font-size-md);
+    }
+    
+    &__tags {
+        overflow: auto;
+        max-height: 300px;
+
+        & > ul.mc-tag-list__tagList {
+            flex-direction: row;  
+            justify-content: center;
+        }
+    }
+    
+    &__tag {
+        &--notification {
+            background-color: var(--mc-warning-500);
+            color: var(--mc-black);
+        }
+        
+        &--block {
+            background-color: var(--mc-danger-500);
+            color: var(--mc-white);
+        }
+    }
+
+    &__notification,
+    &__block {
+        display: grid;
+        gap: size(25);
+        max-height: size(400);
+        max-width: size(550);
+    }
+
+    &__vertical-divisor {
+        height: 100%;
+        border-left: size(1) solid var(--mc-gray-500);
+    }
+}
