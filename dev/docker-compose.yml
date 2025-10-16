@@ -47,7 +47,7 @@ services:
     command: --maxmemory 256Mb --maxmemory-policy allkeys-lru
 
   db:
-    image: postgis/postgis:14-master
+    image: postgis/postgis:16-master
     environment:
       - POSTGRES_PASSWORD=mapas
       - POSTGRES_USER=mapas
