@@ -30,6 +30,12 @@ services:
       - APP_MODE=development
       - BUILD_ASSETS=1
 
+      # chaves de teste do google recaptcha
+      - GOOGLE_RECAPTCHA_SITEKEY=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+      - GOOGLE_RECAPTCHA_SECRET=6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
+
+      - SESSIONS_SAVE_PATH=tcp://sessions:6379
+
     depends_on:
       - db
       - redis
@@ -38,10 +44,16 @@ services:
     stdin_open: true
     tty: true
 
-
   redis:
     image: redis:6
-    command: --maxmemory 256Mb --maxmemory-policy allkeys-lru
+    command: --maxmemory 256Mb --maxmemory-policy allkeys-lru  
+
+  sessions:
+    image: redis:6
+    restart: unless-stopped
+    command: --maxmemory 128Mb --maxmemory-policy allkeys-lru
+    volumes:
+      - ./docker-data/sessions:/data
 
   db:
     image: postgis/postgis:14-master
@@ -59,3 +71,10 @@ services:
     image: mailhog/mailhog
     ports:
       - "8025:8025"
+    
+    environment:  
+      - MH_STORAGE=maildir
+      - MH_MAILDIR_PATH=/maildir
+      
+    volumes:
+      - ./docker-data/mailhog:/maildir

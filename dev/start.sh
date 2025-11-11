@@ -4,7 +4,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CDIR=$( pwd )
 cd $DIR
 
-
 BUILD="0"
 DOWN="0"
 
@@ -21,35 +20,26 @@ case $i in
     ;;
     -h|--help)
     	    echo "
-	start-dev.sh [-b] [-d]
+	run-tests.sh [-b] [-u] [-d] [-s=25]
 
-    -b   | --build      builda a imagem Docker
-    -d   | --down       executa o docker compose down antes do docker compose run
-    -h   | --help       Imprime esta mensagem de ajuda
-    "
+    -b=  | --build      builda a imagem Docker
+	-d=  | --down       executa o docker compose down antes do docker compose run
+    -h=  | --help       Imprime este texto de ajuda
+		    "
     	    exit
     ;;
 esac
 done
+
 if [ $BUILD = "1" ]; then
-   docker compose build --no-cache --pull
+   docker compose build
 fi
 
 if [ $DOWN = "1" ]; then
    docker compose down
 fi
 
-mkdir -p docker-data/assets
-mkdir -p docker-data/logs
-mkdir -p docker-data/private-files
-mkdir -p docker-data/public-files
-mkdir -p docker-data/saas-files
+docker compose run --service-ports mapas 
 
-touch docker-data/logs/app.log
-
-chown -R www-data: docker-data/assets docker-data/logs docker-data/private-files docker-data/public-files docker-data/saas-files
-
-docker compose run --service-ports mapas
-
-docker compose down
+docker compose down --remove-orphans
 cd $CDIR
